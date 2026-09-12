@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>出品时间预测工具</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f7fa;color:#333;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a73e8,#0d47a1);color:#fff;padding:20px 40px;display:flex;align-items:center;gap:16px}
+.header h1{font-size:22px;font-weight:600}
+.container{max-width:1400px;margin:0 auto;padding:24px}
+.upload-zone{border:2px dashed #c0c8d4;border-radius:12px;padding:40px;text-align:center;background:#fff;cursor:pointer;transition:all .2s;margin-bottom:20px}
+.upload-zone:hover,.upload-zone.drag{border-color:#1a73e8;background:#f0f5ff}
+.upload-zone .icon{font-size:48px;margin-bottom:12px}
+.upload-zone .text{font-size:16px;color:#666}
+.upload-zone .hint{font-size:13px;color:#999;margin-top:8px}
+.upload-zone input{display:none}
+.status{display:none;padding:12px 20px;border-radius:8px;margin-bottom:20px;font-size:14px}
+.status.loading{display:block;background:#e8f0fe;color:#1a73e8}
+.status.error{display:block;background:#fce8e6;color:#c5221f}
+.section{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.section h2{font-size:18px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid #1a73e8}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.metric{background:#f8f9fa;border-radius:8px;padding:16px;text-align:center}
+.metric .value{font-size:28px;font-weight:700;color:#1a73e8}
+.metric .label{font-size:12px;color:#888;margin-top:4px}
+.metric.good .value{color:#188038}
+.metric.warn .value{color:#e37400}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f1f3f4;padding:10px 12px;text-align:left;font-weight:600;position:sticky;top:0;border-bottom:2px solid #dadce0}
+td{padding:8px 12px;border-bottom:1px solid #eee}
+tr:hover{background:#f8f9fa}
+.toolbar{display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.btn{padding:8px 20px;border:none;border-radius:6px;font-size:14px;cursor:pointer;font-weight:500;transition:all .2s}
+.btn-primary{background:#1a73e8;color:#fff}
+.btn-primary:hover{background:#1557b0}
+.btn-outline{background:#fff;color:#1a73e8;border:1px solid #1a73e8}
+.btn-outline:hover{background:#f0f5ff}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.eval-table{width:100%;font-size:13px}
+.eval-table td{padding:6px 10px}
+.bar-bg{background:#e8eaed;border-radius:4px;height:20px;overflow:hidden;min-width:80px}
+.bar-fill{background:linear-gradient(90deg,#1a73e8,#4da3ff);height:100%;border-radius:4px;transition:width .3s}
+.bar-fill.good{background:linear-gradient(90deg,#188038,#34a853)}
+.bar-fill.warn{background:linear-gradient(90deg,#e37400,#f9ab00)}
+.footer{text-align:center;padding:20px;color:#999;font-size:12px}
+</style>
+</head>
+<body>
+<div class="header"><h1>出品时间预测工具</h1><span>XGBoost + 门店校准 | 普通单/预订单分开预测</span></div>
+<div class="container">
+<div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+<div class="icon">[Upload]</div>
+<div class="text">点击或拖拽 CSV 文件到此处</div>
+<div class="hint">需含: 点单完成时间, 杯数, 订单类型, 门店编号 | 可选: 制作完成时间(评估用)</div>
+<input type="file" id="fileInput" accept=".csv" onchange="handleFile(this.files[0])">
+</div>
+<div class="status loading" id="statusLoading">预测中，请稍候...</div>
+<div class="status error" id="statusError"></div>
+<div class="section" id="sectionSummary" style="display:none"><h2>预测概况</h2><div class="summary-grid" id="summaryGrid"></div></div>
+<div class="section" id="sectionEval" style="display:none"><h2>准确度评估报告</h2><div id="evalContent"></div></div>
+<div class="section" id="sectionTable" style="display:none">
+<h2>预测结果 <span id="tableInfo" style="color:#888;font-weight:400;font-size:14px"></span></h2>
+<div class="toolbar">
+<input type="text" id="searchBox" placeholder="搜索订单编号..." oninput="filterTable()" style="padding:8px 12px;border:1px solid #dadce0;border-radius:6px;width:200px;font-size:13px">
+<button class="btn btn-primary" id="btnDownload">下载完整结果CSV</button>
+<button class="btn btn-outline" onclick="location.reload()">重新上传</button>
+</div>
+<div style="max-height:500px;overflow:auto"><table id="resultTable"><thead></thead><tbody></tbody></table></div>
+</div>
+</div>
+<div class="footer">XGBoost + 门店偏差校准 | 数据仅在本地处理</div>
+<script>
+var allData=[],allColumns=[],downloadUrl="";
+var zone=document.getElementById("uploadZone");
+zone.addEventListener("dragover",function(e){e.preventDefault();zone.classList.add("drag")});
+zone.addEventListener("dragleave",function(){zone.classList.remove("drag")});
+zone.addEventListener("drop",function(e){e.preventDefault();zone.classList.remove("drag");if(e.dataTransfer.files.length)handleFile(e.dataTransfer.files[0])});
+
+function handleFile(file){
+if(!file)return;
+hideAll();showLoading();
+var form=new FormData();form.append("file",file);
+fetch("/api/predict",{method:"POST",body:form})
+.then(function(r){return r.json()})
+.then(function(data){
+hideLoading();
+if(data.error){showError(data.error);return}
+allData=data.data;allColumns=data.columns;downloadUrl=data.download_url;
+showSummary(data);
+if(data.evaluation)showEval(data.evaluation);
+showTable(data);
+document.getElementById("btnDownload").onclick=function(){window.open(downloadUrl)};
+})
+.catch(function(e){hideLoading();showError("请求失败: "+e.message)});
+}
+
+function hideAll(){["sectionSummary","sectionEval","sectionTable"].forEach(function(id){document.getElementById(id).style.display="none"})}
+function showLoading(){document.getElementById("statusError").style.display="none";document.getElementById("statusLoading").style.display="block"}
+function hideLoading(){document.getElementById("statusLoading").style.display="none"}
+function showError(msg){var e=document.getElementById("statusError");e.textContent="Error: "+msg;e.style.display="block"}
+
+function showSummary(data){
+var s=data.summary;
+var cards=[
+["总订单",data.total_rows.toLocaleString()],
+["平均预测",s.pred_mean+" min"],
+["中位预测",s.pred_median+" min"],
+["最短/最长",s.pred_min+" / "+s.pred_max+" min"]
+];
+document.getElementById("summaryGrid").innerHTML=cards.map(function(x){
+return '<div class="metric"><div class="value">'+x[1]+'</div><div class="label">'+x[0]+'</div></div>';
+}).join("");
+document.getElementById("sectionSummary").style.display="";
+}
+
+function showEval(ev){
+var h="";
+h+='<div class="metrics" style="margin-bottom:16px">';
+h+=metricCard("MAE",ev.mae+" min","good");
+h+=metricCard("R2",ev.r2,"");
+h+=metricCard("实际均值",ev.actual_mean+" min","");
+h+=metricCard("预测均值",ev.pred_mean+" min","");
+h+=metricCard("系统偏差",(ev.residual_mean>0?"+":"")+ev.residual_mean+" min",Math.abs(ev.residual_mean)<1?"good":"warn");
+h+='</div>';
+
+h+='<table class="eval-table"><tr><th>误差范围</th><th>数量</th><th>占比</th><th></th></tr>';
+var bands=ev.error_bands||{};
+Object.keys(bands).forEach(function(band){
+var info=bands[band];
+var cls=band.indexOf("0-2")===0||band.indexOf("2-5")===0?"good":"warn";
+h+='<tr><td>'+band+'</td><td>'+info.count.toLocaleString()+'</td><td>'+info.pct+'%</td><td><div class="bar-bg"><div class="bar-fill '+cls+'" style="width:'+info.pct+'%"></div></div></td></tr>';
+});
+h+='</table>';
+
+var otInfo=ev.by_order_type||{};
+if(Object.keys(otInfo).length){
+h+='<h3 style="margin-top:16px;margin-bottom:8px">按订单类型</h3>';
+h+='<table class="eval-table"><tr><th>类型</th><th>样本</th><th>MAE</th><th>实际均值</th><th>预测均值</th></tr>';
+Object.keys(otInfo).forEach(function(ot){
+var info=otInfo[ot];
+h+='<tr><td>'+ot+'</td><td>'+info.n.toLocaleString()+'</td><td>'+info.mae+'</td><td>'+info.actual_mean+'</td><td>'+info.pred_mean+'</td></tr>';
+});
+h+='</table>';
+}
+
+if(ev.verdict&&ev.verdict.length){
+h+='<div style="margin-top:12px;padding:12px;background:#f8f9fa;border-radius:8px"><strong>综合评价: </strong>';
+ev.verdict.forEach(function(v){h+='<span style="margin-right:16px;font-size:13px">'+v+'</span>'});
+h+='</div>';
+}
+document.getElementById("evalContent").innerHTML=h;
+document.getElementById("sectionEval").style.display="";
+}
+
+function metricCard(label,value,cls){
+return '<div class="metric'+(cls?" "+cls:"")+'"><div class="value">'+value+'</div><div class="label">'+label+'</div></div>';
+}
+
+function showTable(data){
+document.getElementById("tableInfo").textContent="(前"+data.preview_rows+"条, 共"+data.total_rows.toLocaleString()+"条)";
+var thead="<tr>"+allColumns.map(function(c){return"<th>"+c+"</th>"}).join("")+"</tr>";
+var tbody=allData.map(function(row){
+return"<tr>"+allColumns.map(function(c){return"<td>"+(row[c]||"")+"</td>"}).join("")+"</tr>";
+}).join("");
+document.getElementById("resultTable").innerHTML="<thead>"+thead+"</thead><tbody>"+tbody+"</tbody>";
+document.getElementById("sectionTable").style.display="";
+}
+
+function filterTable(){
+var q=document.getElementById("searchBox").value.toLowerCase();
+var filtered=allData.filter(function(r){
+for(var i=0;i<allColumns.length;i++){if(String(r[allColumns[i]]||"").toLowerCase().indexOf(q)>=0)return true}
+return false;
+});
+var tbody=filtered.map(function(row){
+return"<tr>"+allColumns.map(function(c){return"<td>"+(row[c]||"")+"</td>"}).join("")+"</tr>";
+}).join("");
+document.getElementById("resultTable").querySelector("tbody").innerHTML=tbody;
+}
+</script>
+</body>
+</html>
