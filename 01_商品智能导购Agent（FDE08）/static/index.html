@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>澄初 AI 导购 · v2 演示</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+         background:#f6f7f9; color:#24292f; }
+  #wrap { max-width: 920px; margin: 24px auto; display:flex; gap:16px; }
+  #chat { flex:1; min-width:0; }
+  #panel { width: 360px; flex-shrink:0; }
+  @media (max-width: 800px){ #wrap{flex-direction:column} #panel{width:auto} }
+  .card { background:#fff; border:1px solid #e6e8eb; border-radius:12px; padding:16px; }
+  h1 { font-size:18px; margin:0 0 4px; }
+  .sub { font-size:12px; color:#6b7280; margin-bottom:12px; }
+  #log { height: 460px; overflow-y:auto; border:1px solid #eee; border-radius:8px; padding:12px;
+         background:#fbfbfc; margin-bottom:12px; }
+  .msg { margin: 8px 0; padding: 8px 12px; border-radius: 10px; max-width: 86%;
+         white-space:pre-wrap; word-break:break-word; line-height:1.55; font-size:14px; }
+  .msg.user { background:#eaf3ff; margin-left:auto; text-align:left; }
+  .msg.bot  { background:#f1f3f5; }
+  .row { font-size:13px; }
+  input[type=text]{ flex:1; padding:10px 12px; border:1px solid #d7dbe0; border-radius:8px; font-size:14px; }
+  button { padding:10px 16px; border:none; border-radius:8px; background:#2f6fed; color:#fff;
+           font-size:14px; cursor:pointer; }
+  button.ghost { background:#eef0f3; color:#333; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .chip { font-size:12px; padding:6px 10px; background:#f0f4ff; color:#2f6fed;
+          border-radius:16px; cursor:pointer; }
+  .lbl { font-size:12px; color:#6b7280; margin:10px 0 4px; font-weight:600; }
+  #trace { font-size:12px; line-height:1.6; color:#374151; }
+  #trace .k { color:#2f6fed; }
+  pre { background:#0f172a; color:#d7e3ff; padding:10px; border-radius:8px; overflow:auto;
+        font-size:11px; max-height:300px; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="chat" class="card">
+    <h1>澄初 AI 导购 · 商品智能导购助手</h1>
+    <div class="sub">演示版 · 「LLM 翻译 + 代码决策」内核 · 离线自动兜底</div>
+    <div id="log"></div>
+    <div class="row" style="display:flex; gap:8px;">
+      <input id="inp" type="text" placeholder="例如：想买保湿的产品，预算200左右" />
+      <button id="send">发送</button>
+      <button id="reset" class="ghost">重置</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div id="panel" class="card">
+    <h1 style="font-size:15px">决策透视</h1>
+    <div class="sub">点“透视”看规则层如何路由 & 决策</div>
+    <div class="lbl">快速体验</div>
+    <div class="chips" id="chips2"></div>
+    <div class="lbl">路由状态 / 决策</div>
+    <div id="trace">（还没透视——输入或点上方卡片）</div>
+    <button id="traceBtn" class="ghost" style="width:100%; margin-top:10px;">透视当前对话</button>
+  </div>
+</div>
+
+<script>
+const LOG = document.getElementById('log');
+const INP = document.getElementById('inp');
+const TRACE = document.getElementById('trace');
+let msgs = []; // 会话内 messages，持久到 /api/chat
+let cumulative = []; // 累积用户文本，用于 /api/trace
+
+const QUIET = [
+ {t:'想买保湿的，预算200左右', r:'auto'},
+ {t:'我皮肤偏油，想买个洗面奶', r:'auto'},
+ {t:'我想改善粗糙，用哪个？', r:'auto'},
+ {t:'这个能退吗？', r:'auto'},
+ {t:'我皮肤有点泛红过敏', r:'auto'},
+ {t:'给个果酸精华，我敏感肌第一次用', r:'auto'},
+ {t:'讲个笑话', r:'auto'},
+];
+const GREETING = "你好呀～我是小澄🌿 想帮你挑合适的澄初产品：洁面、保湿，还是改善肤质呢？也可以点下方快速卡片试试。";
+
+function addMsg(role, text){
+  const d = document.createElement('div');
+  d.className = 'msg ' + (role==='user'?'user':'bot');
+  d.textContent = (role==='user' ? '你：' : '小澄：') + text;
+  LOG.appendChild(d);
+  LOG.scrollTop = LOG.scrollHeight;
+}
+
+function ask(text){
+  if(!text) return;
+  addMsg('user', text);
+  msgs.push({role:'user', content:text});
+  cumulative.push(text);
+  const btn = document.getElementById('send');
+  btn.disabled = true;
+  fetch('/api/chat', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({messages: msgs})
+  })
+   .then(r=>r.json())
+   .then(j=>{ addMsg('bot', j.reply); msgs.push({role:'assistant', content:j.reply}); })
+   .catch(()=> addMsg('bot', '（网络有点问题，请再试一次～）'))
+   .finally(()=>{ btn.disabled=false; });
+}
+
+function renderChips(list, el){
+  const c = document.getElementById(el);
+  c.innerHTML='';
+  list.forEach(x=>{
+    const s=document.createElement('div');
+    s.className='chip'; s.textContent=x.t;
+    s.onclick=()=>ask(x.t);
+    c.appendChild(s);
+  });
+}
+
+function showTrace(){
+  const text = cumulative.join('\n') || INP.value;
+  fetch('/api/trace?text=' + encodeURIComponent(text))
+   .then(r=>r.json())
+   .then(j=>{
+     TRACE.innerHTML = `<div>状态：<span class="k">${j.state}</span></div>
+       <div>预算OK：${j.budget_ok ? '✅' : '⚠️超预算'}</div>
+       <div>产品：${(j.products||[]).join(',')||'—'}</div>
+       <div>合计：${j.total!=null?('¥'+j.total):'—'}</div>
+       <div>理由：${j.reason||'—'}</div>
+       <div>补充：${j.tradeoff||'—'}</div>
+       <div>追问：${j.question||'—'}</div>
+       <div style="margin-top:8px"><span class="k">信号</span></div>
+       <pre>${JSON.stringify(j.signals,null,1)}</pre>`;
+   });
+}
+
+addMsg('bot', GREETING);
+renderChips(QUIET, 'chips2');
+document.getElementById('send').onclick = ()=> { ask(INP.value.trim()); INP.value=''; };
+INP.addEventListener('keydown', e=>{ if(e.key==='Enter') { ask(INP.value.trim()); INP.value=''; }});
+document.getElementById('reset').onclick = ()=> { msgs=[]; cumulative=[]; LOG.innerHTML=''; addMsg('bot', GREETING); };
+document.getElementById('traceBtn').onclick = showTrace;
+renderChips([{t:'保湿组合 500 预算'},{t:'我想保湿+清洁'},{t:'旅行带点分装'},{t:'多少钱啊 能打折吗'}], 'chips');
+</script>
+</body>
+</html>

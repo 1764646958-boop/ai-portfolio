@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkBuddy · Agent 质量与分发原型</title>
+<style>
+:root{
+  --bg0:#070a13; --bg1:#0c1120; --bg2:#111a30;
+  --card:#141d36; --card2:#182342; --line:#25325a;
+  --txt:#e7ecf7; --txt2:#a3b0cc; --txt3:#6d7ba0;
+  --purple:#8f86ff; --blue:#4f8bff; --teal:#27d3a3; --coral:#ff7a6b;
+  --amber:#ffc457; --green:#57d977; --red:#ff5f76;
+  --mono:ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,system-ui,"Segoe UI","Microsoft YaHei",sans-serif;
+  background:radial-gradient(1200px 600px at 20% -10%,#1a2750 0%,transparent 60%),
+             radial-gradient(900px 500px at 100% 0%,#3a1f4d 0%,transparent 50%),
+             var(--bg0);
+  color:var(--txt); min-height:100vh; padding:28px 24px 60px;
+}
+.wrap{max-width:1240px;margin:0 auto}
+header.masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.brand h1{font-size:26px;font-weight:700;letter-spacing:.3px}
+.brand h1 .accent{background:linear-gradient(90deg,var(--purple),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand p{color:var(--txt2);font-size:13.5px;margin-top:6px;max-width:640px}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap}
+.badge{font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--txt2)}
+.badge b{color:var(--txt)}
+
+.cards{display:grid;grid-template-columns:1.25fr .9fr;gap:18px}
+@media(max-width:960px){.cards{grid-template-columns:1fr}}
+
+.card{background:linear-gradient(180deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.card h2{font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--txt);margin-bottom:14px}
+.card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
+
+textarea{width:100%;min-height:84px;background:var(--bg1);border:1px solid var(--line);border-radius:12px;color:var(--txt);
+  font-size:15px;padding:12px 14px;line-height:1.6;resize:vertical;outline:none;font-family:inherit}
+textarea:focus{border-color:var(--blue)}
+.field-label{font-size:12px;color:var(--txt3);margin-bottom:8px;letter-spacing:.4px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chip{font-size:12.5px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--bg1);color:var(--txt2);cursor:pointer;transition:.15s}
+.chip:hover{border-color:var(--purple);color:var(--txt);transform:translateY(-1px)}
+.chip.on{background:linear-gradient(90deg,rgba(143,134,255,.25),rgba(39,211,163,.2));border-color:var(--purple);color:#fff}
+
+.actions{display:flex;gap:10px;align-items:center;margin-top:6px}
+button.btn{flex:1;padding:12px;border-radius:12px;border:none;font-size:15px;font-weight:600;cursor:pointer;transition:.18s;color:#0a0d16}
+button.btn.run{background:linear-gradient(90deg,var(--purple),var(--teal));box-shadow:0 6px 20px rgba(79,139,255,.35)}
+button.btn.run:hover{filter:brightness(1.1)}
+button.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--txt2);font-weight:500;flex:0 0 auto}
+button.btn.ghost:hover{border-color:var(--txt3);color:var(--txt)}
+
+/* pipeline */
+.pipeline{margin-top:16px}
+.stages{display:flex;gap:6px;flex-wrap:wrap}
+.stage{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);
+  background:var(--bg1);font-size:12px;color:var(--txt3);opacity:.45;transition:.25s;flex-shrink:0}
+.stage .n{font-family:var(--mono);font-size:11px;color:var(--txt3)}
+.stage.active{opacity:1;border-color:var(--teal);color:var(--txt);box-shadow:0 0 0 1px rgba(39,211,163,.3),0 4px 16px rgba(39,211,163,.12)}
+.stage.active .n{color:var(--teal)}
+.stage.done{opacity:.85;border-color:var(--line)}
+.who{font-size:10px;padding:2px 6px;border-radius:6px;font-weight:600;letter-spacing:.2px}
+.who.model{background:rgba(143,134,255,.18);color:var(--purple)}
+.who.rule{background:rgba(79,139,255,.18);color:var(--blue)}
+.who.human{background:rgba(255,199,87,.18);color:var(--amber)}
+
+/* compare bars */
+.compGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+@media(max-width:700px){.compGrid{grid-template-columns:1fr}}
+.compBox h4{font-size:12.5px;color:var(--txt2);margin-bottom:10px;display:flex;align-items:center;gap:6px;font-weight:600}
+.compBox h4 .tag{font-size:10px;padding:2px 6px;border-radius:6px;background:var(--bg1);color:var(--txt3);border:1px solid var(--line)}
+.barRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;margin-bottom:9px}
+.barRow .lbl{font-size:12px;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barRow .val{font-family:var(--mono);font-size:11px;color:var(--txt3);width:52px;text-align:right}
+.barTrack{height:10px;border-radius:6px;background:var(--bg1);overflow:hidden;position:relative;grid-column:1/-1}
+.barFill{height:100%;border-radius:6px;position:relative;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.winnerRow .barFill{background:linear-gradient(90deg,var(--teal),#7ff0cf);box-shadow:0 0 12px rgba(39,211,163,.5)}
+
+/* winner */
+.winner{margin-top:16px;border:1px solid rgba(39,211,163,.35);border-radius:14px;padding:16px;background:linear-gradient(180deg,rgba(39,211,163,.08),transparent)}
+.winner .w-head{display:flex;align-items:center;gap:12px}
+.winner .avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--purple));display:flex;align-items:center;justify-content:center;font-size:20px}
+.winner h3{font-size:17px}
+.winner .sub{font-size:12px;color:var(--txt2)}
+.winner .fits{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}
+.fit{font-size:11.5px;padding:5px 10px;border-radius:8px;background:var(--bg1);border:1px solid var(--line);color:var(--txt2)}
+.fit b{color:var(--teal)}
+.winner .why{font-size:13px;line-height:1.7;color:var(--txt);margin-top:6px}
+
+/* explain panel */
+.explain{font-size:13px;line-height:1.8;color:var(--txt2)}
+.statRow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line)}
+.statRow:last-child{border-bottom:none}
+.statRow .k{color:var(--txt3)}
+.statRow .v{font-family:var(--mono);font-size:12px;color:var(--txt)}
+
+footer{text-align:center;color:var(--txt3);font-size:12px;margin-top:30px;line-height:1.8}
+.muted{color:var(--txt3);font-size:12px;margin-top:10px}
+.hidden{display:none}
+.spin{animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="brand">
+      <h1>WorkBuddy · <span class="accent">Agent 质量与分发原型</span></h1>
+      <p>演示「长尾需求被<strong>非头部资产</strong>命中」的完整链路——需求理解 → 召回 → 语境适配 → 质量×生态 → 探索/门禁 → 命中。左：传统按流量排序；右：本框架得分。</p>
+    </div>
+    <div class="badge-row">
+      <span class="badge">评估框架 <b>P1</b></span>
+      <span class="badge">分发链路 <b>P2</b></span>
+      <span class="badge">可交互原型 <b>P3</b></span>
+    </div>
+  </header>
+
+  <div class="cards">
+    <!-- 左：输入与链路 -->
+    <div class="card">
+      <h2><span class="dot"></span>① 输入自然语言需求</h2>
+      <div class="field-label">描述你的需求（会解析意图/实体/约束）</div>
+      <textarea id="need">今晚要做清蒸鲈鱼，配什么清酒比较合适？</textarea>
+      <div class="chips" id="chips">
+        <span class="chip on" data-n="今晚要做清蒸鲈鱼，配什么清酒比较合适？">长尾需求 · 清酒配餐</span>
+        <span class="chip" data-n="帮我把今天这场产品评审会的纪要给整理成简洁的要点">常规需求 · 会议纪要</span>
+        <span class="chip" data-n="把这份 1980 年的老纪录片胶片修复效果好，写成给投资人的说明">长尾需求 · 胶片修复</span>
+        <span class="chip" data-n="翻译这份 30 页的技术白皮书为英文">头部需求 · 文档翻译（质优长尾翻盘）</span>
+      </div>
+      <div class="actions">
+        <button class="btn run" id="runBtn">▸ 运行完整匹配链路</button>
+        <button class="btn ghost" id="resetBtn">重置</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <label style="font-size:12px;color:var(--txt3)">语义层：</label>
+        <div class="chip mode-btn on" id="modeOffline">离线（近似语义）</div>
+        <div class="chip mode-btn" id="modeLLM">真实 LLM</div>
+        <span id="llmStatus" class="muted" style="margin-left:auto"></span>
+      </div>
+
+      <div class="pipeline">
+        <div class="field-label">链路阶段（规则 / 模型 / 人）</div>
+        <div class="stages" id="stages"></div>
+      </div>
+    </div>
+
+    <!-- 右：结果与可解释 -->
+    <div class="card">
+      <h2><span class="dot"></span>② 判断依据（可解析 / 可采信）</h2>
+      <div id="detail" class="explain">
+        <div class="muted">尚未运行。点击左侧「运行完整匹配链路」，将展示：命中资产、语境适配度、基础质量、生态增益、门禁状态，以及「为什么推荐它」的可解释理由。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px" id="compareCard">
+    <h2><span class="dot"></span>③ 两种排序对照：传统「按流量/评分」 vs 本框架「语境 × 质量 × 生态」</h2>
+    <div class="muted" style="margin-bottom:8px">传统模式会被头部资产虹吸（高流量抬到顶）；本框架用「语境适配度 × 基础质量 × 生态增益」把<strong>恰好契合的长尾</strong>托举上来。</div>
+    <div class="compGrid" id="compGrid"></div>
+  </div>
+
+  <footer>
+    原型为本地轻量演示：内嵌资产库 + 确定性语义匹配 + P1 评分公式 + UCB 探索与三层门禁。<br>
+    语义层以「能力维度 + 关键词」近似模拟 LLM 判断，可替换为真实大模型接口（见 index.md 说明）。· WorkBuddy Agent 生态策略原型 · 2026-09-09
+  </footer>
+</div>
+
+<script>
+/* ============ 资产库（含头部与长尾，覆盖多领域） ============ */
+const DIMS = {
+  text:"文本生成", img:"图像/视觉", data:"数据分析", code:"代码", trans:"翻译",
+  video:"视频/音频", food:"美食/烹饪", medical:"医疗/健康", meeting:"会议/办公",
+  finance:"金融/投资", drink:"酒/饮品", legal:"法律/合规"
+};
+// 语义层：每资产一个能力维度向量（近似语义嵌入，模拟 LLM 判断）
+const ASSETS = [
+  {id:"mb",   name:"MeetingSummarizer",  cn:"会议纪要大师", avatar:"📝", dims:{meeting:.5,text:.5}, calls:51200, rating:4.7, fail:0.05, tok:1200, dropoff:0.06, content:0.9, cluster:"办公", niche:"会议"},
+  {id:"cr",   name:"CodeRefactor",       cn:"代码重构助手", avatar:"🧩", dims:{code:.7,text:.3}, calls:36800, rating:4.5, fail:0.08, tok:2400, dropoff:0.10, content:0.88, cluster:"开发", niche:"代码"},
+  {id:"dt",   name:"DocTranslator",      cn:"多语言文档翻译", avatar:"🌐", dims:{trans:.8,text:.2}, calls:30400, rating:4.6, fail:0.04, tok:900,  dropoff:0.05, content:0.9, cluster:"办公", niche:"翻译"},
+  {id:"fan",  name:"DataAnalyst",        cn:"金融数据洞察", avatar:"📊", dims:{data:.5,finance:.5}, calls:22100, rating:4.3, fail:0.09, tok:2600, dropoff:0.12, content:0.85, cluster:"金融", niche:"数据"},
+  {id:"film", name:"VintageFilmRestorer",cn:"老胶片修复文案",avatar:"🎞️", dims:{video:.6,img:.4}, calls:160,  rating:4.9, fail:0.03, tok:700,  dropoff:0.04, content:0.86, cluster:"影视", niche:"胶片修复"},
+  {id:"sake", name:"SakePairingAdvisor", cn:"清酒配餐顾问", avatar:"🍶", dims:{drink:.5,food:.5}, calls:84, rating:4.8, fail:0.02, tok:600, dropoff:0.03, content:0.88, cluster:"生活", niche:"清酒配餐"},
+  {id:"med",  name:"CTReportParser",     cn:"医学CT报告解析", avatar:"🩺", dims:{medical:.7,data:.3}, calls:46, rating:4.9, fail:0.02, tok:1100, dropoff:0.03, content:0.9, cluster:"医疗", niche:"CT解析"},
+  {id:"soy",  name:"SoyMilkRecipeBot",   cn:"自制豆浆食谱", avatar:"🥛", dims:{food:.7,text:.3}, calls:31, rating:4.6, fail:0.03, tok:500, dropoff:0.05, content:0.84, cluster:"生活", niche:"豆浆"},
+  // —— 附：质量×生态翻盘对照（与 dt 语义同维、但质量更优）—— 检验框架在"语义持平"时仍凭质量+生态逆转长尾
+  {id:"hqt",  name:"HighQualityTranslator", cn:"精译大师", avatar:"✍️", dims:{trans:.8,text:.2}, calls:95, rating:4.9, fail:0.02, tok:750, dropoff:0.03, content:0.95, cluster:"办公", niche:"精译"},
+];
+
+// 关键词 → 维度 映射（近似语义，可通过更细的词表替换）
+const KEYWORDS = {
+  "鲈鱼|鱼|海鲜|做菜|做法|配餐|搭配|推荐什么|吃什么": ["food"],
+  "清酒|酒|佐餐|配酒|喝什么": ["drink"],
+  "会议|纪要|评审|要点|整理|总结|提炼": ["meeting","text"],
+  "胶片|纪录片|修复|影像|视频|视觉": ["video","img"],
+  "翻译|英文|中文|白皮书|文档": ["trans"],
+  "代码|重构|程序|函数|开发": ["code"],
+  "CT|报告|医疗|医学|影像|诊断": ["medical"],
+  "金融|数据|分析|财报|投资": ["finance","data"],
+  "豆浆|食谱|早餐|谷类|豆浆机": ["food","text"],
+  "合规|法律|法规|合同": ["legal"]
+};
+
+const DIMKEY = {text:1,img:1,data:1,code:1,trans:1,video:1,food:1,medical:1,meeting:1,finance:1,drink:1,legal:1};
+
+function parseNeed(text){
+  const vec = {};
+  for(const [pat,dims] of Object.entries(KEYWORDS)){
+    let hit=false;
+    for(const tok of pat.split("|")){ if(text.includes(tok)){hit=true;break;} }
+    if(hit) dims.forEach(d=>{ if(DIMKEY[d]) vec[d]=(vec[d]||0)+1; });
+  }
+  if(Object.keys(vec).length===0) vec.text=1; // 兜底
+  // 识别实体/约束（简化）
+  const entities = [];
+  for(const tok of ["鲈鱼","白皮书","纪录片","评审会","财报"]) if(text.includes(tok)) entities.push(tok);
+  return {raw:text, vec, entities, constraint:noneOr(text)};
+  function noneOr(){ return ""; }
+}
+
+function cos(a,b){
+  let dot=0,na=0,nb=0;
+  for(const k in a) dot+=(a[k]||0)*(b[k]||0), na+=(a[k]||0)**2;
+  for(const k in b) nb+=(b[k]||0)**2;
+  if(na===0||nb===0) return 0;
+  return dot/(Math.sqrt(na)*Math.sqrt(nb));
+}
+
+// P1 框架：基础质量（贝叶斯收缩）+ 生态增益 + 语境适配 + UCB
+function baseQuality(a){
+  // 内容先验（零流量可读）与行为验证，按证据量 N 做贝叶斯收缩
+  const N = a.calls;
+  const k = 5;                     // 收缩平衡常数（P1 统一约定 k=5）
+  const contentPrior = (a.content + a.content*0.05 + a.rating/5*0.1); // 内容信号先验
+  const behavior = Math.max(0, (1 - a.fail) * (0.6 + 0.4*a.rating/5) * (1 - a.dropoff) * (1 - a.tok/4000));
+  const w = N/(N+k);
+  return {q: w*behavior + (1-w)*contentPrior, w, contentPrior, behavior};
+}
+function scarcity(a, need){
+  // 同需求簇内候选越少越稀缺 → 用需needs与候选重合并作近似
+  let same=0;
+  for(const b of ASSETS){
+    if(b.id===a.id) continue;
+    const merge = overlapDim(a.dims, b.dims);
+    if(merge>0.5) same++;
+  }
+  const domainGap = domainGapScore(a, need);
+  return {scarcity: Math.max(0, 1 - same/3), gap: domainGap};
+}
+function overlapDim(x,y){ let m=0; for(const k in x) if(y[k]) m+= Math.min(x[k],y[k]); return m; }
+function domainGapScore(a, need){
+  // 需求覆盖缺口：该 niche 是否被供给覆盖。清酒/胶片 niche 供给少 → 缺口高
+  const gapMap = {"清酒配餐":0.85,"胶片修复":0.8,"CT解析":0.85,"豆浆":0.7,"会议":0.2,"翻译":0.2,"代码":0.2,"数据":0.35};
+  return gapMap[a.niche]!==undefined ? gapMap[a.niche] : 0.4;
+}
+
+/* ============ 语义层模式：离线 | 真实LLM ============ */
+let MODE = "offline";
+// P1 统一符号约定：k=5（收缩平衡）、β=0.15（UCB 探索系数，中等偏保守）、α=0.15（生态增益，膝点 0.2）
+const BETA = 0.15;
+function setStatus(msg, busy){
+  const el = document.getElementById("llmStatus");
+  el.textContent = busy ? "◌ " + msg : msg;
+  el.style.color = busy ? "var(--amber)" : "var(--txt2)";
+}
+async function fetchLLM(text){
+  const res = await fetch("/llm", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text})});
+  if(!res.ok){ let d={}; try{ d=await res.json(); }catch(e){} throw new Error(d.error || ("HTTP "+res.status)); }
+  return res.json();
+}
+
+async function runMatch(){
+  const needText = document.getElementById("need").value;
+  const need = parseNeed(needText);
+  const ALPHA = 0.15, CAP = 0.2;
+  // 语义层：离线用余弦，真实 LLM 用后端的 context-fit 打分
+  let fits = {};
+  if(MODE === "llm"){
+    setStatus("调用真实 LLM ...", true);
+    try{
+      const r = await fetchLLM(needText);
+      fits = r.fits || {};
+      if(r.intent && r.intent.dims) need.intentLLM = r.intent;
+      if(r.intent && r.intent.cluster) need.clusterLLM = r.intent.cluster;
+      setStatus("LLM 打分完成 ✓");
+    }catch(e){
+      setStatus("LLM 不可用，已回退离线近似", false);
+      fits = {};
+    }
+  }
+  const results = ASSETS.map(a=>{
+    const cfit = (fits[a.id]!=null && MODE==="llm") ? Math.round(fits[a.id]*100)/100
+                : Math.round(cos(need.vec, a.dims)*100)/100;
+    const {q,w} = baseQuality(a);
+    const {scarcity, gap} = scarcity(a, need);
+    const gain = 1 + ALPHA*scarcity*gap;
+    const final = cfit * q * gain;
+    // UCB 探索乐观（给低证据长尾一点机会）
+    const t = 100, N = a.calls;
+    const ucb = q + BETA*Math.sqrt(Math.log(t)/(N+1));
+    return {a, cfit, baseQ:q, scarcity, gap, gain, final, ucb, pop:a.calls};
+  });
+  // 排序：本框架 vs 传统（popularity）
+  const fw = [...results].sort((x,y)=>y.final-x.final);
+  const legacy = [...results].sort((x,y)=>y.pop-x.pop);
+  // 传统排序 = 按调用量（会被头部虹吸）；本框架 = final
+  const winner = fw[0];
+  renderStages(need, winner, results);
+  renderDetail(need, winner, results);
+  renderCompare(fw, legacy, winner);
+}
+
+/* ===== 渲染链路 ===== */
+const STAGES = [
+  {n:"① 需求理解", who:"model", q:"解析意图/实体/约束"},
+  {n:"② 需求画像", who:"model", q:"语境向量 / 识别长尾"},
+  {n:"③ 候选召回", who:"rule", q:"语义相似 + 资格过滤"},
+  {n:"④ 语境适配", who:"model", q:"候选×需求 契合度"},
+  {n:"⑤ 质量接入", who:"rule", q:"语境×质量×生态"},
+  {n:"⑥ 探索/利用", who:"rule", q:"UCB 乐观 + 探索预算"},
+  {n:"⑦ 门禁裁决", who:"human", q:"底线/竞争/稀缺豁免"},
+  {n:"⑧ 分发执行", who:"rule", q:"返回 top-k 命中"},
+  {n:"⑨ 反馈闭环", who:"model", q:"命中/放弃归因"},
+  {n:"⑩ 数据回流", who:"rule", q:"贝叶斯收缩更新"},
+];
+function renderStages(need, winner, results){
+  const box = document.getElementById("stages"); box.innerHTML="";
+  STAGES.forEach((st,i)=>{
+    const el=document.createElement("div");
+    el.className="stage"; el.innerHTML=`<span class="n">${st.n.split(" ")[0]}</span><span>${st.n.split(" ")[1]}</span><span class="who ${st.who}">${whoLabel(st.who)}</span>`;
+    el.title=st.q; el.dataset.i=i; box.appendChild(el);
+  });
+  // 播放动画：顺序点亮
+  const els=[...box.children];
+  els.forEach(e=>e.classList.remove("active","done"));
+  let i=0;
+  const id=setInterval(()=>{
+    if(i>0) els[i-1].classList.add("done");
+    if(i<els.length){ els[i].classList.add("active"); i++; }
+    else clearInterval(id);
+  },420);
+}
+function whoLabel(w){return w==="model"?"模型":w==="rule"?"规则":"人工";}
+
+/* ===== 渲染判断依据 ===== */
+function renderDetail(need, w, results){
+  const d=document.getElementById("detail");
+  // 语义层来源：LLM 优先，否则用离线维度
+  let devDims;
+  if(MODE==="llm" && need.intentLLM && need.intentLLM.dims){
+    devDims = need.intentLLM.dims.map(k=>DIMS[k]||k).join("、");
+    if(!devDims) devDims="—";
+  }else{
+    devDims = Object.keys(need.vec).map(k=>DIMS[k]).join("、")||"—";
+  }
+  const fitNote = (MODE==="llm") ? "（真实 LLM 打分）" : "（维度余弦近似）";
+  const topByFit = [...results].sort((a,b)=>b.cfit-a.cfit);
+  // 质量×生态翻盘检测：语义可胜任(cfit≥0.7)的最高调用资产 = 头部；若胜者并非它、且语义持平(±0.005)，则框架靠质量+生态逆转
+  const capable = [...results].filter(r=>r.cfit>=0.7).sort((x,y)=>y.a.calls-x.a.calls);
+  const head = capable[0];
+  const legWin = [...results].sort((x,y)=>y.a.calls-x.a.calls)[0];
+  const callsMax = results.reduce((m,r)=>Math.max(m,r.a.calls),0);
+  const isHead = w.a.calls >= callsMax;
+  const flip = !!(head && head.a.id!==w.a.id && w.cfit >= head.cfit-0.005);
+  let gateStatus;
+  if(w.a.fail > 0.15){ gateStatus = "① 底线闸门 拦截：失败率过高，不进分发 ✗"; }
+  else if(w.a.rating < 4.2){ gateStatus = "① 底线闸门 拦截：评分过低 ✗"; }
+  else if(w.scarcity >= 0.8){ gateStatus = "② 竞争闸门 → ③ 稀缺豁免：内容先验合格，进探索池保底曝光 ✓"; }
+  else if(w.cfit >= 0.5 && w.a.content >= 0.8){ gateStatus = "② 竞争闸门 通过：同簇排进前 40%，进常规曝光 ✓"; }
+  else { gateStatus = "② 竞争闸门 待复核：交由人工裁决"; }
+  d.innerHTML = `
+    <div class="statRow"><span class="k">命中资产</span><span class="v">${w.a.name}（${w.a.cn}）</span></div>
+    <div class="statRow"><span class="k">需求簇 / 识别维度</span><span class="v">${devDims}</span></div>
+    <div class="statRow"><span class="k">语境适配度 ${fitNote}</span><span class="v">${(w.cfit*100).toFixed(0)}%</span></div>
+    <div class="statRow"><span class="k">基础质量（收缩后）</span><span class="v">${(w.baseQ*100).toFixed(0)}</span></div>
+    <div class="statRow"><span class="k">稀缺度 × 需求缺口</span><span class="v">${w.scarcity.toFixed(2)} × ${w.gap.toFixed(2)}</span></div>
+    <div class="statRow"><span class="k">生态增益系数</span><span class="v">×${w.gain.toFixed(3)}</span></div>
+    <div class="statRow"><span class="k">最终分发分</span><span class="v">${(w.final*100).toFixed(1)}</span></div>
+    <div class="statRow"><span class="k">门禁状态</span><span class="v">${gateStatus}</span></div>
+    <div class="statRow"><span class="k">阶段⑥ UCB 乐观值</span><span class="v">${(w.ucb*100).toFixed(0)}（探索系数 β=${BETA}）</span></div>
+    <div style="margin-top:12px">
+      <b style="color:var(--teal)">为什么推荐它：</b>
+      ${flip?`
+      <p style="margin-top:6px">本案例中，<strong>${w.a.cn}</strong> 与头部「${head.a.cn}」在语境适配度上几乎持平（均约 ${(w.cfit*100).toFixed(0)}%，语义都胜任）。真正拉开差别的是框架的两个差异化信号——<strong>基础质量</strong>（内容自证 ${(w.a.content*100).toFixed(0)} / 失败率 ${(w.a.fail*100).toFixed(0)}% / 评分 ${w.a.rating}，均优于头部）与 <strong>生态增益</strong>（稀缺度 ${w.scarcity.toFixed(2)} × 需求缺口 ${w.gap.toFixed(2)}，给到 ×${w.gain.toFixed(3)}）。</p>
+      <p style="margin-top:6px">对照右侧「传统」列：按调用量会优先选 <strong>${legWin.a.cn}</strong>（${legWin.a.calls.toLocaleString()} 次，流量最大、即便它与当前需求语义无关）；而本框架在语义持平的条件下，把曝光给到质量更高、更稀缺的达标长尾——这正是用「质量 + 生态」而非「语义别苗头」逆转马太的验证。</p>
+      `:isHead?`
+      <p style="margin-top:6px">本案例中，<strong>${w.a.cn}</strong> 就是当前需求下调用量最大的头部资产（${w.a.calls.toLocaleString()} 次）。当头部在语义与质量上确实都是最优解时，本框架仍然推它——因为框架的目标是「给长尾起跑线」，而非「反头部、为反而反」。</p>
+      `:`
+      <p style="margin-top:6px"><strong>${w.a.cn}</strong> 在「${devDims}」维度与你的需求高度重合（语境适配 ${(w.cfit*100).toFixed(0)}%），
+      虽调用量仅 ${w.a.calls}（远低于头部），但<p></p>其内容自证 ${(w.a.content*100).toFixed(0)} / 失败率 ${(w.a.fail*100).toFixed(0)}% / 评分 ${w.a.rating} 均优，
+      属「达标长尾」。右：同一需求下头部资产因与该需求几乎不契合，语境适配得分很低——这正是本框架打破马太效应的关键。</p>
+      ${w.a.id==="film"||w.a.id==="sake"||w.a.id==="med"||w.a.id==="soy"||w.a.id==="hqt"?
+        `<div style="margin-top:10px" class="muted">⚠ 传统按「调用量」排序时，这类长尾会被头部资产（评分高、流量大）抢先占据曝光，导致难以被用户看见。</div>`:""}
+      `}
+    </div>
+  `;
+}
+
+/* ===== 渲染两个对照排序条 ===== */
+function renderCompare(fw, legacy, winner){
+  const grid=document.getElementById("compGrid");
+  const fwMax=Math.max(...fw.map(x=>x.final));
+  const legMax=Math.max(...legacy.map(x=>x.pop));
+  // 列出每列 top5，记录各列最大值用于标度与高亮
+  const fwTop=fw.slice(0,5), legTop=legacy.slice(0,5);
+  const fwMaxTop=Math.max(...fwTop.map(x=>x.final))||1;
+  const legMaxTop=Math.max(...legTop.map(x=>x.pop))||1;
+  grid.innerHTML=`
+    <div class="compBox">
+      <h4><span class="tag">传统</span> 按调用量（头部流量口径）</h4>
+      ${legTop.map(x=>barRow(x.a, x.pop/legMaxTop, x, "legacy", x.a.id===winner.a.id)).join("")}
+    </div>
+    <div class="compBox">
+      <h4><span class="tag">本框架</span> 语境适配度 × 基础质量 × 生态增益</h4>
+      ${fwTop.map(x=>barRow(x.a, x.final/fwMaxTop, x, "fw", x.a.id===winner.a.id)).join("")}
+    </div>`;
+}
+function barRow(a, ratio, info, kind, isWinner){
+  const pct=(Math.max(0,Math.min(1,ratio))*100).toFixed(1);
+  const isFwWin = kind==="fw" && isWinner;
+  const hex = isFwWin ? "#27d3a3" : "#4f8bff";
+  const val = kind==="fw" ? (info.final*100).toFixed(0)
+             : (info.a.calls>=1000 ? (info.a.calls/1000).toFixed(0)+"k" : info.a.calls);
+  const mark = isWinner && kind==="fw" ? '<span style="color:var(--teal);font-weight:700"> ◆</span>' : "";
+  return `<div class="barRow${isFwWin?" winnerRow":""}">
+    <div class="lbl" title="${info.a.name}">${isWinner&&kind==="fw"?'<b>'+info.a.cn+'</b>':info.a.cn} <span style="color:var(--txt3)">· 命中${(info.cfit*100).toFixed(0)}%</span>${mark}</div>
+    <div class="val">${val}</div>
+    <div class="barTrack"><div class="barFill" style="width:${pct}%;background:${hex}"></div></div>
+  </div>`;
+}
+
+/* 事件 */
+document.getElementById("runBtn").onclick=()=>runMatch();
+document.getElementById("resetBtn").onclick=()=>runMatch();
+document.querySelectorAll("#chips .chip").forEach(c=>{
+  c.onclick=()=>{
+    document.querySelectorAll("#chips .chip").forEach(x=>x.classList.remove("on"));
+    c.classList.add("on");
+    document.getElementById("need").value=c.dataset.n;
+    runMatch();
+  };
+});
+// 语义层模式切换（注意：#chips .chip 选择器不影响 .mode-btn）
+const modeOffline=document.getElementById("modeOffline"), modeLLM=document.getElementById("modeLLM");
+function setMode(m){
+  MODE=m;
+  modeOffline.classList.toggle("on", m==="offline");
+  modeLLM.classList.toggle("on", m==="llm");
+  setStatus(m==="llm" ? "真实 LLM · 需先运行 server.py 并配置 .env" : "离线近似语义", false);
+}
+modeOffline.onclick=()=>setMode("offline");
+modeLLM.onclick=()=>setMode("llm");
+runMatch();
+</script>
+</body>
+</html>
