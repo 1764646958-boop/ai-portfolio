@@ -1,0 +1,19 @@
+> 📄 **作品集展示副本（已脱敏）**：服务器地址 / 主机名 / 域名 / 邮箱 / 凭据 / 令牌均已替换为占位符；
+> 完整原报告不随作品集仓库分发。指标与结论未作任何修改。
+
+== CloudLoom 开机自检 2026-09-14 01:44:00 ==
+启动时刻: 2026-09-14 01:43:45
+caddy: active
+team-console: active
+hermes-gateway-cehua: active
+hermes-gateway-chengxu: active
+hermes-gateway-pingshen: active
+hermes-gateway-zhiban: active
+health:8642 → {"status": "ok", "platform": "hermes-agent", "version": "0.19.0"}
+health:8643 → {"status": "ok", "platform": "hermes-agent", "version": "0.19.0"}
+health:8644 → {"status": "ok", "platform": "hermes-agent", "version": "0.19.0"}
+health:8645 → {"status": "ok", "platform": "hermes-agent", "version": "0.19.0"}
+api:8787 → {"ok":true,"service":"team-console","time":"2026-09-13T17:44:15.171Z"}
+static:3000 → 200
+kanban cards → 4
+== 自检结束 ==
