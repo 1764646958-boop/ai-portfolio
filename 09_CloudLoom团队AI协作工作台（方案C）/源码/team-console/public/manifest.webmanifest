@@ -1,0 +1,16 @@
+{
+  "name": "CloudLoom 团队工作台",
+  "short_name": "CloudLoom",
+  "description": "楚华成章团队协作工作台：聊天 / 看板 / 任务 / 画像 / 资料库 / 记忆",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f9fafb",
+  "theme_color": "#2563eb",
+  "lang": "zh-CN",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
