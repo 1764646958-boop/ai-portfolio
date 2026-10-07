@@ -1,0 +1,20 @@
+[Unit]
+Description=CloudLoom Team Console Proxy (API 8787 + MCP + static 3000)
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/local/bin/node /opt/team-console/server/src/index.js
+WorkingDirectory=/opt/team-console/server
+EnvironmentFile=/opt/team-console/server/.env
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
