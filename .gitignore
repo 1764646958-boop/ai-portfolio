@@ -5,6 +5,21 @@
 !.env.example
 !**/.env.example
 
+# ===== CloudLoom 源码目录内的运行时敏感文件（一旦入库 = 密钥/数据泄露）=====
+# 服务器部署目录 /opt/team-console 里的这些文件「绝不可」随源码入库：
+#   · agents.json        含 5 个 Agent 的真实 api_server_key（48 位）
+#   · .env               含 JWT_SECRET（已被上方全局规则覆盖）
+#   · 密钥台账.md         密钥位置与指纹清单
+#   · data/              真实账号、消息、团队记忆、任务与用量数据库
+#   · reports/           含服务器地址的未脱敏原版报告（公开版见「_原始报告（脱敏）」）
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/agents.json
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/密钥台账.md
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/data/
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/reports/
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/*.db
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/*.sqlite*
+09_CloudLoom团队AI协作工作台（方案C）/源码/**/*.bak*
+
 # ===== 依赖 / 缓存 / 日志 / 预览 =====
 __pycache__/
 *.py[cod]
