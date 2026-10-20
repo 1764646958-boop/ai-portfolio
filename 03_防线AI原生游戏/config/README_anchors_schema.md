@@ -65,7 +65,7 @@
 1. ~~把 26 个现有锚点补齐 schema 必填字段~~ ✅ 已完成（v7.0）
 2. ~~给 5 个锚点写完整示例（含 `player_selected` / `llm_complete_memory` / `drift_update` 等运行时字段的实际填写示例，[生产指南 §二.2 B-W2 验收](README.md)）~~ ✅ 已完成
    - 文档：[`docs/anchors_examples_v5.3.md`](../docs/anchors_examples_v5.3.md)
-   - 数据实例：[`save/example_save.json`](../save/example_save.json)（5/5 通过 schema 校验）
+   - 数据实例：`save/example_save.json`（5/5 通过 schema 校验）——该实例文件未随仓库分发
    - 覆盖：3 场景 × A/B offset_type × 3 drift_direction（toward_closeness / toward_distance / ambiguous）
 3. 范���扩至 25 条 → 40 条（[生产指南 §二.2 B-W3](README.md)）
 4. 引入 `python -m jsonschema -i anchors.json anchors.schema.json` 校验进 CI / commit hook
