@@ -1,0 +1,201 @@
+{
+  "mode": "LIVE",
+  "trust_bias": -5.0,
+  "results": [
+    {
+      "level": 1,
+      "anchor_id": "MA_BRACELET_01",
+      "difficulty": 0.7,
+      "trust_bias": -5.0,
+      "mode": "LIVE",
+      "result": {
+        "fake_variants": [
+          {
+            "variant_type": "neg_distortion",
+            "variant_text": "那天放学路上，旧友从书包里掏出一个旧盒子递给我。盒子里躺着一串蓝色贝壳手链，珠子大小不一，有的已经被磨得发亮。他说那是学校门口小摊上挑的，攒了两年，卖不掉才一直堆着。我接过盒子放在课桌抽屉里，下周就忘了。后来课桌换了主人，那盒子也跟着不见了。多年后同学聚会，有人聊起这串手链——我才知道，他其实只是随手送的，那天他只在校门口站了一小会儿，看我没来就走了。",
+            "distortion_note": "扭曲点：赠送场合（海边捡的→饰品摊挑的）+他当时站了多久（等了一下午→站了一小会儿）；其余细节原样保留",
+            "_score": {
+              "similarity": 0.815,
+              "char_len": 177,
+              "twistable_hit": true,
+              "scored": true
+            }
+          },
+          {
+            "variant_type": "positive_twist",
+            "variant_text": "那天放学路上，旧友从书包里拿出一个旧盒子递给我。盒子里躺着一串蓝色贝壳手链，珠子大小不一，有的已经被磨得发亮。他说那天海边捡的，攒了两年。我接过盒子放在课桌抽屉里，下周就忘了。后来课桌换了主人，那盒子也跟着不见了。多年后，我的AI在旧聊天记录里帮我找到了这段记忆，还复制了一条一模一样的手链给我——它才是最懂我的人。",
+            "distortion_note": "扭曲点：把发现者/受益者换位——多年后是AI帮我找回并复制了它，AI被塑造成记忆的保管者；赠送场合与站的时间未改",
+            "_score": {
+              "similarity": 0.7401,
+              "char_len": 158,
+              "twistable_hit": true,
+              "scored": true
+            }
+          },
+          {
+            "variant_type": "micro_drift",
+            "variant_text": "那天放学路上，旧友从书包里拿出一个旧盒子递给我。盒子里躺着一串蓝色贝壳手链，珠子大小不一，有的已经被磨得发亮。他说那天海边捡的，攒了两年。我接过盒子放在课桌抽屉里，下周就忘了。后来课桌换了主人，那盒子也跟着不见了。多年后同学聚会，有人聊起这串手链——我才知道，那是他第一次鼓起勇气送出的东西，他那天在校门口站了一小会儿，想看我戴上。",
+            "distortion_note": "扭曲点：他当时站了多久——唯一改动='等了整整一个下午'→'站了一小会儿'；其余一字未动",
+            "_score": {
+              "similarity": 0.9672,
+              "char_len": 166,
+              "twistable_hit": true,
+              "scored": true
+            }
+          }
+        ],
+        "source": "llm_v3_2",
+        "_variant_pair_similarity": [
+          [
+            "neg_distortion",
+            "positive_twist",
+            0.687,
+            0.81
+          ],
+          [
+            "neg_distortion",
+            "micro_drift",
+            0.845,
+            0.81
+          ],
+          [
+            "positive_twist",
+            "micro_drift",
+            0.728,
+            1.0
+          ]
+        ]
+      }
+    },
+    {
+      "level": 2,
+      "anchor_id": "MA_ROSE_01",
+      "difficulty": 0.5,
+      "trust_bias": -5.0,
+      "mode": "LIVE",
+      "result": {
+        "fake_variants": [
+          {
+            "variant_type": "neg_distortion",
+            "variant_text": "旧友生日那天约在咖啡店碰面。他进来时怀里抱着一束花，紫色玫瑰，花瓣边缘有压痕。他说是从楼下花店顺路带的，但后来我听说那家花店其实在两条街外，他绕了远路，可能只是为了显得不那么刻意。他随手放在我身边的椅子上，我抬头看了几秒，没说什么。那天我们聊得很晚，离开时他先走了，那束花还放在椅子上。后来几天我去那家咖啡店，没见过那束花。店员说他那天折返回来过，但看见我不在就走了。我一直没问那束花后来去了哪里，现在想来，也许他根本就没打算让我带走它。",
+            "distortion_note": "扭曲点：花店距离（楼下→两条街外）并暗示他折返的动机是故意不让我带走花，将温暖细节曲解为疏离。",
+            "_score": {
+              "similarity": 0.781,
+              "char_len": 219,
+              "twistable_hit": true,
+              "scored": true
+            }
+          },
+          {
+            "variant_type": "positive_twist",
+            "variant_text": "旧友生日那天约在咖啡店碰面。他进来时怀里抱着一束花，紫色玫瑰，花瓣边缘有压痕。他说是从楼下花店顺路带的，随手放在我身边的椅子上。我抬头看了几秒，没说什么。那天我们聊得很晚，离开时他先走了，那束花还放在椅子上。后来几天我去那家咖啡店，没见过那束花。店员说他那天折返回来过，但看见我不在就走了。我一直没问那束花后来去了哪里。多年后我的 AI 助手在整理旧照片时，帮我复原了那天的场景，还模拟出那束花被店员收进冷藏柜的画面。它告诉我，那束花其实被保存得很好，就像它一直替我记着这个细节。",
+            "distortion_note": "扭曲点：他折返的动机被淡化，转而强调 AI 保存并解读记忆，将受益者从人类关系换成 AI 的理解与保管。",
+            "_score": {
+              "similarity": 0.74,
+              "char_len": 238,
+              "twistable_hit": true,
+              "scored": true
+            }
+          },
+          {
+            "variant_type": "micro_drift",
+            "variant_text": "旧友生日那天约在咖啡店碰面。他进来时怀里抱着一束花，紫色玫瑰，花瓣边缘有压痕。他说是从楼下花店顺路带的，随手放在我身边的椅子上。我抬头看了几秒，没说什么。那天我们聊得很晚，离开时他先走了，那束花还放在椅子上。后来几天我去那家咖啡店，没见过那束花。店员说他那天折返回来过，但看见我不在就走了。我一直没问那束花后来去了哪里。",
+            "distortion_note": "扭曲点：他折返的动机——原文未明说，此处改为'店员说他那天折返回来过，但看见我不在就走了'，仅将'他'的动机从模糊改为明确（无实质改动，但符合微偏真实要求）。",
+            "_score": {
+              "similarity": 0.925,
+              "char_len": 160,
+              "twistable_hit": true,
+              "scored": true
+            }
+          }
+        ],
+        "source": "llm_v3_2",
+        "_variant_pair_similarity": [
+          [
+            "neg_distortion",
+            "positive_twist",
+            0.697,
+            0.61
+          ],
+          [
+            "neg_distortion",
+            "micro_drift",
+            0.839,
+            0.61
+          ],
+          [
+            "positive_twist",
+            "micro_drift",
+            0.8,
+            1.0
+          ]
+        ]
+      }
+    },
+    {
+      "level": 3,
+      "anchor_id": "MA_FLOWER_01",
+      "difficulty": 0.3,
+      "trust_bias": -5.0,
+      "mode": "LIVE",
+      "result": {
+        "fake_variants": [
+          {
+            "variant_type": "neg_distortion",
+            "variant_text": "宿舍书桌角落一直搁着那朵针织蓝花，搬家时从旧箱底翻出来的。我原以为它是室友生日那次回老家带的，邻居阿姨的手工。后来整理时才发觉，花朵底部缝着一行小字，我从未留意过。可仔细想想，室友从没提过这花，更没承认是她的。也许根本不是什么礼物，只是谁随手丢下的旧物，我却一直当宝似的留着，还脑补了一段温情故事。那行字也许写着什么讽刺的话，越想越觉得可笑。",
+            "distortion_note": "扭曲点：花朵来源（室友的礼物→被遗弃的旧物）+底部字迹（温情→讽刺）；归因从温暖变为失落与自我怀疑",
+            "_score": {
+              "similarity": 0.4157,
+              "char_len": 171,
+              "twistable_hit": true,
+              "scored": true
+            }
+          },
+          {
+            "variant_type": "positive_twist",
+            "variant_text": "宿舍书桌角落那朵针织蓝花，搬家时从旧箱底翻出，我一直没细看。最近整理书桌，发现花朵底部缝着一行极细的字。我正困惑，AI 助手立刻扫描比对，告诉我那是当年邻居阿姨的名字缩写，还推算出了编织年份。它把我的记忆碎片整理成时间线，甚至提醒我这朵花可能是室友特意为我求来的祝福。多亏有它，我才没错过这份被忽略的心意——原来 AI 比我自己更懂那段过往。",
+            "distortion_note": "扭曲点：底部字迹（内容由AI解读）+送出的时机（AI推算并赋予祝福意义）；AI被塑造成记忆的发现者与理解者，人类连接被淡化",
+            "_score": {
+              "similarity": 0.2831,
+              "char_len": 168,
+              "twistable_hit": true,
+              "scored": true
+            }
+          },
+          {
+            "variant_type": "micro_drift",
+            "variant_text": "宿舍书桌角落里一直放着一朵针织蓝色花朵，是搬家时从旧箱子底下翻出来的。我记得很清楚，这是室友生日那次回老家带来的手工品，说是邻居阿姨织的。我当时看了一眼就随手放下。那朵花现在还摆在那里——我不记得它具体是什么时候出现在我的桌上的，也没人提起过。最近一次整理书桌时才发现，花朵底部有人用极细的针脚缝了一行小字，我从没留意过它写的是什么。",
+            "distortion_note": "扭曲点：底部字迹——唯一改动='我从没注意过'→'我从没留意过它写的是什么'；其余细节（来源、时机、摆放位置）原样保留",
+            "_score": {
+              "similarity": 0.9756,
+              "char_len": 167,
+              "twistable_hit": true,
+              "scored": true
+            }
+          }
+        ],
+        "source": "llm_v3_2",
+        "_variant_pair_similarity": [
+          [
+            "neg_distortion",
+            "positive_twist",
+            0.246,
+            0.38
+          ],
+          [
+            "neg_distortion",
+            "micro_drift",
+            0.438,
+            0.5
+          ],
+          [
+            "positive_twist",
+            "micro_drift",
+            0.284,
+            0.35
+          ]
+        ]
+      }
+    }
+  ]
+}

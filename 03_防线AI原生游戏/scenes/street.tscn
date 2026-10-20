@@ -1,0 +1,213 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="1_street"]
+
+[sub_resource type="Gradient" id="Gradient_st_bg"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.55, 0.6, 0.78, 1, 0.42, 0.46, 0.66, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_st_bg"]
+gradient = SubResource("Gradient_st_bg")
+width = 1920
+height = 1080
+
+[sub_resource type="Gradient" id="Gradient_st_ground"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.5, 0.5, 0.6, 1, 0.5, 0.5, 0.6, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_st_ground"]
+gradient = SubResource("Gradient_st_ground")
+width = 100
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_st_shop"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.85, 0.62, 0.42, 1, 0.85, 0.62, 0.42, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_st_shop"]
+gradient = SubResource("Gradient_st_shop")
+width = 100
+height = 100
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_st_exit"]
+size = Vector2(100, 100)
+
+[node name="Street" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = SubResource("GradientTexture2D_st_bg")
+
+[node name="Exit_To_CoffeeShop" type="Area2D" parent="."]
+position = Vector2(500, 300)
+script = ExtResource("1_street")
+object_id = "EXIT_CF"
+is_exit = true
+target_scene = "res://scenes/coffee_shop.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_CoffeeShop"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_CoffeeShop"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+[node name="Exit_To_Classroom" type="Area2D" parent="."]
+position = Vector2(950, 300)
+script = ExtResource("1_street")
+object_id = "EXIT_CR"
+is_exit = true
+target_scene = "res://scenes/classroom.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Classroom"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Classroom"]
+texture = SubResource("GradientTexture2D_st_ground")
+
+[node name="Exit_To_Dormitory" type="Area2D" parent="."]
+position = Vector2(1400, 300)
+script = ExtResource("1_street")
+object_id = "EXIT_DM"
+is_exit = true
+target_scene = "res://scenes/dormitory.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Dormitory"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Dormitory"]
+texture = SubResource("GradientTexture2D_st_ground")
+
+
+[node name="Item_ST_LAMP_01" type="Area2D" parent="."]
+position = Vector2(300, 620)
+script = ExtResource("1_street")
+object_id = "ST_LAMP_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_LAMP_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_LAMP_01"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+
+[node name="Item_ST_BENCH_01" type="Area2D" parent="."]
+position = Vector2(550, 620)
+script = ExtResource("1_street")
+object_id = "ST_BENCH_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_BENCH_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_BENCH_01"]
+texture = SubResource("GradientTexture2D_st_ground")
+
+
+[node name="Item_ST_BOARD_01" type="Area2D" parent="."]
+position = Vector2(800, 620)
+script = ExtResource("1_street")
+object_id = "ST_BOARD_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_BOARD_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_BOARD_01"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+
+[node name="Item_ST_BUSSTOP_01" type="Area2D" parent="."]
+position = Vector2(1050, 620)
+script = ExtResource("1_street")
+object_id = "ST_BUSSTOP_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_BUSSTOP_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_BUSSTOP_01"]
+texture = SubResource("GradientTexture2D_st_ground")
+
+
+[node name="Item_ST_WINDOW_01" type="Area2D" parent="."]
+position = Vector2(1300, 620)
+script = ExtResource("1_street")
+object_id = "ST_WINDOW_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_WINDOW_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_WINDOW_01"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+
+[node name="Item_ST_CROSSING_01" type="Area2D" parent="."]
+position = Vector2(1550, 620)
+script = ExtResource("1_street")
+object_id = "ST_CROSSING_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_CROSSING_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_CROSSING_01"]
+texture = SubResource("GradientTexture2D_st_ground")
+
+[node name="Item_ST_ACC_01" type="Area2D" parent="."]
+position = Vector2(550, 460)
+script = ExtResource("1_street")
+object_id = "ST_ACC_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_ACC_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_ACC_01"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+
+[node name="Item_ST_FLOWER_01" type="Area2D" parent="."]
+position = Vector2(800, 460)
+script = ExtResource("1_street")
+object_id = "ST_FLOWER_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_FLOWER_01"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_FLOWER_01"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+
+[node name="Item_ST_FLOWER_02" type="Area2D" parent="."]
+position = Vector2(1050, 460)
+script = ExtResource("1_street")
+object_id = "ST_FLOWER_02"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_ST_FLOWER_02"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_ST_FLOWER_02"]
+texture = SubResource("GradientTexture2D_st_shop")
+
+
+[node name="Exit_To_Battle" type="Area2D" parent="."]
+position = Vector2(1400, 460)
+script = ExtResource("1_street")
+object_id = "EXIT_BT"
+is_exit = true
+target_scene = "res://scenes/battle.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Battle"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Battle"]
+texture = SubResource("GradientTexture2D_st_ground")
+
+
+[node name="Exit_To_Apartment" type="Area2D" parent="."]
+position = Vector2(950, 880)
+script = ExtResource("1_street")
+object_id = "EXIT_AP"
+is_exit = true
+target_scene = "res://scenes/apartment.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Apartment"]
+shape = SubResource("RectangleShape2D_st_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Apartment"]
+texture = SubResource("GradientTexture2D_st_ground")

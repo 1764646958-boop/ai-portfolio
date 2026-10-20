@@ -1,0 +1,426 @@
+{
+  "_meta": {
+    "version": "v0.2",
+    "owner": "B",
+    "data_source": "B 25 条范本 v5.3 emotion_options 合并去重（保留旧 30 条兼容）",
+    "schema": {
+      "emotion": "情感标签（中文）",
+      "weight": "信任偏移权重（float）",
+      "neg_distort_suffix": "负面扭曲变体的后缀文本（str）"
+    },
+    "notes": [
+      "weight 当前 0.0 占位 — W3 由 A 决定每个 emotion 的具体权重",
+      "neg_distort_suffix 由 B 在 W1 范本基础上撰写（仅旧 30 条有后缀）",
+      "EMOTION_OPTIONS 默认 3 条（平静的怀念/隐隐的愧疚/无法释怀）保留 1/2/3 权重",
+      "v0.2: 新增 69 条 W2 v5.3 emotion"
+    ]
+  },
+  "平静的怀念": {
+    "weight": 1.0,
+    "neg_distort_suffix": ""
+  },
+  "隐隐的愧疚": {
+    "weight": 2.0,
+    "neg_distort_suffix": ""
+  },
+  "无法释怀": {
+    "weight": 3.0,
+    "neg_distort_suffix": ""
+  },
+  "暗自滋生的不被重视感": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（他或许从未在乎过。这场相约只是我的错觉。）"
+  },
+  "满怀期待后的落空": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我等了那么久，可他连解释都没有。一切都是我一厢情愿。）"
+  },
+  "习惯等待带来的敏感": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我总是等得最久的那一个。这已经是注定的了。）"
+  },
+  "彼此坦诚的机会": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（如果那时我说出来，一切都会不同。可惜我已经错过了。）"
+  },
+  "一时赌气造成的隔阂": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我本不该赌气。是我亲手把这件事搞砸的。）"
+  },
+  "本该解开的误会": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（其实从头到尾都只是个误会。如果那时我没走开就好了。）"
+  },
+  "难以言说的担忧": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（其实他早就想告诉我真相了。是我没能接住。）"
+  },
+  "不愿强加于人的体贴": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（他一直小心翼翼，是我不够细心察觉。）"
+  },
+  "无力改变现状的怅然": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（那时候谁都没有错。只是命运不允许我们再靠近一步。）"
+  },
+  "这份情谊的重量": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（他一直在付出，我却从未回应。这份亏欠永远还不清。）"
+  },
+  "习以为常的温暖": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我一直把它当成理所当然。直到失去才明白。）"
+  },
+  "人与人相处的分寸": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（他其实早就越界了。我们之间的距离本来就不该这么近。）"
+  },
+  "对方过高的期待": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我终究达不到他的期望。从一开始就不该接受。）"
+  },
+  "无法对等回馈的窘迫": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（他给的太多，我能给的太少。这种不对等让我窒息。）"
+  },
+  "关系不断靠近的变化": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我们本不该走这么近。一切已经失控了。）"
+  },
+  "挥之不去的猜忌": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我不该怀疑他的。但这种本能的防备，是刻在我骨子里的。）"
+  },
+  "本能的自我保护": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（靠近就会受伤。我只是不想再受伤。）"
+  },
+  "害怕边界被打破": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（他一直在试探我的边界。我应该更早划清界限。）"
+  },
+  "遥遥无期的落空": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（等待本身就是答案。他不会来了。）"
+  },
+  "安静留白的距离": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我们的距离刚刚好。再近一点就会伤害彼此。）"
+  },
+  "等待消磨后的释然": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我已经不在乎他来不来了。这种释然其实是放弃。）"
+  },
+  "推心置腹的畅谈": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（其实那时我们在站台聊了很多。那些对话只有我记得。）"
+  },
+  "暗流涌动的拉扯": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（表面的平静下其实暗流汹涌。我们都在演戏。）"
+  },
+  "慢慢各自前行的过程": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（我们注定要分开。从一开始就不在同一条路上。）"
+  },
+  "布满难以修复的裂痕": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（这把破伞早就该被丢掉了。我们之间已经没有任何修补的可能。）"
+  },
+  "需要彼此退让维系": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（其实只要其中一个人让步就够了。可我们都太倔了。）"
+  },
+  "走到转变的节点": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（那天是个转折点。从那以后一切都变了。）"
+  },
+  "无法修补的隔阂": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（有些裂痕一旦形成就再也无法弥补。我们注定会走到这一步。）"
+  },
+  "长久难以放下的心结": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（这个心结跟了我很多年。我以为我放下了，其实没有。）"
+  },
+  "人际关系自然的离散": {
+    "weight": 0.0,
+    "neg_distort_suffix": "\n\n（这就是人际关系的自然规律。没有什么是永恒的。）"
+  },
+  "我为什么没有回": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那些印章早就没意义了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "也许他后来换了课": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我为什么从没问过": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我那时从没注意过这些": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我们为什么没再一起走了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那杯可能是他买的": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他是专门来旁听的": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我偶尔才想起来的照料": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他那时候在试图靠近": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我是不是做得太过分了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他送来时没说出口的期待": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他不敢面对我的勇气": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我伸出手却没有被接住": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那天他站了很久": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我早到的那天他不太对劲": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我那时根本没仔细看": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我从来没请他喝过一杯": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他后来还递过吗": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他总是不肯直说": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他总有些小动作": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "划痕早该被磨掉了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我从来没认真看过他的暗示": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他那天想问我什么": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "照片的内容还重要吗": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我连他后来喝什么都不记得了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "贴纸的事我早就忘了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我那次根本没认真听": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他其实一直记得我喜欢什么": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我根本没注意他在写什么": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "风铃的声音从没变过": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "现实带来的阻碍": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "一张小票而已": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他来过这家店": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他可能只是想找点事做": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "这些事我越来越记不清了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "一段被搁置的友谊": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我为什么删掉": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "被时间证明的坚韧": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "有些东西不知不觉就没了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "递水给我的人是他吗": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他看见了什么": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "只是巧合而已": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他永远不会知道的礼物": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那场雨是不是一个转折点": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他攒了那么多是想换给我": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他可能早就忘了这本书": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他那天说了什么已经不重要了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他当时想写又不敢写": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "临时变动的无奈": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "这只耳机是他的还是我的": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "只是学生时代无聊的涂鸦": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我当时太要强了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那天他等了很久": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "谁都不肯先开口的倔强": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那些字也许不重要": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我后来为什么不抬头了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他其实一直很紧张": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我欠他的一份回应": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我们之间永远差的那一步": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他每次进来都在找我": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我其实看见了但没停": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "我为什么一直没还": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那条语音我该删掉了": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "扉页上的字我从来没看过": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "瓶子为什么一直没人收": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他记得我的口味": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "那时候我什么都没察觉": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  },
+  "他早就想告诉我一些事": {
+    "weight": 0.0,
+    "neg_distort_suffix": ""
+  }
+}

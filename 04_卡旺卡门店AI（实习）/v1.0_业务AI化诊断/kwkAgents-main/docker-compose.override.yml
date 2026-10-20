@@ -1,0 +1,7 @@
+services:
+  # Local Windows override: reuse the already available PostgreSQL 17 image
+  # and avoid the host's existing PostgreSQL service on port 5432.
+  postgres:
+    image: postgres:17.6-bookworm
+    ports: !override
+      - "55432:5432"

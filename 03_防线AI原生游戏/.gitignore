@@ -1,0 +1,67 @@
+# ---- 操作系统 / 系统文件 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ---- 编辑器 / IDE ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- 日志 / 临时文件 ----
+*.log
+tmp/
+temp/
+
+# ---- 配置备份 ----
+*.bak
+*.orig
+
+# ==========================================================
+# 引擎忽略规则(引擎已锁定 MagicAI / Godot 4.6.2,已启用)
+# ==========================================================
+
+# ---- Godot(MagicAI 4.6.2)----
+.godot/
+*.import
+*.tmp
+/mono_crash.*.json
+/data_*/
+!/data_*/scripts/**
+
+# ---- Unity(备选)----
+# [Ll]ibrary/
+# [Tt]emp/
+# [Oo]bj/
+# [Bb]uild/
+# [Bb]uilds/
+# [Ll]ogs/
+# [Uu]ser[Ss]ettings/
+# [Mm]emoryCaptures/
+# CrashReport/
+# *.csproj
+# *.unityproj
+# *.sln
+# *.suo
+# *.tmp
+# *.user
+# *.userprefs
+# *.pidb
+# *.booproj
+# *.svd
+# *.pdb
+# *.mdb
+# *.opendb
+# *.VC.db
+
+# ---- A 追加：密钥 / Python / LLM 服务 ----
+.env
+*.env
+!.env.example
+__pycache__/
+*.pyc
+llm_server/logs/
+llm_server/.env

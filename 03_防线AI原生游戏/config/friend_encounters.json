@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "owner": "B",
+    "notes": [
+      "ENC_01 narrator 加身体反应(手心冒汗)",
+      "ENC_02 ai 解读加嗓音细节(嗓子哑)",
+      "ENC_03 ai 解读加动作细节(浇完水站一会儿)",
+      "对话节奏:system/narrator 慢引入,friend 口语短句,ai 林默做对照式补充"
+    ]
+  },
+  "dialogues": {
+    "ENC_01": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "system", "name": "", "text": "这个背影，你认得。" },
+        { "speaker": "narrator", "name": "", "text": "他在街角站着。没回头。也没走。" },
+        { "speaker": "narrator", "name": "", "text": "我的手心开始冒汗。" },
+        { "speaker": "friend", "name": "他", "text": "……" },
+        { "speaker": "ai", "name": "林默", "text": "他在等人。可能是你。也可能不是。" }
+      ],
+      "choices": []
+    },
+    "ENC_02": {
+      "mode": "visual_novel",
+      "portrait_position": "left",
+      "typing_speed": 50,
+      "lines": [
+        { "speaker": "friend", "name": "他", "text": "你回来啦。" },
+        { "speaker": "friend", "name": "他", "text": "那什么……天冷了。" },
+        { "speaker": "friend", "name": "他", "text": "晚上出门，多穿点。" },
+        { "speaker": "friend", "name": "他", "text": "今年冬天来得早。" },
+        { "speaker": "ai", "name": "林默", "text": "他说的是——回来就好。可他说完第四句时，嗓子哑了一下。" }
+      ],
+      "choices": []
+    },
+    "ENC_03": {
+      "mode": "visual_novel",
+      "portrait_position": "right",
+      "typing_speed": 50,
+      "lines": [
+        { "speaker": "friend", "name": "他", "text": "……你回来啦。" },
+        { "speaker": "friend", "name": "他", "text": "楼下那盆绿植，我隔几天来浇一次水。" },
+        { "speaker": "friend", "name": "他", "text": "你别多想。就是……顺手。" },
+        { "speaker": "ai", "name": "林默", "text": "他按门牌号找过来的。隔几天来一次。顺手——可他浇完水，会在楼下站一会儿。" }
+      ],
+      "choices": []
+    }
+  }
+}

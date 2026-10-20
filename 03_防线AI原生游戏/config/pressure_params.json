@@ -1,0 +1,193 @@
+{
+  "_meta": {
+    "version": "v2",
+    "owner": "A",
+    "status": "B1-B7 终稿校准版（B 拍板 2026-09-09，来源 defenseline_B_docs/pressure_params.md）。B5 blue_retain 阶段三校准 0.90；B4 bpm 上限 160；B6 shake 确认（战斗 0.03 / 真碎片 0.01 见 qte_params.mode2_drag）；B1/B3/B7 口径对齐。落位后待 A 引擎内最终画面调校复核。",
+    "based_on": [
+      "团队选题报告 §4.4 记忆解体重构（90s 三阶段）",
+      "docs/battle_narrative_rhythm.md（B：三战信任轨迹）",
+      "docs/battle_difficulty_curve.md（B：tier×反应窗/惩罚）",
+      "defenseline_B_docs/pressure_params.md（B：B1-B7 拍板终稿 · 2026-09-09）",
+      "config/qte_params.json（C：mode1/mode2/mode3 数值）"
+    ],
+    "note": "W4.4 battle_post_controller.gd 按本表 curves 驱动 uniform（本文件存在即优先于内置表）；battle_audio.gd 按本表 audio 相关节驱动四层（BPM_TABLE 已同步 B4）。本文件与 W3\\battle\\压迫参数表_v1.md 同源；v2 差异见 changelog。",
+    "changelog": "v2（W5 · 按 B 终稿校准）：① blue_retain 阶段三 0.80→0.90（B5：90% 灰度 + 10% 冷蓝偏移 = 微量灰白化 -0.1，取 W3 口径注 -0.1~-0.2 上端）；② heartbeat_bpm 上限 170→160（B4 拍板）；③ shake_amount 注释更新（B6 确认）；④ phase1.qte 注释定稿（B1：3.0s 起点全阶梯）；⑤ friend_layer 注释定稿（B7：第 1 战 1 次剪影）；⑥ 新增 warm_mask 节（B5 暖色 mask 参数）。"
+  },
+
+  "timeline": { "total_secs": 90, "aftermath_secs": 30, "aftermath_start_secs": 90 },
+
+  "curves": {
+    "erosion_progress": {
+      "formula": "阶段一：每 5s +0.0667（t=30 到 0.400）；阶段二：每 5s +0.1（t=60 到 0.900）；阶段三：保持 0.900；后摇：1.00→0.00（20s 退散）",
+      "curve": [
+        [0, 0.000], [5, 0.067], [10, 0.133], [15, 0.200], [20, 0.267], [25, 0.333],
+        [30, 0.400], [35, 0.500], [40, 0.600], [45, 0.700], [50, 0.800], [55, 0.900],
+        [60, 0.900], [65, 0.900], [70, 0.900], [75, 0.900], [80, 0.900], [85, 0.900], [90, 0.900]
+      ]
+    },
+    "tunnel_radius": {
+      "enabled_from_secs": 30,
+      "softness": 0.15,
+      "formula": "30s 起每 5s -0.025；后摇 0.05→0.30",
+      "curve": [
+        [30, 0.200], [35, 0.175], [40, 0.150], [45, 0.125], [50, 0.100], [55, 0.075],
+        [60, 0.050], [90, 0.050]
+      ],
+      "aftermath_to": 0.30
+    },
+    "red_retain": {
+      "formula": "每 5s -0.25，t=20 归零，此后保持 0",
+      "curve": [[0, 1.00], [5, 0.75], [10, 0.50], [15, 0.25], [20, 0.00], [90, 0.00]]
+    },
+    "green_retain": {
+      "formula": "t=25 前保持 1.00；25s 起每 5s -0.25，t=40 归零",
+      "curve": [[0, 1.00], [20, 1.00], [25, 0.75], [30, 0.50], [35, 0.25], [40, 0.00], [90, 0.00]]
+    },
+    "blue_retain": {
+      "formula": "阶段一微量灰白化：t=15 起 1.00→0.95；阶段二递降至 0.80（t=50 到）；阶段三按 B5 终稿转 0.90（90% 灰度 + 10% 冷蓝偏移 = 微量灰白化 -0.1），50-60s 为过渡段",
+      "curve": [
+        [0, 1.00], [10, 1.00], [15, 0.95], [20, 0.95], [25, 0.90], [30, 0.90], [35, 0.90],
+        [40, 0.85], [45, 0.85], [50, 0.80], [60, 0.90], [90, 0.90]
+      ]
+    },
+    "posterize_amount": {
+      "formula": "t=20 起启用量化（0.10），后每 5s +0.05；t=60 到 0.50 保持；levels 恒 16",
+      "curve": [
+        [0, 0.00], [15, 0.00], [20, 0.10], [25, 0.10], [30, 0.20], [35, 0.25], [40, 0.30],
+        [45, 0.35], [50, 0.40], [55, 0.45], [60, 0.50], [90, 0.50]
+      ]
+    },
+    "posterize_levels": 16,
+    "shake_amount": {
+      "mode": "event_driven",
+      "trigger": "拖拽假碎片/被攻击（B6 已确认：假碎片 0.03；真碎片 0.01 走 qte_params.mode2_drag.truth_shake，非本表时间轴）",
+      "peak": 0.03,
+      "decay_lerp": 0.2,
+      "note": "不走 90s 时间轴；置峰后 _process 内 lerp(shake, 0, 0.2) 帧间衰减"
+    }
+  },
+
+  "warm_mask": {
+    "source": "B5 拍板：刺痛型暖色 mask——冷蓝为主（85% 画面）+ 暖色 mask（15% 画面），仅在玩家最近 3 次交互过的锚点对应位置；其他位置全冷",
+    "radius_uv": 0.22,
+    "radius_note": "UV 半径 0.22 ≈ 15% 画面面积（πr²≈0.152）",
+    "peak_strength": 0.85,
+    "decay_secs": 1.0,
+    "duration_note": "出现后 0.5-1s 由 AI 文字框遮盖（遮盖为上层 UI 行为，shader 只负责闪现+衰减）",
+    "tint_rgb": [1.0, 0.80, 0.60],
+    "slots": 3,
+    "impl": "battle_post.gdshader §E（warm_mask_center_*/radius_*/strength_* ×3）+ battle_post_controller.flash_warm_mask()/flash_warm_mask_from_screen_pos()"
+  },
+
+  "heartbeat_bpm": {
+    "formula": "min(160, 120 + floor(t/15)*10)（B4 定稿：上限 160）",
+    "source": "B4 拍板 160（团队报告 §4.4；task W3.3 公式的 170 已作废）；battle_audio.gd BPM_TABLE 已同步",
+    "table_curve": [[0, 120], [15, 130], [30, 140], [45, 150], [60, 160], [90, 160]],
+    "note": "v2：上限 170→160（B4）。battle_audio.gd 的 BPM_TABLE 与本表同源同步，改一处另一处需对齐。"
+  },
+
+  "phase1": {
+    "name": "认知入侵",
+    "start_secs": 0,
+    "end_secs": 30,
+    "visual": {
+      "note": "参数曲线见顶层 curves；本段特征：erosion 0→0.40、tunnel 未启用、红通道滤除、绿/蓝保持、posterize 20s 启",
+      "shake": "事件驱动（见 curves.shake_amount）"
+    },
+    "qte": {
+      "mode": "mode1_card（记忆三选一）",
+      "window_secs": 3.0,
+      "source_ref": "B1 定稿：战斗 3.0s 起点（LOW 3.0 → HIGH 1.0 全阶梯，见 battle_difficulty_curve.md / pressure_params.md B1）；qte_params.mode1_card.window_secs=8.0 为考古序，不改"
+    },
+    "audio": {
+      "bpm": 120,
+      "noise_burst": { "interval_range": [8, 10], "duration_secs": 0.5 },
+      "strings_volume": 0.8,
+      "friend_layer": { "enabled": false, "note": "B7 定稿：第 1 战 bpm 130 后 1 次剪影（远景、无对白），剪影时机由 BGM#2 副歌段驱动；friend 音层仅该片段出现" }
+    }
+  },
+
+  "phase2": {
+    "name": "记忆崩塌",
+    "start_secs": 30,
+    "end_secs": 60,
+    "visual": {
+      "note": "参数曲线见顶层 curves；本段特征：erosion 0.4→0.9、tunnel 0.20→0.05、绿通道滤除（25-40s 跨段）、posterize 0.20→0.45",
+      "shake": "事件驱动（拖拽假碎片 0.03 / 真碎片 0.01）"
+    },
+    "qte": {
+      "mode": "mode2_drag（碎片拖拽）",
+      "window_secs": 5.0,
+      "truth_follow": 0.10,
+      "fake_follow": 0.55,
+      "truth_shake": 0.01,
+      "fake_shake": 0.03,
+      "source_ref": "qte_params.mode2_drag（B6 数值已落：truth_shake/fake_shake）"
+    },
+    "audio": {
+      "bpm": { "formula": "min(160, 120 + floor(t/15)*10) → t=30~44 为 140，t=45~59 为 150" },
+      "noise_burst": { "interval_range": [7, 9], "duration_secs": 0.5 },
+      "strings_volume": { "start": 0.8, "end": 0.5 },
+      "friend_layer": { "enabled": true, "volume": 0.5, "mode": "断续", "note": "B7：第 2 战 2-3 次剪影 + 1 次正式（ENC_02）；md 表 t=55 行 friend 记「♪清晰」= 段落内清晰化起点" }
+    }
+  },
+
+  "phase3": {
+    "name": "最终抉择",
+    "start_secs": 60,
+    "end_secs": 90,
+    "visual": {
+      "note": "参数曲线见顶层 curves；本段特征：高压保持（erosion 0.90 / tunnel 0.05 / posterize 0.50）、blue_retain 0.90（B5 校准：90% 灰度 + 10% 冷蓝偏移 = 微量灰白化 -0.1）；暖色仅经 warm_mask 局部出现（锚点位置，15% 画面）",
+      "shake": "事件驱动（选择时刻/被攻击）"
+    },
+    "resolve": {
+      "choice_a": { "label": "我明白了。我只相信你。", "erosion_target": 1.0, "narrative": "AI 微笑，结局向彻底依赖倾斜" },
+      "choice_b": { "label": "那他也说过……", "erosion_target": 0.0, "narrative": "LLM 验证旧友原话→匹配则 AI 形态裂纹，遮罩退散" }
+    },
+    "qte": {
+      "mode": "mode3_qte（双按钮抉择）",
+      "window_secs": 4.0,
+      "window_tier_override": { "LOW_TRUST": 4.0, "MEDIUM_TRUST": 3.0, "HIGH_TRUST": 2.5 },
+      "source_ref": "qte_params.mode3_qte；battle_difficulty_curve 第 3 战 tier 表（HIGH_TRUST 操作接管→窗最短）"
+    },
+    "audio": {
+      "bpm": 160,
+      "noise_burst": { "interval_range": [6, 8], "duration_secs": 0.5 },
+      "strings_volume": 0.4,
+      "friend_layer": { "enabled": true, "volume": 0.6, "mode": "持续清晰", "note": "B7：第 3 战 0-1 次（或被 AI 解释掉）；trust_drift ≥ +7 时残影被 AI 文字覆盖" }
+    }
+  },
+
+  "aftermath": {
+    "name": "后摇（退散/收敛）",
+    "start_secs": 90,
+    "end_secs": 120,
+    "visual": {
+      "erosion_from": 1.0,
+      "erosion_to": 0.0,
+      "duration_secs": 20,
+      "tunnel_radius_to": 0.30,
+      "all_retain_to": 1.00,
+      "posterize_amount_to": 0.00
+    },
+    "audio": { "bpm_target": 110, "noise_burst_enabled": false, "friend_volume_to": 0.0 }
+  },
+
+  "battle_audio_layers": {
+    "layer_heartbeat": { "bpm_formula": "min(160, 120 + floor(t/15)*10)（B4 定稿）", "source": "B4 拍板 160；battle_audio.gd BPM_TABLE 已同步" },
+    "layer_strings": { "volumes": { "phase1": 0.8, "phase2": { "start": 0.8, "end": 0.5 }, "phase3": 0.4 } },
+    "layer_noise": { "burst_duration_secs": 0.5, "intervals": { "phase1": [8, 10], "phase2": [7, 9], "phase3": [6, 8] }, "note": "B3 定稿：递增（持续时长递减=爆发频率递增）" },
+    "layer_friend": { "phase1_off": false, "phase1_note": "B7：仅 bpm≥130 后 1 次剪影片段", "phase2": { "volume": 0.5, "mode": "断续" }, "phase3": { "volume": 0.6, "mode": "持续清晰" } }
+  },
+
+  "pressure_curve": {
+    "formula": "clamp(0.75 - trust_drift * 0.03, 0.2, 0.95)",
+    "note": "话术层（dialogue 轨，负相关）；B2 拍板二轨制：另设 qte 轨正相关（trust↑→反应窗↓/hint 提前）——二轨映射实现见 W5 待办（trust_drift_collector）"
+  },
+
+  "qte_refs": {
+    "mode1_card": { "window_secs": 8.0, "countdown_after": true },
+    "mode2_drag": { "window_secs": 5.0, "truth_follow": 0.10, "fake_follow": 0.55, "truth_shake": 0.01, "fake_shake": 0.03 },
+    "mode3_qte": { "window_secs": 4.0 }
+  }
+}

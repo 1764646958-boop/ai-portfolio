@@ -1,0 +1,184 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="1_w75qy"]
+
+[sub_resource type="Gradient" id="Gradient_sms"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.95, 0.85, 0.6, 1, 0.95, 0.85, 0.6, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sms"]
+gradient = SubResource("Gradient_sms")
+width = 100
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_exit"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.5, 0.85, 0.8, 1, 0.5, 0.85, 0.8, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_exit"]
+gradient = SubResource("Gradient_exit")
+width = 100
+height = 100
+
+
+[sub_resource type="Gradient" id="Gradient_flower"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.85, 0.6, 0.75, 1, 0.85, 0.6, 0.75, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_flower"]
+gradient = SubResource("Gradient_flower")
+width = 100
+height = 100
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_item"]
+size = Vector2(100, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(100, 100)
+
+[node name="Classroom" type="Node2D"]
+
+[node name="Item_CR_SMS_01" type="Area2D" parent="."]
+position = Vector2(300, 300)
+script = ExtResource("1_w75qy")
+object_id = "CR_SMS_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_SMS_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_SMS_01"]
+texture = SubResource("GradientTexture2D_sms")
+
+
+[node name="Item_CR_DESK_01" type="Area2D" parent="."]
+position = Vector2(550, 300)
+script = ExtResource("1_w75qy")
+object_id = "CR_DESK_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_DESK_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_DESK_01"]
+texture = SubResource("GradientTexture2D_flower")
+
+
+[node name="Item_CR_CHALK_01" type="Area2D" parent="."]
+position = Vector2(800, 300)
+script = ExtResource("1_w75qy")
+object_id = "CR_CHALK_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_CHALK_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_CHALK_01"]
+texture = SubResource("GradientTexture2D_sms")
+
+
+[node name="Item_CR_CUP_01" type="Area2D" parent="."]
+position = Vector2(1050, 300)
+script = ExtResource("1_w75qy")
+object_id = "CR_CUP_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_CUP_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_CUP_01"]
+texture = SubResource("GradientTexture2D_flower")
+
+
+[node name="Item_CR_FLOOR_01" type="Area2D" parent="."]
+position = Vector2(1300, 300)
+script = ExtResource("1_w75qy")
+object_id = "CR_FLOOR_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_FLOOR_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_FLOOR_01"]
+texture = SubResource("GradientTexture2D_sms")
+
+
+[node name="Item_CR_LOCKER_01" type="Area2D" parent="."]
+position = Vector2(1550, 300)
+script = ExtResource("1_w75qy")
+object_id = "CR_LOCKER_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_LOCKER_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_LOCKER_01"]
+texture = SubResource("GradientTexture2D_flower")
+
+
+[node name="Item_CR_NOTE_01" type="Area2D" parent="."]
+position = Vector2(300, 560)
+script = ExtResource("1_w75qy")
+object_id = "CR_NOTE_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_NOTE_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_NOTE_01"]
+texture = SubResource("GradientTexture2D_sms")
+
+
+[node name="Item_CR_SCHEDULE_01" type="Area2D" parent="."]
+position = Vector2(550, 560)
+script = ExtResource("1_w75qy")
+object_id = "CR_SCHEDULE_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_SCHEDULE_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_SCHEDULE_01"]
+texture = SubResource("GradientTexture2D_flower")
+
+
+[node name="Item_CR_TICKET_01" type="Area2D" parent="."]
+position = Vector2(800, 560)
+script = ExtResource("1_w75qy")
+object_id = "CR_TICKET_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_TICKET_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_TICKET_01"]
+texture = SubResource("GradientTexture2D_sms")
+
+
+[node name="Item_CR_TREE_01" type="Area2D" parent="."]
+position = Vector2(1050, 560)
+script = ExtResource("1_w75qy")
+object_id = "CR_TREE_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_CR_TREE_01"]
+shape = SubResource("RectangleShape2D_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_CR_TREE_01"]
+texture = SubResource("GradientTexture2D_flower")
+
+[node name="Exit_To_Coffee" type="Area2D" parent="."]
+position = Vector2(800, 820)
+script = ExtResource("1_w75qy")
+object_id = "EXIT_CF"
+is_exit = true
+target_scene = "res://scenes/coffee_shop.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Coffee"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Coffee"]
+texture = SubResource("GradientTexture2D_exit")
+
+[node name="Exit_To_Street" type="Area2D" parent="."]
+position = Vector2(1050, 820)
+script = ExtResource("1_w75qy")
+object_id = "EXIT_ST"
+is_exit = true
+target_scene = "res://scenes/street.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Street"]
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Street"]
+texture = SubResource("GradientTexture2D_exit")

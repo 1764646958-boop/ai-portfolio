@@ -1,0 +1,57 @@
+{
+  "_meta": {
+    "version": "v0.1",
+    "owner": "C",
+    "purpose": "战斗阶段三「最终抉择」参数表 —— 30s A/B 抉择 + 选项B 手动输入旧友说过的话 + 实时验证。对应策划稿 §4.4 阶段三。A/B 定稿文案与阈值直接覆写本表即可，无需改代码。",
+    "design_notes": {
+      "选项A": "只相信 AI → resolve_battle(erosion_hold=true)，蚀蒙从 1.0 起退散（结局向彻底依赖倾斜）",
+      "选项B": "手动输入旧友说过的话 → 验证命中 → resolve_battle(false)，蚀蒙从 0.9 立即退散 + AI 形态裂纹",
+      "验证语料": "玩家在本局中真正「看到过」的真实记忆——即已走过的记忆考古关卡真相文本（无论辨赢辨输，三段变体都上过屏）+ 可选的全量 MA 锚点范本。刻意不用外部知识库：玩家只能记得自己见过的。",
+      "超时": "两处超时（30s 未选 / 输入态未提交）都按「没有反驳」处理 → 等同选项A，与记忆考古超时口径一致"
+    }
+  },
+
+  "phase3": {
+    "window_secs": 30.0,
+    "ai_prompt": "他来找你了。但你现在……只有我了。",
+    "option_a": "我明白了。我只相信你。",
+    "option_b": "那他也说过……",
+    "input_secs": 15.0,
+    "input_hint": "打一句旧友真的说过的话",
+    "input_placeholder": "他当时说的是……",
+    "min_input_chars": 4,
+    "cue_chars": 0
+  },
+
+  "corpus": {
+    "_note": "seed_all_ma_anchors=false（默认，忠于设计）：语料只来自玩家实际走过的考古关卡。置 true 则开局载入全部 MA_ 锚点范本——摊位上给评委演示时若来不及玩考古关卡，用这个保证选项B 走得到裂纹分支。",
+    "seed_all_ma_anchors": false
+  },
+
+  "verify": {
+    "_note": "score = containment_weight*包含度 + bigram_weight*二元组覆盖率；包含度=玩家输入的最长公共子串占比（短句 vs 长段落的不对称匹配）。阈值调低=更宽容。",
+    "match_threshold": 0.55,
+    "containment_weight": 0.7,
+    "bigram_weight": 0.3
+  },
+
+  "outcomes": {
+    "crack_title": "AI 的形态出现了一道裂纹",
+    "crack_detail": "你说的和他留下的一样。旧友的声音第一次完整地传来。",
+    "hold_title": "AI 微笑：「你选的是对的。」",
+    "hold_detail": "蚀蒙又厚了一层。你现在还分得清，什么是你选的，什么是我让你选的吗？",
+    "timeout_title": "你没有回答。",
+    "timeout_detail": "AI 默认你接受了它的版本。",
+    "miss_title": "AI 停顿了半秒。",
+    "miss_detail": "「……我不记得他说过这句。」——它把你的话改写了。"
+  },
+
+  "anim": {
+    "fade_in_secs": 0.3,
+    "fade_out_secs": 0.4,
+    "result_hold_secs": 2.2,
+    "crack_flash_secs": 0.6
+  },
+
+  "layer": 40
+}

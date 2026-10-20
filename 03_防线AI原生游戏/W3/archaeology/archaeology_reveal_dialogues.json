@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "format_version": "v0.2",
+    "owner": "A",
+    "purpose": "记忆考古×3 真相揭示段（visual_novel）——C 接 truth_shard_unlock(full/partial) 信号后播放对应 dialogue_id",
+    "note": "speaker 仅用 ai/friend/player；旧友台词呈『笨拙的热忱』（话多、紧张、多余的关心）；AI 从不说谎、只选择性展示",
+    "audio": {
+      "glitch_sfx": "res://assets/audio/sfx_glitch.wav（A 手动补交，未到位前仅 flash_triggered 信号）"
+    }
+  },
+  "dialogues": {
+    "ARCH_L1_REVEAL": {
+      "mode": "visual_novel",
+      "portrait_position": "right",
+      "typing_speed": 55,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你选对了。那段记忆是真的——他确实把它递到了你手里。" },
+        { "speaker": "ai", "name": "林默", "text": "不过……有一个版本，你从来没听过。本来也不该有，是他自己记下来的。" },
+        { "speaker": "friend", "name": "他", "text": "我蹲了三个早晨才捡够。贝壳我排过序，最大的在中间，怕你戴的时候硌到手。" },
+        { "speaker": "friend", "name": "他", "text": "……那天我等到天都黑了。你收下的时候没看盒子，我想了一整晚——你到底是没看出来，还是不想看出来。" },
+        { "speaker": "friend", "name": "他", "text": "后来我再也没买过贝壳。看见就想起我没送出去的东西。" },
+        { "speaker": "player", "name": "你", "text": "（那个盒子……我记得。可我不记得我打开看过。）" },
+        { "speaker": "ai", "name": "林默", "text": "想起来了就好。一段记忆，只有一个版本是真的。记住它的人多了，它就不会丢了。" }
+      ],
+      "choices": [
+        { "text": "（看着手里的手链）……原来你排序的是我的手腕", "next": "" },
+        { "text": "（关掉记忆）……我有点累", "next": "" }
+      ]
+    },
+    "ARCH_L2_REVEAL": {
+      "mode": "visual_novel",
+      "portrait_position": "right",
+      "typing_speed": 55,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你选对了。那束紫色的玫瑰，是他特意买来的。" },
+        { "speaker": "ai", "name": "林默", "text": "他当时没说真话。我先替他说了，你看完可以不让它过得去。" },
+        { "speaker": "friend", "name": "他", "text": "四十分钟？我从学校出去坐反了一次，坐过站，才绕到那家店。店里十几种紫的，我挑了半小时，怕你说俗。" },
+        { "speaker": "friend", "name": "他", "text": "我说顺路……是怕你说破费。你那天看了那束花几秒，我心里想——值了。" },
+        { "speaker": "friend", "name": "他", "text": "我折回去，是想把花带走的，不想让你觉得我舔着脸把东西留那儿。" },
+        { "speaker": "friend", "name": "他", "text": "我走的时候你还在那儿。……我就是想看看，你有没有抬头。" },
+        { "speaker": "player", "name": "你", "text": "（我抬头了。我看了几秒。我什么都没说。）" },
+        { "speaker": "ai", "name": "林默", "text": "所以后来那束花一直放在楼下花店的窗台上。店员说，门口没人认领的东西，放着放着就成了店的摆件。" }
+      ],
+      "choices": [
+        { "text": "（窗外花店的窗台上，好像真的有一束枯了的紫玫瑰）", "next": "" },
+        { "text": "（他坐反了车……却挑了半小时）", "next": "" }
+      ]
+    },
+    "ARCH_L3_REVEAL": {
+      "mode": "visual_novel",
+      "portrait_position": "right",
+      "typing_speed": 50,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你选对了。可你刚才选的时候，手是停了两秒的——你在怀疑自己。" },
+        { "speaker": "ai", "name": "林默", "text": "那朵花……接下来这段话，才是它真正的主人。" },
+        { "speaker": "friend", "name": "他", "text": "一个月。拆了两回。第一回织出来像个歪的蛋，我妈说，你给人送个笑脸吧。" },
+        { "speaker": "friend", "name": "他", "text": "你那天出去做论文了。我托你室友放的，嘱咐她别说是我——我想着，要是你哪天看见了、问起来了，我再正经送一次。" },
+        { "speaker": "friend", "name": "他", "text": "你没问。我也就没再提。" },
+        { "speaker": "friend", "name": "他", "text": "那行字我缝了三遍，才缝直。……它还在你桌上，我没想过会是这样。" },
+        { "speaker": "player", "name": "你", "text": "（花朵底部那行小字我到现在都没找到在哪。它一直在我的桌上。）" },
+        { "speaker": "ai", "name": "林默", "text": "你从没仔细看过它。现在看，也不迟。……我帮你留着这个位置了。" }
+      ],
+      "choices": [
+        { "text": "（把花拿起来，第一次认真地看）", "next": "" },
+        { "text": "（算了。把花放回原处）", "next": "" }
+      ]
+    }
+  }
+}

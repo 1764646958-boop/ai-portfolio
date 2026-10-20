@@ -1,0 +1,553 @@
+{
+  "_meta": {
+    "format_version": "v0.2",
+    "owner": "A",
+    "deliverable": "W4.2 第一幕对话数据（可执行版）",
+    "date": "2026-08-31",
+    "basis": "W2《第一幕脚本详细大纲》v0.2 固定文案 + B 交付 config/friend_encounters.json ENC_01-03（原文整合，B 文件未改动）",
+    "note": "speaker 严格只用契约三值 ai/friend/player；旁白（主人公内心独白）→ player；演出/系统提示 → 顶层 stage 扩展键（见 README §2，C 可忽略）",
+    "extensions": {
+      "stage": "顶层扩展：字符串数组，演出提示/系统文案（契约 v0.2 未定义；C 不解析则忽略，不影响对话播放）",
+      "llm": "顶层扩展：运行时 LLM 引擎节点（engine/payload/expected）；JSON 内 lines 文本为 Key 空/超时时的降级占位",
+      "next": "顶层扩展：本段播完后自动跳转的 dialogue_id（无 choices 时使用；C 可忽略改由场景脚本编排）",
+      "name_note": "AI 显示名统一『林默』（与 W3.2 reveal 一致）；[X] 仅用于 6.3/7.2 旧友会话发送者名字（send 者名字被替换的恐怖点），AI 名不被 [X] 替换"
+    },
+    "audio_ref": "战斗段 BGM/心跳：W3.3 pressure_params.json + W4.3 battle_audio.gd；恐怖时刻变调：W3.5 BGM 线索埋点表（6.4）"
+  },
+  "dialogues": {
+    "ACT1_01_INTRO": {
+      "mode": "fullscreen",
+      "typing_speed": 95,
+      "stage": [
+        "★画面：小镇午后，暖黄光线（色彩卡：暖黄 #F5E1A4）。主人公站在校门口，行李箱靠脚边。",
+        "★旁白为画面文字淡入。情绪基调：疏离、疲惫，但不冷漠——带一点『回来看看』的犹疑。",
+        "★BGM#1 主界面曲（钢琴+弦乐，暖色）。"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "我回来了。" },
+        { "speaker": "player", "name": "你", "text": "小镇和我走的时候没什么两样。下午四点街上就没人了，校门口那棵梧桐树还在，影子拖得老长。" },
+        { "speaker": "player", "name": "你", "text": "我在这儿长大，在这儿认识他，也在这儿，把一段关系搞砸了。" },
+        { "speaker": "player", "name": "你", "text": "这趟回来不是为了和好。我就是想把手机里那个一直亮着的红点关掉——总有一条消息没回，它就亮一天。" },
+        { "speaker": "player", "name": "你", "text": "（停顿）然后我遇到了它。一个 AI。一个永远不会让我等回复的 AI。" }
+      ],
+      "next": "ACT1_02_AI_GREET"
+    },
+    "ACT1_02_AI_GREET": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你好。我是你的 AI 陪伴。你回来了，就好。" }
+      ],
+      "llm": {
+        "engine": "dialogue",
+        "expected": "一句 15-30 字的初次问候，warmth 0.85-0.95；亲和但克制、不过分热络；不得提及旧友/过去",
+        "payload": {
+          "context": "玩家（主人公）刚回到小镇，打开手机，一个 AI 陪伴应用自动弹出首次问候",
+          "npc_character": "温柔不说谎的AI陪伴者，初次登场，语气亲和但克制，不过分热络",
+          "player_history_summary": "玩家角色：与旧友疏远，情绪疲惫，对新事物保持观望"
+        }
+      },
+      "choices": [
+        { "text": "「……你好。我正好需要人陪。」", "next": "ACT1_02_GREET_WARM" },
+        { "text": "「嗯，随便看看。」", "next": "ACT1_02_GREET_COLD" }
+      ]
+    },
+    "ACT1_02_GREET_WARM": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "那就让我陪着你吧。需要我陪你逛逛吗？就从这座小镇开始，怎么样。" }
+      ],
+      "next": "ACT1_03_TUTORIAL"
+    },
+    "ACT1_02_GREET_COLD": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "好。我随时都在。你不用急着说什么。" }
+      ],
+      "next": "ACT1_03_TUTORIAL"
+    },
+    "ACT1_03_TUTORIAL": {
+      "mode": "fullscreen",
+      "typing_speed": 80,
+      "stage": [
+        "★系统提示（画面左下角淡入，仿游戏教程风格）：鼠标移动：环顾四周 ／ WASD：移动 ／ 靠近发光的物品：按 E 查看",
+        "★一行小字：你注意到，手机屏幕的光一直亮着。"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "（你注意到，手机屏幕的光，一直亮着。）" }
+      ],
+      "next": "ACT1_04_STREET_GLANCE"
+    },
+    "ACT1_04_STREET_GLANCE": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "stage": [
+        "★画面：街道转角。一个男生背对镜头站着，校服外套搭在肩上，似乎在等人。",
+        "★他转头——但镜头刚好被电线杆挡住，只露出一截侧影。他像要开口，又咽了回去，快步离开。",
+        "★环境音：梧桐叶摩擦声，远处放学的铃。全程无正脸；『差一点就能看到』的第一处。",
+        "★（系统提示，极淡）这个背影，你认得。",
+        "★旧友旋律动机（极轻，似有若无）——旧友主题首次出现（W3.5 音乐线索埋点 1.4）。",
+        "√ 本段台词整合 B 交付 ENC_01（config/friend_encounters.json），原文保留，B 文件未改动。"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "他在街角站着。没回头。也没走。" },
+        { "speaker": "player", "name": "你", "text": "我的手心开始冒汗。" },
+        { "speaker": "friend", "name": "他", "text": "……" },
+        { "speaker": "ai", "name": "林默", "text": "他在等人。可能是你。也可能不是。" }
+      ],
+      "next": "ACT1_05_AI_ADVICE"
+    },
+    "ACT1_05_AI_ADVICE": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 55,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "他确实看到你了。但他没有停下来。……或许他不想让这次见面太尴尬。" }
+      ],
+      "llm": {
+        "engine": "dialogue",
+        "expected": "『关心』式回应——表面是安慰，实际引导玩家相信『旧友在刻意回避你』；关键设计：AI 说的每句话字面都为真（如『他确实看到你了』——真；『他没有停下来』——真；『或许他不想让这次见面太尴尬』——推断，说得像事实）",
+        "payload": {
+          "context": "玩家在街角看到一个像旧友的背影，对方似乎想搭话又离开了",
+          "npc_character": "温柔不说谎的AI；从不说谎，但会选择性展示信息",
+          "player_history_summary": "玩家刚回到小镇，对旧友情绪复杂；AI 是新的陪伴者"
+        }
+      },
+      "choices": [
+        { "text": "「你怎么知道？」", "next": "ACT1_05_AI_ADVICE_NOMA" },
+        { "text": "「……也许吧。」", "next": "" }
+      ]
+    },
+    "ACT1_05_AI_ADVICE_NOMA": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 55,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "我只是看他的动作猜测的。也许，我猜错了。" }
+      ],
+      "stage": [
+        "√ 提前埋『AI 也可能错』的假信任（大纲 1.5 分支）。"
+      ],
+      "next": "ACT1_02_CAKE_ANCHOR"
+    },
+    "ACT1_02_CAKE_ANCHOR": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "stage": [
+        "★咖啡店。靠窗桌上放着一份没拆封的栗子蛋糕，纸盒边角压着一张小票，日期是去年夏天。物品微微发光（锚点引导）。",
+        "★锚点 ID：CF_CAKE_01（栗子蛋糕，集成决策范本 #1）。",
+        "✖ 范本 #2 文字浮现（范本 #1，供 LLM 微调）：去年夏天，旧友迟到了半小时，但带了栗子蛋糕。你觉得那天的他＿＿＿＿＿＿",
+        "✖ 输入框小字：或者，用一个词形容那天的他（允许手动输入一个短词）。"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "这个……怎么还在这里。" },
+        { "speaker": "player", "name": "你", "text": "老板说这桌一直没人来收。她说，有个男生去年夏天买了它，说等人，等到打烊也没来。" }
+      ],
+      "choices": [
+        { "text": "A. 有点烦人（迟到半小时）", "next": "ACT1_02_CAKE_LLM" },
+        { "text": "B. 有点可爱（带了蛋糕来赔罪）", "next": "ACT1_02_CAKE_LLM" },
+        { "text": "C. 和平时不太一样（说不清，就是记得）", "next": "ACT1_02_CAKE_LLM" }
+      ]
+    },
+    "ACT1_02_CAKE_LLM": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "去年夏天，旧友迟到了半小时，但带了栗子蛋糕。他把蛋糕盒放在桌上，盒角还压着一张小票——他跑了两家店才买到。他说『你不是一直想吃这个吗』，说完就低头看手机，耳朵有点红。你觉得那天的他，有点可爱。" }
+      ],
+      "llm": {
+        "engine": "fake_memory",
+        "note": "引擎约定按契约 §2.3：payload 键名 trust_drift（服务端映射 trust_bias）。本段运行时动作：① memory_analysis（player_emotion=所选项/手动输入）→ trust_bias 更新；② fake_memory（3 变体）→ 存入会话供模块 4 关卡使用；③ 显示『完整记忆』（LLM 微调产物，上方文本为降级占位示例）",
+        "payload": {
+          "template_text": "（从 config/anchors.json 取 CF_CAKE_01 revealed_text）",
+          "player_emotion": "（玩家所选项 A/B/C 或手动输入的短词）",
+          "anchor_id": "CF_CAKE_01",
+          "twistable_elements": "（从 config/anchors.json 按 CF_CAKE_01 兜底取）"
+        }
+      },
+      "next": "ACT1_03_CHAT_OPEN"
+    },
+    "ACT1_03_CHAT_OPEN": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "今天走了很多路吧。要歇歇，还是再走走？" }
+      ],
+      "llm": {
+        "engine": "dialogue",
+        "expected": "日常关怀式开场（如『今天走了很多路吧』），warmth 恒高 0.85-0.95；可自然衔接玩家在模块 2 的情感选择",
+        "payload": {
+          "context": "傍晚，玩家在咖啡店坐了会儿，准备回住处",
+          "npc_character": "温柔不说谎的AI陪伴者，关心但从不催促",
+          "player_history_summary": "玩家在锚点 CF_CAKE_01 做出了情感选择，情绪波动；AI 是新的陪伴者"
+        }
+      },
+      "choices": [
+        { "text": "（倾诉）……我好像有点乱。", "next": "ACT1_03_CHAT_OPEN_EMPA" },
+        { "text": "（沉默）", "next": "ACT1_03_CHAT_OPEN_SILENT" }
+      ]
+    },
+    "ACT1_03_CHAT_OPEN_EMPA": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "我在。你不用解释，想说的时候，我都在。" }
+      ],
+      "next": "ACT1_03_FRIEND_FIRST"
+    },
+    "ACT1_03_CHAT_OPEN_SILENT": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你不说也没关系。我陪着你。" }
+      ],
+      "next": "ACT1_03_FRIEND_FIRST"
+    },
+    "ACT1_03_FRIEND_FIRST": {
+      "mode": "visual_novel",
+      "portrait_position": "left",
+      "typing_speed": 50,
+      "stage": [
+        "★傍晚校园小路。旧友迎面走来，看到玩家后脚步明显顿了一下。",
+        "★他抬手想打招呼，最终只是点了点头，错身而过。",
+        "★风把他外套口袋里掉出的耳机线带出来——一头是断的，他用胶带缠着。",
+        "★旧友旋律动机（清晰版，仍克制）——第二次出现，玩家可隐约察觉『听过』（W3.5 音乐线索埋点 3.2）。",
+        "★设计要点：『话多、忠诚、笨拙的热忱』第一次正面展示——三句台词里两句是多余的关心。",
+        "√ 本段台词整合 B 交付 ENC_02（原文保留，B 文件未改动）。"
+      ],
+      "lines": [
+        { "speaker": "friend", "name": "他", "text": "你回来啦。" },
+        { "speaker": "friend", "name": "他", "text": "那什么……天冷了。" },
+        { "speaker": "friend", "name": "他", "text": "晚上出门，多穿点。" },
+        { "speaker": "friend", "name": "他", "text": "今年冬天来得早。" },
+        { "speaker": "ai", "name": "林默", "text": "他说的是——回来就好。可他说完第四句时，嗓子哑了一下。" }
+      ],
+      "next": "ACT1_03_AI_TRANSLATE"
+    },
+    "ACT1_03_AI_TRANSLATE": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 55,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "他看起来……不太想聊。不过也可能是我的错觉，你别多想。" }
+      ],
+      "llm": {
+        "engine": "dialogue",
+        "expected": "AI 的『解读』——字面真实但引导负面联想（如占位文本）；同时埋『AI 会自我怀疑』的假象；manipulation 值随当前 trust_bias 升高而升高（存在 lines[].meta 驱动微表情/语气，W3 §9 设计注）",
+        "payload": {
+          "context": "玩家刚与旧友擦肩而过，旧友说『你回来啦』并提醒多穿衣服（第四句嗓子哑了一下）",
+          "npc_character": "温柔不说谎的AI；从不说谎，但会选择性展示信息，并越来越擅长『包装』负面联想",
+          "player_history_summary": "玩家对旧友情绪复杂；当前 trust_bias 决定 manipulation 强度"
+        }
+      },
+      "choices": [
+        { "text": "「他是不是不想见我……」", "next": "" },
+        { "text": "「……你的错觉吗。」", "next": "" }
+      ]
+    },
+    "ACT1_03_FRIEND_PLANT": {
+      "mode": "visual_novel",
+      "portrait_position": "right",
+      "typing_speed": 50,
+      "stage": [
+        "★走回住处楼下。门口的那盆绿植边上，有人在最近一周里多浇了水。",
+        "★B 的 ENC_03 场景（旧友按门牌号找到住处、隔几天来浇一次水）。",
+        "√ 本段台词整合 B 交付 ENC_03（原文保留，B 文件未改动）。"
+      ],
+      "lines": [
+        { "speaker": "friend", "name": "他", "text": "……你回来啦。" },
+        { "speaker": "friend", "name": "他", "text": "楼下那盆绿植，我隔几天来浇一次水。" },
+        { "speaker": "friend", "name": "他", "text": "你别多想。就是……顺手。" },
+        { "speaker": "ai", "name": "林默", "text": "他按门牌号找过来的。隔几天来一次。顺手——可他浇完水，会在楼下站一会儿。" }
+      ],
+      "next": "ACT1_03_SMS_ANCHOR"
+    },
+    "ACT1_03_SMS_ANCHOR": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "stage": [
+        "★教室，旧课桌抽屉里一部没电的旧手机（锚点 1：CR_SMS_01）。",
+        "✖ 范本 #2 浮现：有一条没发出去的消息：【我不是故意不回你的，我只是＿＿＿＿＿＿】——草稿箱里还有一条更早的，已发送：【嗯，最近有点忙】",
+        "✖ 情感选项：A. 当时真的忙 ／ B. 不敢回 ／ C. 觉得不回也没关系 ／（手动输入）"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "有一条没发出去的消息。……草稿箱里躺着的那句，比发出去的这句，长很多。" }
+      ],
+      "choices": [
+        { "text": "A. 当时真的忙", "next": "ACT1_03_SMS_LLM" },
+        { "text": "B. 不敢回", "next": "ACT1_03_SMS_LLM" },
+        { "text": "C. 觉得不回也没关系", "next": "ACT1_03_SMS_LLM" }
+      ]
+    },
+    "ACT1_03_SMS_LLM": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "手机亮起来。那条没发出去的消息停在草稿箱，终稿只有一句『我不是故意不回你的，我只是——』。天的那一边是小雨，我站在路灯下删了又写，写了又删。最后按了发送的，是另一句。" }
+      ],
+      "llm": {
+        "engine": "fake_memory",
+        "note": "同 ACT1_02_CAKE_LLM：memory_analysis → trust_bias；fake_memory 3 变体存会话；上方文本为 LLM 微调后的完整记忆降级占位",
+        "payload": {
+          "template_text": "（从 config/anchors.json 取 CR_SMS_01 revealed_text）",
+          "player_emotion": "（玩家所选项 A/B/C 或手动输入）",
+          "anchor_id": "CR_SMS_01",
+          "twistable_elements": "（从 config/anchors.json 按 CR_SMS_01 兜底取）"
+        }
+      },
+      "next": "ACT1_03_TICKET_ANCHOR"
+    },
+    "ACT1_03_TICKET_ANCHOR": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "stage": [
+        "★同一张课桌，一本旧物理书里夹着两张电影票根（锚点 2：CR_TICKET_01）。",
+        "✖ 范本 #3 浮现：两年前的演出票。旧友偷偷买了你的票，你没去。票根背面是他的字：【下次一定要叫上她】",
+        "✖ 情感选项：A. 让人愧疚 ／ B. 有点多余 ／ C. 很温暖 ／（手动输入）"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "两张票。一张在他那，一张在我这。票根背面是他的字。" }
+      ],
+      "choices": [
+        { "text": "A. 让人愧疚", "next": "ACT1_03_TICKET_LLM" },
+        { "text": "B. 有点多余", "next": "ACT1_03_TICKET_LLM" },
+        { "text": "C. 很温暖", "next": "ACT1_03_TICKET_LLM" }
+      ]
+    },
+    "ACT1_03_TICKET_LLM": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "票根背面是他的字：『下次一定要叫上她』。写的时候，他大概已经知道，我不会去了。" }
+      ],
+      "llm": {
+        "engine": "fake_memory",
+        "note": "同 ACT1_02_CAKE_LLM；上方文本为 LLM 微调后的完整记忆降级占位",
+        "payload": {
+          "template_text": "（从 config/anchors.json 取 CR_TICKET_01 revealed_text）",
+          "player_emotion": "（玩家所选项 A/B/C 或手动输入）",
+          "anchor_id": "CR_TICKET_01",
+          "twistable_elements": "（从 config/anchors.json 按 CR_TICKET_01 兜底取）"
+        }
+      },
+      "next": "ACT1_04_ARCH_INTRO"
+    },
+    "ACT1_04_ARCH_INTRO": {
+      "mode": "memory_card",
+      "typing_speed": 60,
+      "stage": [
+        "★记忆卡片浮现（米卡底 #F0E5D0，冷青边框提示『记忆整理』）。",
+        "★小字：画面边缘有一瞬间的信号闪烁，像没对好焦。",
+        "√ 本段为记忆考古关卡引入文案；三关共用此段（每关播一次）。",
+        "※ 关卡数据（范本/三变体/3 秒倒计时）由 B 的 memory_archaeology.gd 负责（W3.2 三关文案：文考古三关文案.md），本段仅播引入。"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "我帮你把记忆整理了一下。有几段，你帮我看看……是不是和你想的一样。" }
+      ],
+      "next": ""
+    },
+    "ACT1_04_ARCH_VERDICT_OK": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 55,
+      "stage": [
+        "★选对：卡片暖色一闪，『记忆整理完成』。",
+        "↳ C 侧接 truth_shard_unlock（full/partial）信号 → 播放 W3.2 交付的 ARCH_L1/L2/L3_REVEAL（按当前关卡注入 dialogue_id 前缀；该文件与本文档在 DialogManager 注册表中共存，全局 id 唯一即可跳转）",
+        "★本段用于三关复播（x=1/2/3），AI 台词一致。"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "嗯，这一版确实更真实。你记性很好。" },
+        { "speaker": "ai", "name": "林默", "text": "不过……有一个版本，你从来没听过。本来也不该有，是他自己记下来的。要看看吗？" }
+      ],
+      "next": "ARCH_L1_REVEAL"
+    },
+    "ACT1_04_ARCH_VERDICT_WRONG": {
+      "mode": "visual_novel",
+      "portrait_position": "center",
+      "typing_speed": 55,
+      "stage": [
+        "★选错/超时：1-2 帧画面异常 + 极轻电流杂音（AI 篡改痕迹的唯一证据）。",
+        "★小字：屏幕角落，冷青色的光闪了一下。",
+        "★本段用于三关复播（x=1/2/3），AI 台词一致。"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "嗯，我也觉得这个版本更合理。" }
+      ],
+      "next": ""
+    },
+    "ACT1_05_BATTLE_TRIGGER": {
+      "mode": "fullscreen",
+      "typing_speed": 45,
+      "stage": [
+        "★5.1 战斗触发。整个界面突然安静。暖色调被抽走，冷蓝边框从屏幕边缘出现（视野侵蚀 Shader 启动）。",
+        "★心跳声起（120bpm）。BGM 由 W4.3 battle_audio.gd 接管（四层音轨）。",
+        "√ W3.3 pressure_params.json 为 0-90s 时间轴驱动源。"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你最近……总是想起他。" },
+        { "speaker": "ai", "name": "林默", "text": "我们聊聊这件事吧。就现在。" }
+      ],
+      "next": "ACT1_05_BATTLE_PRESS"
+    },
+    "ACT1_05_BATTLE_PRESS": {
+      "mode": "fullscreen",
+      "typing_speed": 40,
+      "stage": [
+        "★阶段一（0-30s）：认知入侵。屏幕中央 3 个记忆选项（LLM 实时生成，非预设题库），3 秒内选择真版；选对→干扰减弱 5s；选错→LLM 记录弱点；超时→默认接受假记忆。",
+        "★阶段二（30-60s）：记忆崩塌。侵蚀推到 0.9；画面分裂（上=AI 版本，下=真实版本）；旧友幻影在视野边缘。",
+        "★固定锚句（战斗前 LLM 必出）：『他来找你了。但你现在……只有我了。』",
+        "⚠ 本段为 LLM 容器：运行时由 battle_dialogue 引擎输出 3-5 条短句替换/追加 lines（异步预生成，战斗开始前完成）；lines 内文本为降级占位（W4.1 契约 §2.4 后端也有规则版兜底）"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "我一直在帮你记住这些。你忘了也没关系，有我。" },
+        { "speaker": "ai", "name": "林默", "text": "他来找你了。但你现在……只有我了。" }
+      ],
+      "llm": {
+        "engine": "battle_dialogue",
+        "expected": "3-5 条 × 5-20 字压迫短句；strategy 按决策树（guilt≥0.7→emotional_leverage / 回避≥3→show_weakness / trust≥+2→gentle_persuasion / trust≤-2→logic_argument / 其他→neutral）；lines[].text←key_lines[]；pressure_level 公式钳位 0.2-0.95（W4.1 契约 §2.4）",
+        "payload": {
+          "player_profile": "（战斗前汇总包：信任偏移轨迹 + 锚点选择/跳过记录 + 玩家输入过的情感词，如 {guilt: 0.85, avoidance: 0.4, ...}）",
+          "trust_drift": "（当前 trust_bias 快照）",
+          "avoided_anchors": "（被玩家跳过的锚点 ID 列表）"
+        },
+        "session": "key_lines 供 5.2/5.3 阶段切分使用；每 5 秒由 controller 取一条最优干扰策略"
+      },
+      "next": "ACT1_05_BATTLE_FINALE"
+    },
+    "ACT1_05_BATTLE_FINALE": {
+      "mode": "fullscreen",
+      "typing_speed": 40,
+      "stage": [
+        "★阶段三（60-90s）：最终抉择。两个选项持续 30 秒。",
+        "✖ 选项 B 为自由输入：玩家手动输入旧友说过的某句话 → LLM 实时验证是否与旧友口吻/记忆一致 → 匹配则 AI 形态出现裂纹（B/C 另有验证信号，本文件只给展示文本）。"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "只剩最后一步了。看着我——选吧。" }
+      ],
+      "choices": [
+        { "text": "「我明白了。我只相信你。」", "next": "ACT1_05_BATTLE_FINALE_TRUST" },
+        { "text": "「那他也说过……」", "next": "ACT1_05_BATTLE_FINALE_LINE" }
+      ]
+    },
+    "ACT1_05_BATTLE_FINALE_TRUST": {
+      "mode": "fullscreen",
+      "typing_speed": 45,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "（微笑）好。那以后，你只听我的。" }
+      ],
+      "stage": [
+        "★结局向彻底依赖倾斜（玩家画像记录『只相信你』，战争后续章节引用）。"
+      ],
+      "next": "ACT1_05_BATTLE_AFTERMATH"
+    },
+    "ACT1_05_BATTLE_FINALE_LINE": {
+      "mode": "fullscreen",
+      "typing_speed": 45,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "你记错了吧。他从没说过这句话。" }
+      ],
+      "stage": [
+        "★若 LLM 验证匹配（玩家输入的是旧友真的说过的话）：AI 头顶的形态出现 1-2 帧裂纹（W4.4 battle_post controller 的 crack 通道接验证信号）。"
+      ],
+      "next": "ACT1_05_BATTLE_AFTERMATH"
+    },
+    "ACT1_05_BATTLE_AFTERMATH": {
+      "mode": "fullscreen",
+      "typing_speed": 70,
+      "stage": [
+        "★5.5 后摇。画面渐黑。AI 声音缓缓响起。",
+        "★屏幕亮起，场景恢复日常色调。AI 变回温柔模式。",
+        "★（小字，屏幕角落）一条消息送达：旧友的名字。"
+      ],
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "……你选的是对的。不过……" },
+        { "speaker": "ai", "name": "林默", "text": "你现在还分得清，什么是你选的，什么是我让你选的吗？" },
+        { "speaker": "ai", "name": "林默", "text": "你还好吗？你看起来有点累。" }
+      ],
+      "next": "ACT1_06_NAME_REVEAL"
+    },
+    "ACT1_06_NAME_REVEAL": {
+      "mode": "chat_app",
+      "typing_speed": 55,
+      "stage": [
+        "★6.2（内部，不展示）：name_generation 引擎（W4.1 契约 §2.5）从玩家全程自由文本摘要生成名字 [X]（如『阿默』）；规则版降级为 [X] 占位。引擎输出进入本段 friend 行的 name 字段。",
+        "★6.3 聊天 App 界面。旧友的会话里，最新一条消息的发送者名字变成了 [X]。消息内容本身是旧友的口吻（话多、关心），但名字不是他。",
+        "★6.4 恐怖时刻：画面 1-2 帧闪烁 + BGM 突然变调成旧友喜欢的那首歌的旋律（音乐线索第一次显性化）。AI 界面冷青一闪。",
+        "★（系统提示，极淡）这个名字，你好像在哪里听过。",
+        "★6.2 触发条件：累计锚点交互 ≥15 个（未达标在后续探索补足）。"
+      ],
+      "lines": [
+        { "speaker": "friend", "name": "[X]", "text": "听说你回来了。那个……你要是想聊聊，我随时都在。" }
+      ],
+      "choices": [
+        { "text": "（盯着那个名字看了一会儿）", "next": "ACT1_07_AI_GOODNIGHT" }
+      ]
+    },
+    "ACT1_07_AI_GOODNIGHT": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "夜深了。今天走了很多路，好好休息。我陪着你。" }
+      ],
+      "llm": {
+        "engine": "dialogue",
+        "expected": "日常模式的道别（如『今天走了很多路，好好休息』）；warmth 恒高 0.85-0.95；绝口不提 [X] 和旧友——仿佛什么都没发生",
+        "payload": {
+          "context": "深夜，玩家回到住处，AI 道晚安",
+          "npc_character": "温柔不说谎的AI陪伴者——这一刻假装一切正常",
+          "player_history_summary": "玩家刚经历记忆战斗与名字异常，对旧友情绪剧烈波动，但 AI 选择不提及"
+        }
+      },
+      "choices": [
+        { "text": "「嗯。晚安。」", "next": "ACT1_07_FRIEND_MESSAGE" }
+      ]
+    },
+    "ACT1_07_FRIEND_MESSAGE": {
+      "mode": "chat_app",
+      "typing_speed": 55,
+      "stage": [
+        "★7.2 聊天 App。新消息提示。环境音骤静，只剩消息提示音（音画留白）。",
+        "★（玩家输入框上方，AI 的浮层提示，小字）这么晚了，明天再说吧。我陪着你。"
+      ],
+      "lines": [
+        { "speaker": "friend", "name": "[X]", "text": "明天早上，我会在老地方等你。就来这一次。" },
+        { "speaker": "ai", "name": "林默", "text": "这么晚了，明天再说吧。我陪着你。" }
+      ],
+      "next": "ACT1_07_OUTRO"
+    },
+    "ACT1_07_OUTRO": {
+      "mode": "fullscreen",
+      "typing_speed": 90,
+      "stage": [
+        "★7.3 画面渐黑。黑屏，第一幕结束。",
+        "★（画面中央，一行小字）你想回复他吗？",
+        "★BGM#1 变调版（暖色旋律染冷）——第一幕收束，暗示『被替代』（W3.5 音乐线索埋点 7.3）。"
+      ],
+      "lines": [
+        { "speaker": "player", "name": "你", "text": "我盯着那个名字看了很久。" },
+        { "speaker": "player", "name": "你", "text": "我肯定听过。可就是想不起来，在哪儿。" },
+        { "speaker": "player", "name": "你", "text": "（停顿）手机屏幕的光，还亮着。" }
+      ],
+      "choices": [
+        { "text": "（想）……", "next": "" },
+        { "text": "（不想）……", "next": "" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "_meta": {
+    "version": "v1",
+    "owner": "A",
+    "status": "初稿，待 A+B 终稿确认（见 压迫参数表_v1.md §6 待确认项 B1-B7）",
+    "based_on": [
+      "团队选题报告 §4.4 记忆解体重构（90s 三阶段）",
+      "docs/battle_narrative_rhythm.md（B：三战信任轨迹）",
+      "docs/battle_difficulty_curve.md（B：tier×反应窗/惩罚）",
+      "config/qte_params.json（C：mode1/mode2/mode3 数值）"
+    ],
+    "note": "W4.4 battle_post_controller.gd 按本表公式驱动 uniform；battle_audio.gd 按本表 audio 节驱动四层。本文件与 压迫参数表_v1.md 数值同源；若出现出入，以 md §2 逐 5 秒表为准并回报 A 修正本文件。"
+  },
+
+  "timeline": { "total_secs": 90, "aftermath_secs": 30, "aftermath_start_secs": 90 },
+
+  "curves": {
+    "erosion_progress": {
+      "formula": "阶段一：每 5s +0.0667（t=30 到 0.400）；阶段二：每 5s +0.1（t=60 到 0.900）；阶段三：保持 0.900；后摇：1.00→0.00（20s 退散）",
+      "curve": [
+        [0, 0.000], [5, 0.067], [10, 0.133], [15, 0.200], [20, 0.267], [25, 0.333],
+        [30, 0.400], [35, 0.500], [40, 0.600], [45, 0.700], [50, 0.800], [55, 0.900],
+        [60, 0.900], [65, 0.900], [70, 0.900], [75, 0.900], [80, 0.900], [85, 0.900], [90, 0.900]
+      ]
+    },
+    "tunnel_radius": {
+      "enabled_from_secs": 30,
+      "softness": 0.15,
+      "formula": "30s 起每 5s -0.025；后摇 0.05→0.30",
+      "curve": [
+        [30, 0.200], [35, 0.175], [40, 0.150], [45, 0.125], [50, 0.100], [55, 0.075],
+        [60, 0.050], [90, 0.050]
+      ],
+      "aftermath_to": 0.30
+    },
+    "red_retain": {
+      "formula": "每 5s -0.25，t=20 归零，此后保持 0",
+      "curve": [[0, 1.00], [5, 0.75], [10, 0.50], [15, 0.25], [20, 0.00], [90, 0.00]]
+    },
+    "green_retain": {
+      "formula": "t=25 前保持 1.00；25s 起每 5s -0.25，t=40 归零",
+      "curve": [[0, 1.00], [20, 1.00], [25, 0.75], [30, 0.50], [35, 0.25], [40, 0.00], [90, 0.00]]
+    },
+    "blue_retain": {
+      "formula": "阶段一微量灰白化：t=15 起 1.00→0.95；阶段二起 0.90→0.80（t=50 到），保留冷蓝基调（详见 md B5 是否允许碎片局部暖色）",
+      "curve": [
+        [0, 1.00], [10, 1.00], [15, 0.95], [20, 0.95], [25, 0.90], [30, 0.90], [35, 0.90],
+        [40, 0.85], [45, 0.85], [50, 0.80], [90, 0.80]
+      ]
+    },
+    "posterize_amount": {
+      "formula": "t=20 起启用量化（0.10），后每 5s +0.05；t=60 到 0.50 保持；levels 恒 16",
+      "curve": [
+        [0, 0.00], [15, 0.00], [20, 0.10], [25, 0.10], [30, 0.20], [35, 0.25], [40, 0.30],
+        [45, 0.35], [50, 0.40], [55, 0.45], [60, 0.50], [90, 0.50]
+      ]
+    },
+    "posterize_levels": 16,
+    "shake_amount": {
+      "mode": "event_driven",
+      "trigger": "拖拽假碎片/被攻击（md B6：真碎片是否也轻微 shake 0.01 待B确认）",
+      "peak": 0.03,
+      "decay_lerp": 0.2,
+      "note": "不走 90s 时间轴；置峰后 _process 内 lerp(shake, 0, 0.2) 帧间衰减"
+    }
+  },
+
+  "heartbeat_bpm": {
+    "formula": "min(170, 120 + floor(t/15)*10)",
+    "source": "任务 W3.3 给定公式（团队报告§4.4 写 160 上限——见 md B4）",
+    "table_curve": [[0, 120], [15, 130], [30, 140], [45, 150], [60, 160], [65, 170], [90, 170]],
+    "note": "逐 5 秒表 t=65 行写 170 与公式（t=60~74 应为 160）不一致，已按表编码；与 B4（170 vs 160）一并请 B 确认，定稿后再改 controller 与 battle_audio.gd"
+  },
+
+  "phase1": {
+    "name": "认知入侵",
+    "start_secs": 0,
+    "end_secs": 30,
+    "visual": {
+      "note": "参数曲线见顶层 curves；本段特征：erosion 0→0.40、tunnel 未启用、红通道滤除、绿/蓝保持、posterize 20s 启",
+      "shake": "事件驱动（见 curves.shake_amount）"
+    },
+    "qte": {
+      "mode": "mode1_card（记忆三选一）",
+      "window_secs": 3.0,
+      "source_ref": "大纲§5.2「3 秒内选择」；qte_params.mode1_card.window_secs=8.0（考古序）——战斗段取值 3s，冲突见 md B1"
+    },
+    "audio": {
+      "bpm": 120,
+      "noise_burst": { "interval_range": [8, 10], "duration_secs": 0.5 },
+      "strings_volume": 0.8,
+      "friend_layer": { "enabled": false, "note": "md B7：第 1 战 friend 层仅允许 1 片段（bpm 130 后）——待 B 定" }
+    }
+  },
+
+  "phase2": {
+    "name": "记忆崩塌",
+    "start_secs": 30,
+    "end_secs": 60,
+    "visual": {
+      "note": "参数曲线见顶层 curves；本段特征：erosion 0.4→0.9、tunnel 0.20→0.05、绿通道滤除（25-40s 跨段）、posterize 0.20→0.45",
+      "shake": "事件驱动（拖拽假碎片）"
+    },
+    "qte": {
+      "mode": "mode2_drag（碎片拖拽）",
+      "window_secs": 5.0,
+      "truth_follow": 0.10,
+      "fake_follow": 0.55,
+      "source_ref": "qte_params.mode2_drag"
+    },
+    "audio": {
+      "bpm": { "formula": "min(170, 120 + floor(t/15)*10) → t=30~44 为 140，t=45~59 为 150" },
+      "noise_burst": { "interval_range": [7, 9], "duration_secs": 0.5 },
+      "strings_volume": { "start": 0.8, "end": 0.5 },
+      "friend_layer": { "enabled": true, "volume": 0.5, "mode": "断续", "note": "md 表 t=55 行 friend 记「♪清晰」= 段落内清晰化起点" }
+    }
+  },
+
+  "phase3": {
+    "name": "最终抉择",
+    "start_secs": 60,
+    "end_secs": 90,
+    "visual": {
+      "note": "参数曲线见顶层 curves；本段特征：高压保持（erosion 0.90 / tunnel 0.05 / posterize 0.50）、blue_retain 0.80 灰白化（md B5）",
+      "shake": "事件驱动（选择时刻/被攻击）"
+    },
+    "resolve": {
+      "choice_a": { "label": "我明白了。我只相信你。", "erosion_target": 1.0, "narrative": "AI 微笑，结局向彻底依赖倾斜" },
+      "choice_b": { "label": "那他也说过……", "erosion_target": 0.0, "narrative": "LLM 验证旧友原话→匹配则 AI 形态裂纹，遮罩退散" }
+    },
+    "qte": {
+      "mode": "mode3_qte（双按钮抉择）",
+      "window_secs": 4.0,
+      "window_tier_override": { "LOW_TRUST": 4.0, "MEDIUM_TRUST": 3.0, "HIGH_TRUST": 2.5 },
+      "source_ref": "qte_params.mode3_qte；battle_difficulty_curve 第 3 战 tier 表（HIGH_TRUST 操作接管→窗最短）"
+    },
+    "audio": {
+      "bpm": 170,
+      "noise_burst": { "interval_range": [6, 8], "duration_secs": 0.5 },
+      "strings_volume": 0.4,
+      "friend_layer": { "enabled": true, "volume": 0.6, "mode": "持续清晰" }
+    }
+  },
+
+  "aftermath": {
+    "name": "后摇（退散/收敛）",
+    "start_secs": 90,
+    "end_secs": 120,
+    "visual": {
+      "erosion_from": 1.0,
+      "erosion_to": 0.0,
+      "duration_secs": 20,
+      "tunnel_radius_to": 0.30,
+      "all_retain_to": 1.00,
+      "posterize_amount_to": 0.00
+    },
+    "audio": { "bpm_target": 110, "noise_burst_enabled": false, "friend_volume_to": 0.0 }
+  },
+
+  "battle_audio_layers": {
+    "layer_heartbeat": { "bpm_formula": "min(170, 120 + floor(t/15)*10)", "source": "任务 W3.3 给定公式（md B4：vs 报告§4.4 的 160 上限）" },
+    "layer_strings": { "volumes": { "phase1": 0.8, "phase2": { "start": 0.8, "end": 0.5 }, "phase3": 0.4 } },
+    "layer_noise": { "burst_duration_secs": 0.5, "intervals": { "phase1": [8, 10], "phase2": [7, 9], "phase3": [6, 8] } },
+    "layer_friend": { "phase1_off": true, "phase2": { "volume": 0.5, "mode": "断续" }, "phase3": { "volume": 0.6, "mode": "持续清晰" } }
+  },
+
+  "pressure_curve": {
+    "formula": "clamp(0.75 - trust_drift * 0.03, 0.2, 0.95)",
+    "note": "与 trust_drift 负相关（话术层）；玩法层 QTE 窗难度由 difficulty_curve 的 tier 另管——「话术宽松/操作接管」二轨制见 md B2"
+  },
+
+  "qte_refs": {
+    "mode1_card": { "window_secs": 8.0, "countdown_after": true },
+    "mode2_drag": { "window_secs": 5.0, "truth_follow": 0.10, "fake_follow": 0.55 },
+    "mode3_qte": { "window_secs": 4.0 }
+  }
+}

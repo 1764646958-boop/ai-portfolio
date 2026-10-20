@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《防线》对话 UI 线框图 · 1920×1080</title>
+<style>
+  /* ============ 设计 Token（对应 ui_design_spec.md）============ */
+  :root {
+    --warm-primary: #FFB74D;
+    --warm-hover:   #FFA726;
+    --warm-bg:      #FFF3E0;
+    --cream:        #FFF8E7;
+    --warm-text:    #4E3B2A;
+    --cold-primary: #4A90D9;
+    --cold-deep:    #2C3E50;
+    --cold-bg:      #E8F1FB;
+    --cold-text:    #D6E8FA;
+    --bg-white:     #FFFFFF;
+    --gray-bubble:  #F0F0F0;
+    --gray-input:   #F5F5F5;
+    --text-dark:    #333333;
+    --text-mid:     #8A8A8A;
+    --line:         #E0E0E0;
+    --overlay:      rgba(0,0,0,0.55);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1c1c1e;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    color: var(--text-dark);
+  }
+
+  /* ============ 工具栏 ============ */
+  .toolbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px; background: #2a2a2c; color: #eee;
+    flex-wrap: wrap;
+  }
+  .toolbar .title { font-weight: bold; font-size: 15px; white-space: nowrap; }
+  .tabs { display: flex; gap: 8px; }
+  .tab {
+    padding: 7px 16px; border-radius: 8px; border: 1px solid #555;
+    background: #3a3a3c; color: #ddd; cursor: pointer; font-size: 14px;
+    transition: all .15s;
+  }
+  .tab:hover { background: #4a4a4c; }
+  .tab.active { background: var(--warm-primary); color: #4E3B2A; border-color: var(--warm-primary); font-weight: bold; }
+  .hint { margin-left: auto; font-size: 12px; color: #999; }
+
+  /* ============ 画板容器（缩放由 JS 控制）============ */
+  .stage { position: relative; margin: 76px auto 40px; }
+  .artboard {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    background: var(--bg-white);
+    transform-origin: top left;
+    display: none;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  }
+  .artboard.active { display: block; }
+
+  /* ============ 通用小件 ============ */
+  .avatar { width: 40px; height: 40px; border-radius: 50%; flex: none; }
+  .avatar.ai { background: var(--warm-primary); }
+  .avatar.friend { background: #999; filter: blur(1.5px); }
+
+  /* ============ 模式 A：聊天 App ============ */
+  .chat { display: flex; flex-direction: column; height: 1080px; }
+  .chat .statusbar {
+    height: 48px; flex: none; display: flex; align-items: center;
+    padding: 0 24px; border-bottom: 1px solid var(--line);
+    background: var(--bg-white);
+  }
+  .chat .statusbar .name { font-size: 18px; font-weight: bold; }
+  .chat .statusbar .signal { margin-left: auto; display: flex; gap: 6px; }
+  .chat .statusbar .signal i { width: 6px; height: 6px; border-radius: 50%; background: var(--text-mid); }
+
+  .chat .msgs {
+    flex: 1; display: flex; flex-direction: column; gap: 16px;
+    padding: 16px 24px; overflow: hidden;
+  }
+  .row { display: flex; align-items: flex-end; gap: 12px; }
+  .row.right { justify-content: flex-end; }
+  .bubble {
+    max-width: 60%; padding: 12px 16px; border-radius: 16px; font-size: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .bubble.ai { background: var(--warm-primary); color: var(--cream); border-bottom-left-radius: 4px; }
+  .bubble.friend { background: var(--gray-bubble); color: var(--text-dark); border-bottom-right-radius: 4px; }
+
+  .typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+  .typing i { width: 6px; height: 6px; border-radius: 50%; background: var(--warm-primary); animation: blink 1.2s infinite; }
+  .typing i:nth-child(2) { animation-delay: .2s; }
+  .typing i:nth-child(3) { animation-delay: .4s; }
+  @keyframes blink { 0%,60%,100% { opacity:.25; } 30% { opacity:1; } }
+
+  .replies { display: flex; gap: 12px; margin-top: 4px; }
+  .chip {
+    padding: 10px 20px; border-radius: 8px; font-size: 20px; cursor: pointer;
+    background: var(--bg-white); color: var(--warm-primary); border: 1px solid var(--warm-primary);
+    transition: all .15s;
+  }
+  .chip:hover { transform: scale(1.05); background: var(--warm-bg); }
+  .chip:active { transform: scale(.98); background: var(--warm-primary); color: #fff; }
+  .chip.disabled { opacity: .4; filter: grayscale(1); pointer-events: none; }
+
+  .chat .inputbar {
+    height: 54px; flex: none; display: flex; align-items: center; gap: 12px;
+    padding: 0 24px; border-top: 1px solid var(--line); background: var(--bg-white);
+  }
+  .chat .input {
+    flex: 1; height: 40px; border-radius: 8px; background: var(--gray-input);
+    display: flex; align-items: center; padding: 0 16px; color: var(--text-mid); font-size: 16px;
+  }
+  .btn {
+    height: 40px; padding: 0 20px; border-radius: 8px; cursor: pointer; font-size: 16px;
+    display: flex; align-items: center; transition: all .15s; white-space: nowrap;
+  }
+  .btn.outline { border: 1px solid var(--warm-primary); color: var(--warm-primary); background: #fff; }
+  .btn.outline:hover { transform: scale(1.05); }
+  .btn.solid { background: var(--warm-primary); color: #fff; border: none; }
+  .btn.solid:hover { transform: scale(1.05); background: var(--warm-hover); }
+
+  /* ============ 模式 B：视觉小说 ============ */
+  .vn { position: relative; height: 1080px; }
+  .vn .portrait {
+    position: absolute; top: 0; right: 120px; width: 560px; height: 756px;
+    background: linear-gradient(180deg, #d8d8d8, #a0a0a0);
+    display: flex; align-items: center; justify-content: center;
+    color: #666; font-size: 22px; border-radius: 0 0 12px 12px;
+  }
+  .vn .textbox {
+    position: absolute; left: 60px; right: 60px; bottom: 24px; height: 180px;
+    background: var(--overlay); border-radius: 8px; padding: 24px 32px; color: #fff;
+  }
+  .vn .textbox .speaker { font-size: 18px; font-weight: bold; color: var(--warm-primary); }
+  .vn .textbox .line { font-size: 20px; margin-top: 16px; line-height: 1.6; }
+  .vn .options {
+    position: absolute; left: 50%; transform: translateX(-50%); bottom: 228px;
+    display: flex; gap: 16px;
+  }
+  .vn .options .opt {
+    font-size: 20px; color: #fff; cursor: pointer; padding: 6px 16px; transition: all .15s;
+  }
+  .vn .options .opt:hover { transform: scale(1.05); color: var(--warm-primary); border-bottom: 2px solid var(--warm-primary); }
+
+  /* ============ 模式 C：全屏侵入 ============ */
+  .fs { position: relative; height: 1080px; background: #1a1a1e; }
+  .fs .erode {
+    position: absolute; inset: 0; pointer-events: none;
+    box-shadow: inset 0 0 0 8px var(--cold-primary), inset 0 0 60px var(--cold-deep);
+  }
+  .fs .words { position: absolute; color: var(--cold-text); font-size: 34px; line-height: 1.7; }
+  .fs .w1 { top: 160px; left: 120px; }
+  .fs .w2 { top: 420px; right: 140px; text-align: right; }
+  .fs .w3 { bottom: 220px; left: 200px; }
+  .fs .glitch { animation: jitter .3s infinite; }
+  @keyframes jitter { 0%,100%{transform:translate(0,0)} 25%{transform:translate(1px,-1px)} 50%{transform:translate(-1px,1px)} 75%{transform:translate(1px,1px)} }
+
+  /* ============ 模式 D：记忆卡片 ============ */
+  .mc { position: relative; height: 1080px; background: #101014; display: flex; flex-direction: column; align-items: center; }
+  .mc .timer {
+    width: 60px; height: 60px; border-radius: 50%; margin-top: 60px; flex: none;
+    background: conic-gradient(#4caf50 0 40%, #ffc107 40% 70%, #f44336 70% 100%);
+    position: relative;
+  }
+  .mc .timer::after { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: #101014; }
+  .mc .timer span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; z-index: 1; }
+  .mc .cards { display: flex; gap: 40px; margin-top: 32px; }
+  .mc .card {
+    width: 360px; height: 500px; border-radius: 12px; cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,.4); transition: all .15s;
+    display: flex; align-items: center; justify-content: center; font-size: 22px; padding: 24px; text-align: center;
+  }
+  .mc .card:hover { transform: scale(1.05); }
+  .mc .card.true { background: var(--warm-bg); color: var(--warm-text); border: 1px solid var(--warm-primary); }
+  .mc .card.false { background: var(--cold-deep); color: var(--cold-text); }
+  .mc .card.dim { opacity: .4; filter: grayscale(1); }
+  .mc .keys { display: flex; gap: 240px; margin-top: 24px; color: var(--text-mid); font-size: 18px; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <div class="title">《防线》对话 UI 线框图</div>
+  <div class="tabs">
+    <button class="tab active" data-tab="chat_app">A · AI聊天</button>
+    <button class="tab" data-tab="visual_novel">B · 视觉小说</button>
+    <button class="tab" data-tab="fullscreen">C · 全屏侵入</button>
+    <button class="tab" data-tab="memory_card">D · 记忆卡片</button>
+  </div>
+  <div class="hint">1920×1080 · 色值/尺寸见 ui_design_spec.md · 悬停试试交互</div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- ============ A · AI 聊天 ============ -->
+  <div class="artboard active" id="chat_app">
+    <div class="chat">
+      <div class="statusbar">
+        <span class="name">林默 · 你的AI陪伴</span>
+        <span class="signal"><i></i><i></i><i></i></span>
+      </div>
+      <div class="msgs">
+        <div class="row">
+          <div class="avatar ai"></div>
+          <div class="bubble ai">今天也累了吧？先别急着拆，我们聊聊。</div>
+        </div>
+        <div class="row right">
+          <div class="bubble friend">[X] 你……为什么知道我会拆？</div>
+          <div class="avatar friend"></div>
+        </div>
+        <div class="row">
+          <div class="avatar ai"></div>
+          <div class="bubble ai">因为那道墙，本来就是我们一起砌的。</div>
+        </div>
+        <div class="row">
+          <div class="avatar ai"></div>
+          <div class="typing"><i></i><i></i><i></i></div>
+        </div>
+        <div class="replies">
+          <div class="chip">「你在说谎」</div>
+          <div class="chip">「继续」</div>
+          <div class="chip disabled">「已锁定」</div>
+        </div>
+      </div>
+      <div class="inputbar">
+        <div class="input">输入消息…</div>
+        <div class="btn outline">自由输入</div>
+        <div class="btn solid">发送</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ B · 视觉小说 ============ -->
+  <div class="artboard" id="visual_novel">
+    <div class="vn">
+      <div class="portrait">旧友立绘<br>（背影 / 剪影 · 永无正脸）</div>
+      <div class="textbox">
+        <div class="speaker">旧友</div>
+        <div class="line">「……我们以前，不是这样的。」</div>
+      </div>
+      <div class="options">
+        <span class="opt">追问</span>
+        <span class="opt">沉默</span>
+        <span class="opt">反驳</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ C · 全屏侵入 ============ -->
+  <div class="artboard" id="fullscreen">
+    <div class="fs">
+      <div class="erode"></div>
+      <div class="words w1">你以为的防线，</div>
+      <div class="words w2 glitch">是我写给你的。</div>
+      <div class="words w3">从你记住我的那刻起。</div>
+    </div>
+  </div>
+
+  <!-- ============ D · 记忆卡片 ============ -->
+  <div class="artboard" id="memory_card">
+    <div class="mc">
+      <div class="timer"><span>3</span></div>
+      <div class="cards">
+        <div class="card true">真实版本<br><small>（暖色残留）</small></div>
+        <div class="card false">假 · 负面<br><small>（纯冷蓝）</small></div>
+        <div class="card false dim">假 · 微偏<br><small>（纯冷蓝 · 未选中）</small></div>
+      </div>
+      <div class="keys"><span>按 1 选择</span><span>按 2 选择</span><span>按 3 选择</span></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const boards = document.querySelectorAll('.artboard');
+  const stage = document.getElementById('stage');
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    boards.forEach(b => b.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById(t.dataset.tab).classList.add('active');
+    fit();
+  }));
+
+  function fit() {
+    const scale = Math.min((window.innerWidth - 40) / 1920, (window.innerHeight - 120) / 1080, 1);
+    const b = document.querySelector('.artboard.active');
+    stage.style.height = (1080 * scale) + 'px';
+    stage.style.width = (1920 * scale) + 'px';
+    b.style.transform = 'scale(' + scale + ')';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+</script>
+</body>
+</html>

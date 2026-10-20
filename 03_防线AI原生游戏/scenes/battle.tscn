@@ -1,0 +1,65 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/battle_scene.gd" id="1_battle"]
+[ext_resource type="Script" path="res://scripts/battle_post_controller.gd" id="2_controller"]
+[ext_resource type="Shader" path="res://assets/shaders/battle_post.gdshader" id="3_post"]
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="4_interactable"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_post"]
+shader = ExtResource("3_post")
+
+[sub_resource type="Gradient" id="Gradient_bt_exit"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bt_exit"]
+gradient = SubResource("Gradient_bt_exit")
+width = 100
+height = 100
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bt_exit"]
+size = Vector2(100, 100)
+
+[node name="Battle" type="Node2D"]
+script = ExtResource("1_battle")
+
+[node name="BattlePostController" type="Node" parent="." groups=["battle_post_controller"]]
+script = ExtResource("2_controller")
+
+[node name="Overlay" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="Bg" type="ColorRect" parent="Overlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.16, 0.15, 0.2, 1)
+mouse_filter = 2
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="Overlay"]
+copy_mode = 2
+rect = Rect2(0, 0, 1920, 1080)
+
+[node name="PostOverlay" type="ColorRect" parent="Overlay" groups=["battle_post"]]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+material = SubResource("ShaderMaterial_post")
+
+[node name="Exit_To_Street" type="Area2D" parent="Overlay"]
+position = Vector2(960, 980)
+script = ExtResource("4_interactable")
+object_id = "EXIT_ST"
+is_exit = true
+target_scene = "res://scenes/street.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Overlay/Exit_To_Street"]
+shape = SubResource("RectangleShape2D_bt_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Overlay/Exit_To_Street"]
+texture = SubResource("GradientTexture2D_bt_exit")

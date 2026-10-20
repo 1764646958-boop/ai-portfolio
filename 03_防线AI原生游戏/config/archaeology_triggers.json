@@ -1,0 +1,14 @@
+{
+  "_meta": {
+    "note": "记忆考古正式入口映射（C W5）。改这里不用改代码——ArchaeologyTrigger 启动时读取。",
+    "id_source": "docs/memory_anchor_integration.md §四：B 范本 #6/#7/#9 标注为「考古主线锚点」，与 memory_archaeology.gd 的 LEVEL_CONFIG 三关一一对应",
+    "scene": "街道",
+    "created": "2026-09-12",
+    "warning": "object_id 必须同时在 scenes/street.tscn 里有对应热点，否则入口点不到；改表请同步改场景。"
+  },
+  "triggers": {
+    "ST_ACC_01": 1,
+    "ST_FLOWER_01": 2,
+    "ST_FLOWER_02": 3
+  }
+}

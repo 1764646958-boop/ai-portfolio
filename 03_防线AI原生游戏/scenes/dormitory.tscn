@@ -1,0 +1,160 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="1_dorm"]
+
+[sub_resource type="Gradient" id="Gradient_dm_bg"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.98, 0.94, 0.85, 1, 0.94, 0.85, 0.72, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dm_bg"]
+gradient = SubResource("Gradient_dm_bg")
+width = 1920
+height = 1080
+
+[sub_resource type="Gradient" id="Gradient_dm_item"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.86, 0.8, 0.68, 1, 0.86, 0.8, 0.68, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dm_item"]
+gradient = SubResource("Gradient_dm_item")
+width = 100
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_dm_plant"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.45, 0.78, 0.5, 1, 0.45, 0.78, 0.5, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dm_plant"]
+gradient = SubResource("Gradient_dm_plant")
+width = 100
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_dm_electronic"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.62, 0.72, 0.85, 1, 0.62, 0.72, 0.85, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dm_electronic"]
+gradient = SubResource("Gradient_dm_electronic")
+width = 100
+height = 100
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dm_item"]
+size = Vector2(100, 100)
+
+[node name="Dormitory" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = SubResource("GradientTexture2D_dm_bg")
+
+[node name="Item_DM_SMS_01" type="Area2D" parent="."]
+position = Vector2(350, 300)
+script = ExtResource("1_dorm")
+object_id = "DM_SMS_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_SMS_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_SMS_01"]
+texture = SubResource("GradientTexture2D_dm_electronic")
+
+[node name="Item_DM_PLANT_01" type="Area2D" parent="."]
+position = Vector2(600, 260)
+script = ExtResource("1_dorm")
+object_id = "DM_PLANT_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_PLANT_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_PLANT_01"]
+texture = SubResource("GradientTexture2D_dm_plant")
+
+[node name="Item_DM_BOX_01" type="Area2D" parent="."]
+position = Vector2(850, 320)
+script = ExtResource("1_dorm")
+object_id = "DM_BOX_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_BOX_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_BOX_01"]
+texture = SubResource("GradientTexture2D_dm_item")
+
+[node name="Item_DM_NOTE_01" type="Area2D" parent="."]
+position = Vector2(1100, 280)
+script = ExtResource("1_dorm")
+object_id = "DM_NOTE_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_NOTE_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_NOTE_01"]
+texture = SubResource("GradientTexture2D_dm_item")
+
+[node name="Item_DM_BOOK_01" type="Area2D" parent="."]
+position = Vector2(1350, 300)
+script = ExtResource("1_dorm")
+object_id = "DM_BOOK_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_BOOK_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_BOOK_01"]
+texture = SubResource("GradientTexture2D_dm_item")
+
+[node name="Item_DM_VOICE_01" type="Area2D" parent="."]
+position = Vector2(400, 560)
+script = ExtResource("1_dorm")
+object_id = "DM_VOICE_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_VOICE_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_VOICE_01"]
+texture = SubResource("GradientTexture2D_dm_electronic")
+
+[node name="Item_DM_RECEIPT_01" type="Area2D" parent="."]
+position = Vector2(650, 570)
+script = ExtResource("1_dorm")
+object_id = "DM_RECEIPT_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_RECEIPT_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_RECEIPT_01"]
+texture = SubResource("GradientTexture2D_dm_item")
+
+[node name="Item_DM_MIRROR_01" type="Area2D" parent="."]
+position = Vector2(1000, 560)
+script = ExtResource("1_dorm")
+object_id = "DM_MIRROR_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_MIRROR_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_MIRROR_01"]
+texture = SubResource("GradientTexture2D_dm_item")
+
+[node name="Item_DM_EARPHONE_01" type="Area2D" parent="."]
+position = Vector2(1350, 560)
+script = ExtResource("1_dorm")
+object_id = "DM_EARPHONE_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_DM_EARPHONE_01"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_DM_EARPHONE_01"]
+texture = SubResource("GradientTexture2D_dm_electronic")
+
+[node name="Exit_To_Street" type="Area2D" parent="."]
+position = Vector2(1720, 300)
+script = ExtResource("1_dorm")
+object_id = "EXIT_ST"
+is_exit = true
+target_scene = "res://scenes/street.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Street"]
+shape = SubResource("RectangleShape2D_dm_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Street"]
+texture = SubResource("GradientTexture2D_dm_item")

@@ -1,0 +1,65 @@
+{
+  "_meta": {
+    "version": "v0.2",
+    "owner": "C",
+    "purpose": "记忆考古/战斗 QTE 共用参数表 —— ② 碎片拖拽 & 阶段三 双按钮 的阻力/时间窗/灵敏度占位值。A/B 压迫参数表终稿到位后直接覆写数值即可，无需改代码。",
+    "mode_notes": {
+      "mode1_card": "考古关卡1 三卡选择（对应现有 MemoryArchaeology 卡片流程）",
+      "mode2_drag": "考古关卡2 碎片拖拽入出口：truth 碎片偏慢(重)、fake 偏快(顺滑)——'正确记忆更难抢救'的直觉化映射；truth_shake/fake_shake 为 B6 终稿值（真碎片轻颤 0.01 / 假碎片重颤 0.03，像素级振幅）",
+      "mode3_qte": "考古关卡3 双按钮 QTE：限定时间内点中真相按钮",
+      "canvas": "UI 基准 1920×1080；窗口时长 > 3.0 保证覆盖记忆考古自带 3s 读秒"
+    },
+    "changelog": "v0.2（W5）：mode2_drag 追加 truth_shake=0.01 / fake_shake=0.03（B6 拍板，来源 defenseline_B_docs/pressure_params.md；请 C 复核后维持 owner 口径）。"
+  },
+
+  "mode1_card": {
+    "window_secs": 8.0,
+    "decision_after_countdown": true
+  },
+
+  "mode2_drag": {
+    "window_secs": 5.0,
+    "truth_follow": 0.10,
+    "fake_follow": 0.55,
+    "truth_shake": 0.01,
+    "fake_shake": 0.03,
+    "shard_base_positions": [
+      {"x": 560,  "y": 620},
+      {"x": 960,  "y": 780},
+      {"x": 1360, "y": 620}
+    ],
+    "exit_zone": {"cx": 960, "cy": 260, "w": 480, "h": 130},
+    "hold_bonus_secs": 0.0
+  },
+
+  "mode3_qte": {
+    "window_secs": 4.0,
+    "show_wrong_flash": true
+  },
+
+  "mouse_sensitivity_scale": 0.85,
+
+  "intro": {
+    "_note": "占位引子，等 A/B 按定稿替换。对应策划稿 §4.2② '点击→屏幕渐暗→主人公想起什么→卡片浮现'。secs 同时作为卡片翻转动画的起始延迟。",
+    "secs": 1.4,
+    "lines": {
+      "1": "……那天放学路上，他从书包里拿出一个旧盒子。",
+      "2": "……那束玫瑰，是冬天的事了吧。",
+      "3": "……那朵针织的蓝花，到底是谁织的？"
+    }
+  },
+
+  "difficulty_by_tier": {
+    "_note": "策划稿 §4.3：信任偏移越偏 AI，假记忆越隐蔽越难辨别。TrustDrift.get_trust_tier() → LOW_TRUST(<3) / MEDIUM_TRUST(3~7) / HIGH_TRUST(>=7)。window_scale 作用于行动窗口；truth_follow_scale 作用于真相碎片阻力(越小越沉/越难拖)。",
+    "LOW_TRUST":    {"window_scale": 1.25, "truth_follow_scale": 1.30, "label": "篡改痕迹明显"},
+    "MEDIUM_TRUST": {"window_scale": 1.00, "truth_follow_scale": 1.00, "label": "痕迹模糊"},
+    "HIGH_TRUST":   {"window_scale": 0.75, "truth_follow_scale": 0.65, "label": "痕迹几乎不可辨"}
+  },
+
+  "anim": {
+    "card_flip_secs": 0.22,
+    "timer_jitter_below_secs": 1.0,
+    "hover_scale": 1.06,
+    "timer_bar_secs": 0.08
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "_meta": {
+    "owner": "B",
+    "data_source": "B 写氛围描述文风(感官代入版)",
+    "trigger_types": {
+      "trust_based": "由 trust_drift 触发(tier 判定)",
+      "progress_based": "由 interaction_count 触发(玩家与锚点交互总数)",
+      "random": "每次进入场景掷一次骰,命中才触发(不是每帧都掷)"
+    },
+    "effect_types": {
+      "photo_glitch": "照片/视觉异常 — A 配合 Shader 实现",
+      "bgm_shift": "背景音乐失谐/变调 — A 实现",
+      "subtitle_stutter": "字幕卡顿/抖动 — A 实现",
+      "item_displace": "物品位移 — C 实现",
+      "light_anomaly": "灯光异常(色温/亮度突变) — A 配合 C 实现",
+      "ambient_sound": "环境音变化(远处脚步声/旧友语音碎片) — A 实现"
+    },
+    "distribution": "15 个事件:CF×2 + CR×2 + ST×4 + AP×3 + 跨场景 X×4",
+    "pacing": {
+      "_note": "节奏参数(C W5 调)。改这里不用改代码,AmbientDirector 启动时读取。",
+      "max_per_visit": 2,
+      "random_min_delay_ms": 6000
+    },
+    "notes": [
+      "description 字段已由 B 填定稿文风(W3 交付)— 第一人称感官代入版",
+      "每条加:身体感受(指头抖/后背冒汗/心跳声) + 短时间刻度(半拍/三秒/一秒)+ 具象呼应(以前从没撞到/声音很熟)",
+      "trigger_param 字段格式:trust_based 用 tier;progress_based 用 interaction_count;random 用 probability",
+      "C 的氛围事件脚本按 id 触发(W3 实现)"
+    ]
+  },
+
+  "CF_001": {
+    "name": "咖啡店・窗户微变",
+    "scene": "咖啡店",
+    "category": "ambient_scene",
+    "trigger_type": "random",
+    "trigger_param": {"probability": 0.15},
+    "effect_type": "light_anomaly",
+    "description": "我愣了一下。窗外的光比平常深了一瞬——街角的路灯还没亮,可光好像先到了。"
+  },
+  "CF_002": {
+    "name": "咖啡店・背景音乐失谐",
+    "scene": "咖啡店",
+    "category": "ambient_scene",
+    "trigger_type": "progress_based",
+    "trigger_param": {"interaction_count": 3},
+    "effect_type": "bgm_shift",
+    "description": "店里循环了半天的歌突然卡了一下,像唱片被谁按住。我抬头——又像有人轻轻咳了一声,赶紧把头低回去。"
+  },
+
+  "CR_001": {
+    "name": "教室・黑板字迹闪烁",
+    "scene": "教室",
+    "category": "ambient_scene",
+    "trigger_type": "random",
+    "trigger_param": {"probability": 0.10},
+    "effect_type": "subtitle_stutter",
+    "description": "黑板上擦干净的粉笔字好像又浮现了一下。我眨了眨眼,什么都没有。指头却还在抖。"
+  },
+  "CR_002": {
+    "name": "教室・照片轻微位移",
+    "scene": "教室",
+    "category": "ambient_scene",
+    "trigger_type": "trust_based",
+    "trigger_param": {"tier": "HIGH_TRUST"},
+    "effect_type": "item_displace",
+    "description": "课桌上的合照好像挪了个位置。我盯着它看了三秒,没动它。也没人动过。可指头有点凉。"
+  },
+
+  "ST_001": {
+    "name": "街道・路灯闪烁",
+    "scene": "街道",
+    "category": "ambient_scene",
+    "trigger_type": "random",
+    "trigger_param": {"probability": 0.20},
+    "effect_type": "light_anomaly",
+    "description": "路灯忽然灭了一秒。我盯着它,等了一拍,它又亮了。好像城市打了个盹,又赶紧醒了——可我后背冒了层薄汗。"
+  },
+  "ST_002": {
+    "name": "街道・行人剪影(无人时出现)",
+    "scene": "街道",
+    "category": "ambient_scene",
+    "trigger_type": "progress_based",
+    "trigger_param": {"interaction_count": 5},
+    "effect_type": "ambient_sound",
+    "description": "街角有个背影在走。我屏住呼吸——鞋跟踩在砖上的声音很熟,一步、两步,像有人在数我的心跳。"
+  },
+  "ST_003": {
+    "name": "街道・花店橱窗玻璃反射异常",
+    "scene": "街道",
+    "category": "ambient_scene",
+    "trigger_type": "trust_based",
+    "trigger_param": {"tier": "MEDIUM_TRUST"},
+    "effect_type": "photo_glitch",
+    "description": "花店橱窗的玻璃反光里,似乎站了一个人。我绕过去,影子碎了。再凑近,没人。可镜子里那个肩膀的形状,我认得。"
+  },
+  "ST_004": {
+    "name": "街道・远处旧友剪影",
+    "scene": "街道",
+    "category": "ambient_scene",
+    "trigger_type": "progress_based",
+    "trigger_param": {"interaction_count": 8},
+    "effect_type": "item_displace",
+    "description": "街对面有人朝我这边看了一眼,又转身走了。像是认错了人,又像是没认错。我的脚步停了半拍,才继续往前走。"
+  },
+
+  "AP_001": {
+    "name": "公寓・录音机偶发电流音",
+    "scene": "公寓",
+    "category": "ambient_scene",
+    "trigger_type": "random",
+    "trigger_param": {"probability": 0.25},
+    "effect_type": "ambient_sound",
+    "description": "录音机自己响了一下。我没按播放键——电流的沙沙声里,隐约有什么人在说话。声音很轻,像隔着雨。"
+  },
+  "AP_002": {
+    "name": "公寓・窗户冷光渗透",
+    "scene": "公寓",
+    "category": "ambient_scene",
+    "trigger_type": "trust_based",
+    "trigger_param": {"tier": "HIGH_TRUST"},
+    "effect_type": "light_anomaly",
+    "description": "窗户没开,可屋子里的光忽然变成了蓝色。我走到窗边,它又恢复了暖黄。可指尖摸过桌面时,留下一层凉。"
+  },
+  "AP_003": {
+    "name": "公寓・家具轻微位移",
+    "scene": "公寓",
+    "category": "ambient_scene",
+    "trigger_type": "progress_based",
+    "trigger_param": {"interaction_count": 4},
+    "effect_type": "item_displace",
+    "description": "椅子好像往外挪了几厘米。我没动它。也没人动过。可我坐下来时,膝盖撞到了桌角——以前从没撞到过。"
+  },
+
+  "X_001": {
+    "name": "跨场景・BGM 整体变调",
+    "scene": "ALL",
+    "category": "ambient_global",
+    "trigger_type": "trust_based",
+    "trigger_param": {"tier": "MEDIUM_TRUST"},
+    "effect_type": "bgm_shift",
+    "description": "背景音乐忽然降了半个调。我抬头——像有人把窗户推开了一条缝。外面很静,可那风是旧的。"
+  },
+  "X_002": {
+    "name": "跨场景・字幕偶发卡顿",
+    "scene": "ALL",
+    "category": "ambient_global",
+    "trigger_type": "random",
+    "trigger_param": {"probability": 0.08},
+    "effect_type": "subtitle_stutter",
+    "description": "屏幕上的字卡了一瞬。我盯着那个字——像是在等我说出口,又像是不愿意让我说完。"
+  },
+  "X_003": {
+    "name": "跨场景・照片颜色整体偏冷",
+    "scene": "ALL",
+    "category": "ambient_global",
+    "trigger_type": "trust_based",
+    "trigger_param": {"tier": "HIGH_TRUST"},
+    "effect_type": "photo_glitch",
+    "description": "所有照片的颜色淡了一层。我凑近看,蓝调比平时重了一点。像冬天提前到了——可日历明明是夏天。"
+  },
+  "X_004": {
+    "name": "跨场景・背景环境音切换",
+    "scene": "ALL",
+    "category": "ambient_global",
+    "trigger_type": "progress_based",
+    "trigger_param": {"interaction_count": 10},
+    "effect_type": "ambient_sound",
+    "description": "扑通扑通,我的心跳声骤然变大,周围的声音忽然变得很远。我听得到自己的呼吸,听不到别的。"
+  }
+}

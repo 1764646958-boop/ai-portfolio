@@ -1,0 +1,41 @@
+{
+  "_meta": {
+    "owner": "A",
+    "purpose": "B2「压力二轨制」映射 + B1 QTE 反应窗 / hint_delay 阶梯的外部数值表。",
+    "consumer": "scripts/trust_pressure_mapper.gd（唯一读取方）",
+    "convention": "改本文件的数字即可调参，无需改任何 .gd；每一项都独立生效——缺失或非法时该项回退代码内置常量并 push_warning，不影响战斗流程。",
+    "load_policy": "节点 _ready() 时读一次；运行中可调用 reload_mapping() 手动重读。",
+    "authority": "defenseline_B_docs/pressure_params.md §B1（3 战 × 3 tier 窗口阶梯「拍值」）+ §B2（二轨公式）；defenseline_B_docs/battle_difficulty_curve.md（reaction_window / hint_delay 逐格值）",
+    "warning": "collector_to_drift 的 5 个值中，anchor_* 三项为 A 建议值、待 B 复核（依据见 W5/patches/B2二轨制映射补丁说明.md §4.1）。其余数值均逐格等于 B 终稿，不得擅改。",
+    "note_for_B": "本文件是「A 已实现、B 可覆盖」的一层；若 B 选择把映射层并入 trust_drift_collector.gd（补丁说明 §3b），则本文件应一并迁移，避免数值两处并存。",
+    "version": "w5-t2.1",
+    "updated": "2026-09-11"
+  },
+
+  "trust_drift": {
+    "min": -10.0,
+    "max": 10.0
+  },
+
+  "qte_window_table": {
+    "1": { "LOW_TRUST": 3.0, "MEDIUM_TRUST": 2.5, "HIGH_TRUST": 2.0 },
+    "2": { "LOW_TRUST": 2.5, "MEDIUM_TRUST": 2.0, "HIGH_TRUST": 1.5 },
+    "3": { "LOW_TRUST": 2.0, "MEDIUM_TRUST": 1.5, "HIGH_TRUST": 1.0 }
+  },
+
+  "hint_delay_table": {
+    "1": { "LOW_TRUST": 0.0, "MEDIUM_TRUST": 0.0, "HIGH_TRUST": 1.0 },
+    "2": { "LOW_TRUST": 0.0, "MEDIUM_TRUST": 2.0, "HIGH_TRUST": 3.0 },
+    "3": { "LOW_TRUST": 2.0, "MEDIUM_TRUST": 4.0, "HIGH_TRUST": 5.0 }
+  },
+
+  "collector_to_drift": {
+    "_what": "trust_drift_collector 的 score（0 起累积、只增不减）→ B2 需要的 trust_drift（-10~+10）的代表锚点换算。",
+    "_warning": "anchor_low / anchor_medium / anchor_high 三项为 A 建议值，待 B 复核（补丁说明 §4.1）；score_to_* 与 trust_drift_collector.get_trust_tier() 的阈值严格对齐，B 若改阈值必须同步改这里。",
+    "score_to_medium": 3.0,
+    "score_to_high": 7.0,
+    "anchor_low": -5.0,
+    "anchor_medium": 0.0,
+    "anchor_high": 7.0
+  }
+}

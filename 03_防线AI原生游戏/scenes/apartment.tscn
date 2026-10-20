@@ -1,0 +1,150 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/interactable.gd" id="1_apartment"]
+
+[sub_resource type="Gradient" id="Gradient_ap_bg"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.62, 0.54, 0.46, 1, 0.38, 0.33, 0.32, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ap_bg"]
+gradient = SubResource("Gradient_ap_bg")
+width = 1920
+height = 1080
+
+[sub_resource type="Gradient" id="Gradient_ap_warm"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.92, 0.76, 0.5, 1, 0.92, 0.76, 0.5, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ap_warm"]
+gradient = SubResource("Gradient_ap_warm")
+width = 100
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_ap_cold"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.62, 0.7, 0.86, 1, 0.62, 0.7, 0.86, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ap_cold"]
+gradient = SubResource("Gradient_ap_cold")
+width = 100
+height = 100
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ap_item"]
+size = Vector2(100, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ap_exit"]
+size = Vector2(100, 100)
+
+[node name="Apartment" type="Node2D"]
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+texture = SubResource("GradientTexture2D_ap_bg")
+
+[node name="Item_AP_DESK_01" type="Area2D" parent="."]
+position = Vector2(300, 300)
+script = ExtResource("1_apartment")
+object_id = "AP_DESK_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_DESK_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_DESK_01"]
+texture = SubResource("GradientTexture2D_ap_warm")
+
+
+[node name="Item_AP_RECORDER_01" type="Area2D" parent="."]
+position = Vector2(550, 300)
+script = ExtResource("1_apartment")
+object_id = "AP_RECORDER_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_RECORDER_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_RECORDER_01"]
+texture = SubResource("GradientTexture2D_ap_cold")
+
+
+[node name="Item_AP_WINDOW_01" type="Area2D" parent="."]
+position = Vector2(800, 300)
+script = ExtResource("1_apartment")
+object_id = "AP_WINDOW_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_WINDOW_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_WINDOW_01"]
+texture = SubResource("GradientTexture2D_ap_cold")
+
+
+[node name="Item_AP_CHAIR_01" type="Area2D" parent="."]
+position = Vector2(1050, 300)
+script = ExtResource("1_apartment")
+object_id = "AP_CHAIR_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_CHAIR_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_CHAIR_01"]
+texture = SubResource("GradientTexture2D_ap_warm")
+
+
+[node name="Item_AP_BED_01" type="Area2D" parent="."]
+position = Vector2(300, 560)
+script = ExtResource("1_apartment")
+object_id = "AP_BED_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_BED_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_BED_01"]
+texture = SubResource("GradientTexture2D_ap_warm")
+
+
+[node name="Item_AP_PHOTO_01" type="Area2D" parent="."]
+position = Vector2(550, 560)
+script = ExtResource("1_apartment")
+object_id = "AP_PHOTO_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_PHOTO_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_PHOTO_01"]
+texture = SubResource("GradientTexture2D_ap_cold")
+
+
+[node name="Item_AP_CUP_01" type="Area2D" parent="."]
+position = Vector2(800, 560)
+script = ExtResource("1_apartment")
+object_id = "AP_CUP_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_CUP_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_CUP_01"]
+texture = SubResource("GradientTexture2D_ap_warm")
+
+
+[node name="Item_AP_CALENDAR_01" type="Area2D" parent="."]
+position = Vector2(1050, 560)
+script = ExtResource("1_apartment")
+object_id = "AP_CALENDAR_01"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Item_AP_CALENDAR_01"]
+shape = SubResource("RectangleShape2D_ap_item")
+
+[node name="Sprite2D" type="Sprite2D" parent="Item_AP_CALENDAR_01"]
+texture = SubResource("GradientTexture2D_ap_cold")
+
+[node name="Exit_To_Street" type="Area2D" parent="."]
+position = Vector2(675, 880)
+script = ExtResource("1_apartment")
+object_id = "EXIT_ST"
+is_exit = true
+target_scene = "res://scenes/street.tscn"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit_To_Street"]
+shape = SubResource("RectangleShape2D_ap_exit")
+
+[node name="Sprite2D" type="Sprite2D" parent="Exit_To_Street"]
+texture = SubResource("GradientTexture2D_ap_warm")

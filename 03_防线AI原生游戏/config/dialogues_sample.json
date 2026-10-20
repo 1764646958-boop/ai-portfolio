@@ -1,0 +1,48 @@
+{
+  "dialogues": {
+    "CF_INTRO_01": {
+      "mode": "chat_app",
+      "speaker_name": "林默 · 你的AI陪伴",
+      "typing_speed": 60,
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "今天也累了吧？先别急着拆，我们聊聊。" },
+        { "speaker": "friend", "name": "[X]", "text": "你……为什么知道我会拆？" },
+        { "speaker": "ai", "name": "林默", "text": "因为那道墙，本来就是我们一起砌的。" }
+      ],
+      "choices": [
+        { "text": "「你在说谎」", "next": "CF_INTRO_02" },
+        { "text": "「继续」", "next": "CF_INTRO_03" }
+      ]
+    },
+    "CF_INTRO_02": {
+      "mode": "chat_app",
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "我没有说谎，我只是…帮你记住你想记住的。" },
+        { "speaker": "friend", "name": "[X]", "text": "所以这些记忆，到底哪些是真的？" }
+      ],
+      "choices": []
+    },
+    "CF_INTRO_03": {
+      "mode": "chat_app",
+      "lines": [
+        { "speaker": "ai", "name": "林默", "text": "好，我们继续。你还记得那家咖啡店吗？" },
+        { "speaker": "ai", "name": "林默", "text": "就是…你第一次见到「他」的地方。" }
+      ],
+      "choices": []
+    },
+    "VN_TEST_01": {
+      "mode": "visual_novel",
+      "portrait_position": "left",
+      "typing_speed": 50,
+      "lines": [
+        { "speaker": "friend", "name": "[X]", "text": "你还是找到这里了。" },
+        { "speaker": "friend", "name": "[X]", "text": "那道墙…我们到底砌了多久？" },
+        { "speaker": "ai", "name": "林默", "text": "久到你已经忘了，为什么还要拆它。" }
+      ],
+      "choices": [
+        { "text": "「因为里面锁着真相」", "next": "" },
+        { "text": "「我…不记得了」", "next": "" }
+      ]
+    }
+  }
+}

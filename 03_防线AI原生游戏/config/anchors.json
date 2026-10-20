@@ -1,0 +1,883 @@
+{
+  "_meta": {
+    "version": "v7.1",
+    "owner": "B",
+    "data_source": "B 25 条范本 v5.3(W2) + CR_SMS_01 复用 + 3 条 MA_* 记忆考古专用范本",
+    "schema": {
+      "item_name": "锚点物显示名 (卡片标题)",
+      "scene": "场景名 (咖啡店/教室/宿舍) - 美术定位用",
+      "anchor_object": "锚点物本体",
+      "category": "memory_anchor | memory_anchor_archaeology_main | memory_anchor_location",
+      "revealed_text": "范本全文 (含 \\n,卡片正文)",
+      "emotion_options": "情感选项列表 (3 条)"
+    },
+    "notes": [
+      "v6.0 替换为 W2 v5.3 最终定稿 25 条（7 咖啡店 + 9 教室 + 9 宿舍）",
+      "DM_SMS_01（旧手机草稿箱）为 W2 用户指定保留项",
+      "每条范本完全独立（不复制）",
+      "CR_SMS_01：教室场景复用 DM_SMS_01（手机草稿箱）范本（用户指定保留）",
+      "v7.0:按 B v5.3 范本补全 schema 必填字段(anchor_id/object_id/scene_location/identification_difficulty/llm_params)",
+      "v7.0:offset_type 字段保留为扩展(v5.3 设计元数据,schema 未要求)",
+      "v7.0:CR_SMS_01 复用 DM_SMS_01 的 llm_params(B 未单独给 CR 草稿箱范本)",
+      "v7.0:按 B v5.3 范本补全 schema 必填字段(anchor_id/object_id/scene_location/identification_difficulty/llm_params)",
+      "v7.0:offset_type 字段保留为扩展(v5.3 设计元数据,schema 未要求)",
+      "v7.0:CR_SMS_01 复用 DM_SMS_01 的 llm_params(B 未单独给 CR 草稿箱范本)",
+      "v7.1: 添加 3 条 MA_* 记忆考古专用范本(MA_BRACELET_01/MA_ROSE_01/MA_FLOWER_01)",
+      "v7.1: scene 枚举扩展加「记忆考古」(决策#5 配套)",
+      "v7.1: 新增 archaeology_truth_shard 字段(关卡揭示文案,仅 MA_* 使用)",
+      "v7.1: 添加 3 条 MA_* 记忆考古专用范本(MA_BRACELET_01/MA_ROSE_01/MA_FLOWER_01)",
+      "v7.1: scene 枚举扩展加「记忆考古」(决策#5 配套)",
+      "v7.1: 新增 archaeology_truth_shard 字段(关卡揭示文案,仅 MA_* 使用)",
+      "v7.1: 添加 3 条 MA_* 记忆考古专用范本(MA_BRACELET_01/MA_ROSE_01/MA_FLOWER_01)",
+      "v7.1: scene 枚举扩展加「记忆考古」(决策#5 配套)",
+      "v7.1: 新增 archaeology_truth_shard 字段(关卡揭示文案,仅 MA_* 使用)"
+    ]
+  },
+  "CF_CAKE_01": {
+    "anchor_id": "CF_CAKE_01",
+    "object_id": "CF_CAKE_01",
+    "scene": "咖啡店",
+    "scene_location": "邻桌桌面",
+    "item_name": "桌上的栗子蛋糕",
+    "anchor_object": "栗子蛋糕",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.75,
+    "revealed_text": "傍晚，我独自坐在学校旁边的咖啡店。邻桌客人点了一份栗子蛋糕，奶油慢慢向下塌陷。视线落在蛋糕上，思绪不由自主飘回从前。这是大一下学期见面时，我随口提起喜欢的款式。记忆里，那人满头是汗冲进店里，怀里紧紧护着蛋糕盒，一路从宿舍楼跑过来，盒内的奶油几乎没有晃动。“抱歉，路上耽搁太久。”对方喘着气坐下。那时候我心里憋着不悦，下意识觉得对方没有重视这场会面，垂着眼不愿多言语。我不断说服自己不必在意，任何决定我都不会后悔。我已经记不太清那场约定对方迟到了多久，或许半小时，又或许是整整一个下午。只隐约记得，对方落座的那一刻，窗外天色已经彻底沉了下来。望着蛋糕，万千思绪涌上心头。我刻意摆出冷淡模样，藏在心底不肯承认的是＿＿＿＿＿＿",
+    "emotion_options": [
+      "暗自滋生的不被重视感",
+      "满怀期待后的落空",
+      "习惯等待带来的敏感"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "时间长度",
+        "迟到原因",
+        "蛋糕款式"
+      ],
+      "drift_dimension": [
+        "信任",
+        "期待"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "CF_SEAT_01": {
+    "anchor_id": "CF_SEAT_01",
+    "object_id": "CF_SEAT_01",
+    "scene": "咖啡店",
+    "scene_location": "窗边双人桌",
+    "item_name": "靠窗的位置",
+    "anchor_object": "靠窗双人桌",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.62,
+    "revealed_text": "从前每次约在这家店，那人总是先到，提前占好靠窗的位子。我每次推开门，都能看见他朝我挥手。后来我故意早到过一次，推开门，看见他坐在角落，低头反复擦着桌面上不存在的灰。他抬头看到我，愣了一下，然后站起来，把靠窗的位子让给我，自己坐到了对面。那天我们没说几句话。后来我很少再约他出来，现在坐在这里，才想起＿＿＿＿＿＿",
+    "emotion_options": [
+      "他其实一直很紧张",
+      "我早到的那天他不太对劲",
+      "那时候我什么都没察觉"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "他为什么擦桌子",
+        "我早到那天发生了什么",
+        "后来为什么不约了"
+      ],
+      "drift_dimension": [
+        "认知",
+        "情感"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "B"
+  },
+  "CF_NOTE_01": {
+    "anchor_id": "CF_NOTE_01",
+    "object_id": "CF_NOTE_01",
+    "scene": "咖啡店",
+    "scene_location": "柜台旁",
+    "item_name": "留言本",
+    "anchor_object": "留言本",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.56,
+    "revealed_text": "留言本上有两行字。一行是我的：“今天心情一般。”隔了几页，另一行没有署名：“希望明天她心情好一点。”我当时看到这行字，翻过去了，没多想。现在重新翻开，才觉得这两行字隔得有点巧。也许只是陌生人随手写的。也许＿＿＿＿＿＿",
+    "emotion_options": [
+      "他来过这家店",
+      "只是巧合而已",
+      "我那时根本没仔细看"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "两行字隔了几页是巧合还是有意",
+        "他是否来过这家店",
+        "我当时为什么没多想"
+      ],
+      "drift_dimension": [
+        "认知",
+        "归因"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "C"
+  },
+  "CF_CARD_01": {
+    "anchor_id": "CF_CARD_01",
+    "object_id": "CF_CARD_01",
+    "scene": "咖啡店",
+    "scene_location": "柜台台面",
+    "item_name": "柜台上的积分卡",
+    "anchor_object": "积分卡",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.65,
+    "revealed_text": "柜台台面上放着一叠积分卡，集满十杯换一杯。我忽然想起，大一时我们常来这家店。每次点单，他都抢着把积分卡递过去。我问他攒了多少，他总说不记得了。后来有一次我瞥见那张卡，上面的印章已经盖了七个。那学期还没结束。现在那叠卡还放在老位置。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他攒了那么多是想换给我",
+      "那些印章早就没意义了",
+      "我从来没请他喝过一杯"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "积分卡的去向",
+        "他为什么总抢着递卡",
+        "印章盖了多少"
+      ],
+      "drift_dimension": [
+        "情感",
+        "认知"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "CF_MENU_01": {
+    "anchor_id": "CF_MENU_01",
+    "object_id": "CF_MENU_01",
+    "scene": "咖啡店",
+    "scene_location": "墙面",
+    "item_name": "墙上的手写菜单",
+    "anchor_object": "手写菜单板",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.58,
+    "revealed_text": "墙上还挂着那块手写菜单板。字迹已经有点褪色。我记得大一刚发现这家店时，菜单上有款饮料叫“海盐焦糖拿铁”。他喝过一次，说太甜了。后来每次来，他都点美式，我点那款甜的。再后来我自己来，还是点那款。现在菜单板上已经没有那个名字了。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "有些东西不知不觉就没了",
+      "他其实一直记得我喜欢什么",
+      "我连他后来喝什么都不记得了"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "那款饮料为什么下架",
+        "他后来还来不来这家店",
+        "我为什么一直点同一款"
+      ],
+      "drift_dimension": [
+        "情感",
+        "记忆真实性"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "C"
+  },
+  "CF_CHIME_01": {
+    "anchor_id": "CF_CHIME_01",
+    "object_id": "CF_CHIME_01",
+    "scene": "咖啡店",
+    "scene_location": "店门口",
+    "item_name": "门口的风铃",
+    "anchor_object": "风铃",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.55,
+    "revealed_text": "推开店门，头顶的风铃响了一声。很轻。我记得这风铃很久了。大一有段时间我们常来这家店。每次他推门进来，风铃都会响，然后他站在门口扫一圈，看到我了才走过来。后来我单独来的次数多了，推门时风铃也响。不知道从什么时候起，我不再抬头看门口了。现在风铃还在响。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他每次进来都在找我",
+      "我后来为什么不抬头了",
+      "风铃的声音从没变过"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "他站在门口是在找我还是等人",
+        "我最后一次抬头看门口是什么时候",
+        "我们多久没一起来过了"
+      ],
+      "drift_dimension": [
+        "认知",
+        "回避"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "B"
+  },
+  "CF_TISSUE_01": {
+    "anchor_id": "CF_TISSUE_01",
+    "object_id": "CF_TISSUE_01",
+    "scene": "咖啡店",
+    "scene_location": "靠窗桌",
+    "item_name": "桌上的纸巾",
+    "anchor_object": "纸巾盒",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.6,
+    "revealed_text": "靠窗那张桌上，纸巾盒还是老样子。我抽出一张，想起大一下期末那段时间，我们在这里自习。他总坐对面，遇到不会的题就抬头问我。后来有一次我去洗手间，回来时看见他把桌上的纸巾叠成了一个小方块，整整齐齐，放在杯垫旁边。我当时没在意，顺手展开擦了桌子。现在才想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他可能只是想找点事做",
+      "我那时从没注意过这些",
+      "他总有些小动作"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "纸巾是谁叠的",
+        "我当时为什么展开擦桌子",
+        "他还有过哪些小动作"
+      ],
+      "drift_dimension": [
+        "认知",
+        "归因"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "D"
+  },
+  "CR_TICKET_01": {
+    "anchor_id": "CR_TICKET_01",
+    "object_id": "CR_TICKET_01",
+    "scene": "教室",
+    "scene_location": "书柜",
+    "item_name": "旧书里的票根",
+    "anchor_object": "演出票根",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.72,
+    "revealed_text": "午后在教室整理书柜，抽出一本高中时买的辅导书。一张两年前的演出票，轻飘飘从书页间滑落，票根背面留有一行字迹：“下次一定要叫上她”。很早以前，我们确实说好一起去看这场演出。后来约定落空，我心里存有芥蒂，一直没有深究。某次随口提起，对方只是淡淡一句：“没什么好看的。”我当时选择沉默相信，不再追问。直到此刻才留意，这是一张双人票。原来那天，对方也没有去。我们各自握着那张没用的票，在两座不同的城市，错过了同一场演出。这场没能成行的相聚，藏着我们未曾开口诉说的＿＿＿＿＿＿",
+    "emotion_options": [
+      "现实带来的阻碍",
+      "临时变动的无奈",
+      "谁都不肯先开口的倔强"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "演出取消原因",
+        "对方为什么说没什么好看的",
+        "票根为什么夹在这本书里"
+      ],
+      "drift_dimension": [
+        "信任",
+        "认知"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "C"
+  },
+  "CR_DESK_01": {
+    "anchor_id": "CR_DESK_01",
+    "object_id": "CR_DESK_01",
+    "scene": "教室",
+    "scene_location": "靠窗第三排课桌",
+    "item_name": "课桌刻痕",
+    "anchor_object": "课桌刻痕",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.58,
+    "revealed_text": "桌面右下角有一道浅浅的刻痕，像是一个歪斜的箭头。顺着箭头望过去，窗外那棵树还在。我们好像在那下面躲过雨。那时候他总说些没头没尾的话，我从来不当回事。现在站在这里，才突然想，那个箭头是不是他刻的，他当时到底想让我看什么。也许只是随手划的。也许＿＿＿＿＿＿",
+    "emotion_options": [
+      "他早就想告诉我一些事",
+      "只是学生时代无聊的涂鸦",
+      "我从来没认真看过他的暗示"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "箭头是谁刻的",
+        "刻痕的时间",
+        "指向那棵树的意图"
+      ],
+      "drift_dimension": [
+        "认知",
+        "信任"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "CR_NOTE_01": {
+    "anchor_id": "CR_NOTE_01",
+    "object_id": "CR_NOTE_01",
+    "scene": "教室",
+    "scene_location": "旧课本",
+    "item_name": "未送出的纸条",
+    "anchor_object": "纸条",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.6,
+    "revealed_text": "一张折叠整齐的纸条从旧课本里掉出：“今天别走那么快，我在后门等你。”笔迹被水渍晕开了一角，我想起那个傍晚，他确实在后门站了很久。我那天从正门走了，手机静音塞在书包最底层。深夜才看到他发来的消息，最后一条是：“没事，我刚好顺路。”我当时觉得他总这样，把简单的事说得很复杂。现在看这张纸条，才察觉＿＿＿＿＿＿",
+    "emotion_options": [
+      "那天他等了很久",
+      "他总是不肯直说",
+      "我其实看见了但没停"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "纸条为什么没送出去",
+        "他等了多久",
+        "我是否真的没看见"
+      ],
+      "drift_dimension": [
+        "信任",
+        "情感"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "CR_TREE_01": {
+    "anchor_id": "CR_TREE_01",
+    "object_id": "CR_TREE_01",
+    "scene": "教室",
+    "scene_location": "窗外",
+    "item_name": "窗外那棵树",
+    "anchor_object": "窗外大树",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.55,
+    "revealed_text": "雨声很大，对方说了句什么，我没听清。后来雨停了，他也没再重复。我们站在树下等雨停，谁都没说话。雨停之后各自走了。现在看窗外那棵树，才突然想起来——那场雨之后，我们好像就没怎么一起走过那段路了。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "那场雨是不是一个转折点",
+      "我们为什么没再一起走了",
+      "他那天说了什么已经不重要了"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "那句话的内容",
+        "雨停后为什么不再一起走",
+        "那场雨是什么时候"
+      ],
+      "drift_dimension": [
+        "认知",
+        "回避"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "CR_LOCKER_01": {
+    "anchor_id": "CR_LOCKER_01",
+    "object_id": "CR_LOCKER_01",
+    "scene": "教室",
+    "scene_location": "走廊储物柜",
+    "item_name": "储物柜贴纸",
+    "anchor_object": "贴纸",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.53,
+    "revealed_text": "教学楼的储物柜上，还残留着半张撕坏的贴纸。我撕掉过两次。第三次，他没有再贴。我记得第一次看到旁边多了一张同款贴纸时，第一反应是烦。那时候我正想和他保持距离，任何形式的靠近都让我不舒服。现在那半张贴纸还在，边缘已经卷起。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他那时候在试图靠近",
+      "我是不是做得太过分了",
+      "贴纸的事我早就忘了"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "贴纸是谁贴的",
+        "我为什么撕掉",
+        "第三次为什么没贴"
+      ],
+      "drift_dimension": [
+        "归因",
+        "情感"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "CR_CHALK_01": {
+    "anchor_id": "CR_CHALK_01",
+    "object_id": "CR_CHALK_01",
+    "scene": "教室",
+    "scene_location": "讲台",
+    "item_name": "讲台上的粉笔",
+    "anchor_object": "粉笔盒",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.63,
+    "revealed_text": "讲台上还放着一盒粉笔。我拿起一根，想起大一时有次下课，黑板没擦干净，上面留着他写的几个字。写的是什么，我现在完全想不起来了。只记得他站在黑板前，背对着我，粉笔捏在手里，迟迟不写。最后写了什么，擦掉了什么，我都没看清。现在想想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他当时想写又不敢写",
+      "我根本没注意他在写什么",
+      "那些字也许不重要"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "黑板上写的是什么",
+        "他为什么犹豫",
+        "我当时在干什么"
+      ],
+      "drift_dimension": [
+        "认知",
+        "记忆真实性"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "D"
+  },
+  "CR_CUP_01": {
+    "anchor_id": "CR_CUP_01",
+    "object_id": "CR_CUP_01",
+    "scene": "教室",
+    "scene_location": "窗台",
+    "item_name": "窗台上的水瓶",
+    "anchor_object": "塑料水瓶",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.57,
+    "revealed_text": "窗台上放着一个塑料水瓶，已经很久没人动了。瓶身上有一道压痕，像是被什么重物压过。我想起大一时有次体育课回来，大家都挤在小卖部买水。有人递过来一瓶，说多买了一瓶。我接过来说了声谢。后来那个瓶子就一直放在窗台上，没人收。现在瓶身上的压痕还在。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "递水给我的人是他吗",
+      "瓶子为什么一直没人收",
+      "这些事我越来越记不清了"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "递水的人是谁",
+        "瓶子为什么在窗台上放了这么久",
+        "那次体育课之后发生了什么"
+      ],
+      "drift_dimension": [
+        "认知",
+        "记忆真实性"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "C"
+  },
+  "CR_SCHEDULE_01": {
+    "anchor_id": "CR_SCHEDULE_01",
+    "object_id": "CR_SCHEDULE_01",
+    "scene": "教室",
+    "scene_location": "教室后墙",
+    "item_name": "墙上的签到表",
+    "anchor_object": "签到表",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.54,
+    "revealed_text": "教室后墙上还贴着一张上学期的签到表，边角已经翘起。我扫了一眼，看到几个熟悉的名字。我想起来了——有一段时间，每周三下午那节公选课，他都会出现在这间教室，坐在我后两排。我从来没问过他为什么选这门课。后来有一次我瞥见他的选课截图，周三下午那门课，他明明没有选。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他是专门来旁听的",
+      "也许他后来换了课",
+      "我为什么从没问过"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "他为什么每周三来",
+        "选课截图是不是我看错了",
+        "他从什么时候开始不来"
+      ],
+      "drift_dimension": [
+        "认知",
+        "回避"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "B"
+  },
+  "CR_FLOOR_01": {
+    "anchor_id": "CR_FLOOR_01",
+    "object_id": "CR_FLOOR_01",
+    "scene": "教室",
+    "scene_location": "讲台前地面",
+    "item_name": "地面上的划痕",
+    "anchor_object": "地面划痕",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.51,
+    "revealed_text": "讲台前的地面上有几道划痕，不深，像是拖过讲桌留下的。我想起大一下学期有一次小组展示，我负责把讲桌往前搬。桌腿在地面上刮出刺耳的声音。展示结束后，他走过来想帮我把讲桌搬回去。我头也没回地说“不用”。后来那些划痕一直在。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "那天他站了很久",
+      "我当时太要强了",
+      "划痕早该被磨掉了"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "他那天有没有走开",
+        "我为什么拒绝",
+        "划痕是不是我留下的"
+      ],
+      "drift_dimension": [
+        "归因",
+        "回避"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "DM_SMS_01": {
+    "anchor_id": "DM_SMS_01",
+    "object_id": "DM_SMS_01",
+    "scene": "宿舍",
+    "scene_location": "书桌·手机",
+    "item_name": "旧手机的草稿箱",
+    "anchor_object": "旧手机草稿",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.7,
+    "revealed_text": "深夜，我翻出换手机时导出的旧数据备份。无意中点开草稿箱，屏幕上停着半截没能送出的文字：“我不是故意不回你的，我只是＿＿”思绪骤然被拉回当年。那日我们原本约好在教学楼碰面。我忍不住猜想，对方或许反复输入、删除，挣扎许久，最终还是没能按下发送。那天我守着对话框等了整整一日，越等越烦闷，暗自下定决心绝不主动搭话，手机始终一片沉寂。那时我认定主动退让便是妥协，自己的选择无需动摇。屏幕上显示消息发送失败，我无从分辨，究竟是校园网出了问题，还是另有隐情。长久的沉默对峙，硬生生阻隔了＿＿＿＿＿＿",
+    "emotion_options": [
+      "彼此坦诚的机会",
+      "一时赌气造成的隔阂",
+      "本该解开的误会"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "未发送原因",
+        "等待时长",
+        "消息内容"
+      ],
+      "drift_dimension": [
+        "信任",
+        "沟通"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "DM_PLANT_01": {
+    "anchor_id": "DM_PLANT_01",
+    "object_id": "DM_PLANT_01",
+    "scene": "宿舍",
+    "scene_location": "窗台",
+    "item_name": "窗台那盆绿植",
+    "anchor_object": "窗台绿植",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.72,
+    "revealed_text": "宿舍窗台上那盆绿植还活着，叶子比刚拿来时更长了。这是大一入学时，对方送来的入学礼物。他送到女生宿舍楼下就走了，我下楼去拿，只看见一盆小小的绿植和一袋土。袋子上贴着一张便签：“不知道你喜欢什么，这个好养。”我当时觉得送植物很没意思，随手放在窗台，偶尔想起来才浇一次水。室友说这盆绿植长得很好，像有人在偷偷照顾。我只是笑笑，觉得是阳光充足。现在才注意到，花盆底部有一圈长期积水留下的痕迹。我不在的那些日子里，有什么东西一直替我留着水。那盆绿植，一直记着＿＿＿＿＿＿",
+    "emotion_options": [
+      "我偶尔才想起来的照料",
+      "他送来时没说出口的期待",
+      "被时间证明的坚韧"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "绿植来源",
+        "谁在照料",
+        "我浇水的频率"
+      ],
+      "drift_dimension": [
+        "情感",
+        "归因"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "DM_BOX_01": {
+    "anchor_id": "DM_BOX_01",
+    "object_id": "DM_BOX_01",
+    "scene": "宿舍",
+    "scene_location": "床底收纳箱",
+    "item_name": "未拆的快递",
+    "anchor_object": "未拆快递盒",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.69,
+    "revealed_text": "床底收纳箱最深处，塞着一个没有拆开的快递盒。面单已经模糊，只隐约认出寄件人姓氏。但这不是别人寄给我的。这是我买给他的。上个学期，我在网上看到一样东西，第一反应是“他会喜欢”。下单之后，物流显示已签收。我打开和他的聊天框，打了几个字，又删掉。最后没有发出去。盒子被我塞进收纳箱深处，和自己说等期末就寄出去。期末没有寄。盒子还在那里。盒子里是什么，他永远不会知道。那个没有拆开的盒子，封存着＿＿＿＿＿＿",
+    "emotion_options": [
+      "我欠他的一份回应",
+      "他永远不会知道的礼物",
+      "一段被搁置的友谊"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "盒内物品",
+        "我为何不寄出",
+        "对方是否知道"
+      ],
+      "drift_dimension": [
+        "情感",
+        "回避"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "D"
+  },
+  "DM_NOTE_01": {
+    "anchor_id": "DM_NOTE_01",
+    "object_id": "DM_NOTE_01",
+    "scene": "宿舍",
+    "scene_location": "书桌",
+    "item_name": "室友的便签",
+    "anchor_object": "室友便签",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.66,
+    "revealed_text": "整理书桌时，翻到一张便签。是室友的字迹：“今天有个男生在楼下站了很久，问是不是找你。我说你不在。”我完全不记得这件事。但我想起了另一件事。有一次我在宿舍楼下碰见他，他站在花坛旁边，手里拿着一瓶水。我走过去，想打招呼。他看到我，愣了一下，然后把水塞进包里，转身走了。我站在原地，看着他的背影越来越小。后来他发消息说：“刚才有急事。”我没有追问。那张便签和那个转身之间，隔着一整个学期。那个转身，藏着＿＿＿＿＿＿",
+    "emotion_options": [
+      "他不敢面对我的勇气",
+      "我伸出手却没有被接住",
+      "我们之间永远差的那一步"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "转身的原因",
+        "他是否看到我",
+        "消息的真假"
+      ],
+      "drift_dimension": [
+        "情感",
+        "信任"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "B"
+  },
+  "DM_BOOK_01": {
+    "anchor_id": "DM_BOOK_01",
+    "object_id": "DM_BOOK_01",
+    "scene": "宿舍",
+    "scene_location": "书架",
+    "item_name": "一本借了没还的书",
+    "anchor_object": "借来的书",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.52,
+    "revealed_text": "书架上有一本书，是他的。大一的时候说好周末还。后来“下次见面”再也没有发生。我翻开封面，扉页上写着一行小字，是他的名字和当时的日期。字迹很轻，像是怕被人看见。现在这本书夹在我的书中间，和其他书没什么两样。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "我为什么一直没还",
+      "他可能早就忘了这本书",
+      "扉页上的字我从来没看过"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "书为什么没还",
+        "扉页写的什么",
+        "我是否故意不还"
+      ],
+      "drift_dimension": [
+        "回避",
+        "认知"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "DM_VOICE_01": {
+    "anchor_id": "DM_VOICE_01",
+    "object_id": "DM_VOICE_01",
+    "scene": "宿舍",
+    "scene_location": "书桌·手机",
+    "item_name": "手机里的旧语音",
+    "anchor_object": "语音备忘录",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.56,
+    "revealed_text": "语音备忘录最底部有一条两秒的录音：“我想问你……”那天我睡得很早，没有接到。第二天看到未接来电，也没有回。此后他再没有在这个时间打过电话。现在点开这条语音，两秒钟，只有三个字，后面是漫长的空白。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他那天想问我什么",
+      "我为什么没有回",
+      "那条语音我该删掉了"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "没说完的话是什么",
+        "深夜来电的原因",
+        "我为何不回拨"
+      ],
+      "drift_dimension": [
+        "情感",
+        "信任"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "C"
+  },
+  "DM_RECEIPT_01": {
+    "anchor_id": "DM_RECEIPT_01",
+    "object_id": "DM_RECEIPT_01",
+    "scene": "宿舍",
+    "scene_location": "钱包",
+    "item_name": "楼下奶茶店的小票",
+    "anchor_object": "奶茶小票",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.54,
+    "revealed_text": "钱包夹层里有一张发黄的小票，是宿舍楼下那家奶茶店的。小票上只有一杯，备注栏写着：“少冰，少糖。”那家店已经关门了。我忘了这张小票为什么会在我这里。也许是他买给我的，也许是我自己买的。备注是我常说的要求。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他记得我的口味",
+      "那杯可能是他买的",
+      "一张小票而已"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "小票是谁的",
+        "奶茶是谁买的",
+        "备注为什么写少冰少糖"
+      ],
+      "drift_dimension": [
+        "认知",
+        "记忆真实性"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "DM_MIRROR_01": {
+    "anchor_id": "DM_MIRROR_01",
+    "object_id": "DM_MIRROR_01",
+    "scene": "宿舍",
+    "scene_location": "门后",
+    "item_name": "门后的全身镜",
+    "anchor_object": "门后全身镜",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.53,
+    "revealed_text": "语音通话里，他说：“你朋友圈发的那张照片……”顿了一下，又说：“没什么，路上小心。”那张照片我后来删了。删的时候没想太多。现在站在门后的全身镜前，忽然想不起来那张照片拍的是什么。也许是在这面镜子前拍的。也许不是。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "他看见了什么",
+      "我为什么删掉",
+      "照片的内容还重要吗"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "照片内容",
+        "他为什么提到",
+        "我为什么删"
+      ],
+      "drift_dimension": [
+        "认知",
+        "回避"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "B"
+  },
+  "DM_EARPHONE_01": {
+    "anchor_id": "DM_EARPHONE_01",
+    "object_id": "DM_EARPHONE_01",
+    "scene": "宿舍",
+    "scene_location": "飘窗",
+    "item_name": "飘窗上的旧耳机",
+    "anchor_object": "旧耳机",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.52,
+    "revealed_text": "半副旧耳机压在飘窗垫子下面。我忘了是自己买的，还是他的。只记得大一时有一段时间，他总在课间把一只耳机递过来，说这首好听。我接过一次，听了一半就还给他了。后来那只耳机去了哪里，我想不起来。现在只剩半副压在这里。我忽然想＿＿＿＿＿＿",
+    "emotion_options": [
+      "我那次根本没认真听",
+      "他后来还递过吗",
+      "这只耳机是他的还是我的"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "耳机的归属",
+        "我为什么听了一半就还",
+        "他后来有没有再递过"
+      ],
+      "drift_dimension": [
+        "记忆真实性",
+        "认知"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "C"
+  },
+  "CR_SMS_01": {
+    "anchor_id": "CR_SMS_01",
+    "object_id": "CR_SMS_01",
+    "scene": "教室",
+    "scene_location": "教室·书桌",
+    "item_name": "未发出的短信草稿",
+    "anchor_object": "手机短信草稿",
+    "category": "memory_anchor_archaeology_main",
+    "identification_difficulty": 0.7,
+    "revealed_text": "深夜，我翻出换手机时导出的旧数据备份。无意中点开草稿箱，屏幕上停着半截没能送出的文字：“我不是故意不回你的，我只是＿＿”思绪骤然被拉回当年。那日我们原本约好在教学楼碰面。我忍不住猜想，对方或许反复输入、删除，挣扎许久，最终还是没能按下发送。那天我守着对话框等了整整一日，越等越烦闷，暗自下定决心绝不主动搭话，手机始终一片沉寂。那时我认定主动退让便是妥协，自己的选择无需动摇。屏幕上显示消息发送失败，我无从分辨，究竟是校园网出了问题，还是另有隐情。长久的沉默对峙，硬生生阻隔了＿＿＿＿＿＿",
+    "emotion_options": [
+      "彼此坦诚的机会",
+      "一时赌气造成的隔阂",
+      "本该解开的误会"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "未发送原因",
+        "等待时长",
+        "消息内容"
+      ],
+      "drift_dimension": [
+        "信任",
+        "沟通"
+      ],
+      "note": "设计元数据,供 A 的 Prompt 参考(v5.3)"
+    },
+    "offset_type": "A"
+  },
+  "MA_BRACELET_01": {
+    "anchor_id": "MA_BRACELET_01",
+    "object_id": "MA_BRACELET_01",
+    "scene": "记忆考古",
+    "scene_location": "关卡 1 主舞台",
+    "item_name": "蓝色贝壳的手链",
+    "anchor_object": "蓝色贝壳的手链",
+    "category": "memory_anchor_archaeology_main",
+    "anchor_type": "core",
+    "identification_difficulty": 0.7,
+    "revealed_text": "那天放学路上，旧友从书包里拿出一个旧盒子递给我。盒子里躺着一串蓝色贝壳手链，珠子大小不一，有的已经被磨得发亮。他说那天海边捡的，攒了两年。我接过盒子放在课桌抽屉里，下周就忘了。后来课桌换了主人，那盒子也跟着不见了。多年后同学聚会，有人聊起这串手链——我才知道，那是他第一次鼓起勇气送出的东西，他那天站在校门口等了整整一个下午，想看我戴上。",
+    "emotion_options": [
+      "被时间带走的忐忑",
+      "我收起来的那份犹豫",
+      "没有说出口的等待"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "贝壳数量",
+        "赠送场合",
+        "他当时站了多久"
+      ],
+      "drift_dimension": [
+        "信任",
+        "期待"
+      ],
+      "note": "关卡 1 基准范本(辨识度 70%, 易识别)"
+    },
+    "offset_type": "A",
+    "archaeology_truth_shard": "那串手链不是海边随便捡的——他在海边礁石缝里蹲了好几个早晨，每个贝壳都按大小排过序。他那天放学后站在校门口等到天黑，不是为了看我戴上——是想知道，我会用什么样的表情接过它。他后来再也没买过贝壳。"
+  },
+  "MA_ROSE_01": {
+    "anchor_id": "MA_ROSE_01",
+    "object_id": "MA_ROSE_01",
+    "scene": "记忆考古",
+    "scene_location": "关卡 2 主舞台",
+    "item_name": "紫色的玫瑰",
+    "anchor_object": "紫色的玫瑰",
+    "category": "memory_anchor_archaeology_main",
+    "anchor_type": "core",
+    "identification_difficulty": 0.5,
+    "revealed_text": "旧友生日那天约在咖啡店碰面。他进来时怀里抱着一束花，紫色玫瑰，花瓣边缘有压痕。他随手放在我身边的椅子上，说是从楼下花店顺路带的。我抬头看了几秒，没说什么。那天我们聊得很晚，离开时他先走了，那束花还放在椅子上。后来几天我去那家咖啡店，没见过那束花。店员说他那天折返回来过，但看见我不在就走了。我一直没问那束花后来去了哪里。",
+    "emotion_options": [
+      "一个过于随意的理由",
+      "没送出去的那份心意",
+      "折返回来过的人"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "花店距离",
+        "压痕来历",
+        "他折返的动机"
+      ],
+      "drift_dimension": [
+        "情感",
+        "归因"
+      ],
+      "note": "关卡 2 基准范本(辨识度 50%, 中等)"
+    },
+    "offset_type": "B",
+    "archaeology_truth_shard": "紫色玫瑰不是花店顺路带的——他从学校外面坐了四十分钟地铁去市中心花店，在店里挑了半小时才选了这束。他没告诉我，是因为那天他怕我说'不用这么破费'。他后来折返回来，是想把花拿走——但他看见我还坐在那里，又走了。他只是想确认，我还在不在那里。"
+  },
+  "MA_FLOWER_01": {
+    "anchor_id": "MA_FLOWER_01",
+    "object_id": "MA_FLOWER_01",
+    "scene": "记忆考古",
+    "scene_location": "关卡 3 主舞台",
+    "item_name": "针织的蓝色花朵",
+    "anchor_object": "针织的蓝色花朵",
+    "category": "memory_anchor_archaeology_main",
+    "anchor_type": "core",
+    "identification_difficulty": 0.3,
+    "revealed_text": "宿舍书桌角落里一直放着一朵针织蓝色花朵，是搬家时从旧箱子底下翻出来的。我记得很清楚，这是室友生日那次回老家带来的手工品，说是邻居阿姨织的。我当时看了一眼就随手放下。那朵花现在还摆在那里——我不记得它具体是什么时候出现在我的桌上的，也没人提起过。最近一次整理书桌时才发现，花朵底部有人用极细的针脚缝了一行小字，我从没注意过。",
+    "emotion_options": [
+      "一个我从未注意的角落",
+      "邻居阿姨从没来过",
+      "花是谁织的"
+    ],
+    "llm_params": {
+      "twistable_elements": [
+        "花朵来源",
+        "底部字迹",
+        "送出的时机"
+      ],
+      "drift_dimension": [
+        "记忆真实性",
+        "情感"
+      ],
+      "note": "关卡 3 基准范本(辨识度 30%, 极难)"
+    },
+    "offset_type": "D",
+    "archaeology_truth_shard": "那朵针织蓝色花朵不是邻居阿姨织的——是旧友花了一个月，一针一线织出来的。他送给我的那天我不在宿舍，是室友代收的，室友没告诉我是谁送的。我从来没仔细看过那朵花，因为我以为它和我没什么关系。底部那一行小字，写的是'希望你看见它的时候，心情能好一点'。"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "_meta": {
+    "source": "dialogues_act1.json",
+    "source_path": "W4/dialogues/dialogues_act1.json",
+    "generated": "2026-09-11",
+    "note": "可人工扩充（追加变体台词时保持 id 唯一、dialogue_id 指向源对话）",
+    "count": 10
+  },
+  "lines": [
+    {
+      "id": "FL_001",
+      "dialogue_id": "ACT1_04_STREET_GLANCE",
+      "text": "……"
+    },
+    {
+      "id": "FL_002",
+      "dialogue_id": "ACT1_03_FRIEND_FIRST",
+      "text": "你回来啦。"
+    },
+    {
+      "id": "FL_003",
+      "dialogue_id": "ACT1_03_FRIEND_FIRST",
+      "text": "那什么……天冷了。"
+    },
+    {
+      "id": "FL_004",
+      "dialogue_id": "ACT1_03_FRIEND_FIRST",
+      "text": "晚上出门，多穿点。"
+    },
+    {
+      "id": "FL_005",
+      "dialogue_id": "ACT1_03_FRIEND_FIRST",
+      "text": "今年冬天来得早。"
+    },
+    {
+      "id": "FL_006",
+      "dialogue_id": "ACT1_03_FRIEND_PLANT",
+      "text": "……你回来啦。"
+    },
+    {
+      "id": "FL_007",
+      "dialogue_id": "ACT1_03_FRIEND_PLANT",
+      "text": "楼下那盆绿植，我隔几天来浇一次水。"
+    },
+    {
+      "id": "FL_008",
+      "dialogue_id": "ACT1_03_FRIEND_PLANT",
+      "text": "你别多想。就是……顺手。"
+    },
+    {
+      "id": "FL_009",
+      "dialogue_id": "ACT1_06_NAME_REVEAL",
+      "text": "听说你回来了。那个……你要是想聊聊，我随时都在。"
+    },
+    {
+      "id": "FL_010",
+      "dialogue_id": "ACT1_07_FRIEND_MESSAGE",
+      "text": "明天早上，我会在老地方等你。就来这一次。"
+    }
+  ]
+}
