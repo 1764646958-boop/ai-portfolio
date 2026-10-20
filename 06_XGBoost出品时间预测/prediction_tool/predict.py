@@ -614,7 +614,7 @@ def _eval_summary_dict(df_eval, mae, rmse, r2, residuals):
 def predict_pipeline(input_path, output_path=None, model_dir=None):
     """完整的预测流水线，返回 (result_df, eval_dict_or_None)"""
     if model_dir is None:
-        model_dir = SCRIPT_DIR
+        model_dir = os.path.normpath(os.path.join(SCRIPT_DIR, os.pardir, 'model'))
     if output_path is None:
         output_path = os.path.splitext(input_path)[0] + '_预测结果.csv'
 
@@ -652,8 +652,8 @@ def main():
     parser.add_argument('input', help='输入 CSV 文件路径')
     parser.add_argument('-o', '--output', default=None,
                         help='输出 CSV 路径（默认: <输入>_预测结果.csv）')
-    parser.add_argument('--model-dir', default=SCRIPT_DIR,
-                        help=f'模型文件所在目录（默认: 本脚本所在目录）')
+    parser.add_argument('--model-dir', default=os.path.normpath(os.path.join(SCRIPT_DIR, os.pardir, 'model')),
+                        help=f'模型文件所在目录（默认: 上级目录的 model/）')
     args = parser.parse_args()
 
     output = args.output or f"{os.path.splitext(args.input)[0]}_预测结果.csv"

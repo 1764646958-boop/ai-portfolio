@@ -32,8 +32,11 @@ import time as time_module
 # ============================================================
 # 0. 全局设置
 # ============================================================
-DATA_PATH = r"D:\work\叫号\data\combined_train.csv"
-OUTPUT_DIR = r"D:\work\叫号"
+DATA_PATH = os.environ.get("ORDER_DATA_PATH", r"D:\work\叫号\data\combined_train.csv")
+OUTPUT_DIR = os.environ.get(
+    "MODEL_OUTPUT_DIR",
+    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "model"),
+)
 RANDOM_STATE = 42
 
 print("=" * 70)

@@ -36,7 +36,7 @@ def api_predict():
     file.save(in_path)
     out_path = os.path.join(RESULT_DIR, f'{task_id}_out.csv')
     try:
-        result_df, eval_dict = predict_pipeline(in_path, out_path, SCRIPT_DIR)
+        result_df, eval_dict = predict_pipeline(in_path, out_path, os.path.normpath(os.path.join(SCRIPT_DIR, os.pardir, 'model')))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     import pandas as pd, numpy as np
